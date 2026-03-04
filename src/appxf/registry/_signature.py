@@ -33,7 +33,7 @@ class Signature(Storable):
         return self.pub_key
 
     # Set attribute mask to exclude not needed objects
-    attribute_mask = Storable.attribute_mask + ["_security"]
+    attribute_mask = (*Storable.attribute_mask, "_security")
 
     def verify(self, data: bytes):
         """Verify loaded signature

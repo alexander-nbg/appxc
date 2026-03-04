@@ -87,7 +87,7 @@ class SyncData(Storable):
 
     # get_state()/set_state() can be taken from Storable/Stateful but
     # attribute_mask must be extenden:
-    attribute_mask = Storable.attribute_mask + ["_this_storage"]
+    attribute_mask = (*Storable.attribute_mask, "_this_storage")
 
 
 # Pyhon dirsync:

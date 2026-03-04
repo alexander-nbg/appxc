@@ -6,6 +6,8 @@ Implemented as mock for remote locations like FTP during the initialization
 procedure.
 """
 
+from typing import ClassVar
+
 from appxf.setting import Setting
 from appxf.storage import LocalStorage
 
@@ -13,7 +15,7 @@ from appxf.storage import LocalStorage
 class CredentialLocationMock(LocalStorage):
     credential = "yes, sir!"
 
-    config_properties = {"credential": Setting.new(str)}
+    config_properties: ClassVar[dict] = {"credential": Setting.new(str)}
 
     def __init__(self, path: str, credential: str = ""):
         if credential != self.credential:

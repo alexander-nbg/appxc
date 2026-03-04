@@ -8,7 +8,7 @@ from abc import ABC, abstractmethod
 from collections.abc import Callable
 from copy import deepcopy
 from inspect import isabstract
-from typing import Protocol, overload, runtime_checkable
+from typing import ClassVar, Protocol, overload, runtime_checkable
 
 from appxf.logging import logging
 
@@ -112,7 +112,7 @@ class Storage(ABC):
     # unique storage location (like folders of URL+path). The registry has
     # therefore a first level (the location) and a second level (the storage
     # item's name). Both are provided during construction:
-    _storage_registry: dict[str, dict[str, Storage]] = {}
+    _storage_registry: ClassVar[dict[str, dict[str, Storage]]] = {}
 
     # Context is a weirdo feature that should not be used in applications but
     # is required during testing. If two or more application instances need to
@@ -139,7 +139,7 @@ class Storage(ABC):
     # storage objects would be generated.
     #
     # The following variable would store registry backup based on the context:
-    _context_registry_backup: dict[str, dict[str, dict[str, Storage]]] = {}
+    _context_registry_backup: ClassVar[dict[str, dict[str, dict[str, Storage]]]] = {}
     # And the following is set in switch_context when switching to context="".
     _context_locked = False
 
@@ -147,7 +147,7 @@ class Storage(ABC):
     # and resets properly. Note that this list remains accessible from all
     # classes as long as it is not replaced upon construction of a new class.
     # Only non-abstract classes will be added.
-    _storage_class_registry: list[type[Storage]] = []
+    _storage_class_registry: ClassVar[list[type[Storage]]] = []
 
     # Control meta data handling on class level. Can be overwritten also on
     # instance level.

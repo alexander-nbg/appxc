@@ -16,7 +16,7 @@ class PredefinedAttributes(Stateful):
     state_int: int = 0
     state_str: str = "test"
     state_list: list[str] = field(default_factory=lambda: ["test"])
-    attributes = ["state_list"]
+    attributes = ("state_list",)
 
 
 # With only the list being defined, get_state() should only return this list
@@ -40,7 +40,7 @@ def test_predefined_default():
 class PredefinedAttributesDerived(PredefinedAttributes):
     state_new_int: int = 0
     # best way to extend is to add to the parent attributes setting:
-    attributes = PredefinedAttributes.attributes + ["state_new_int"]
+    attributes = (*PredefinedAttributes.attributes, "state_new_int")
 
 
 # this test case is copied from test_predefined_default with state_new_int added
@@ -135,7 +135,7 @@ def test_state_import_wrong_key():
 
 def test_state_export_wrong_key():
     class WrongExport(PredefinedAttributes):
-        attributes = ["unsupported_key"]
+        attributes = ("unsupported_key",)
 
     obj = WrongExport()
     with pytest.raises(TypeError) as exc:

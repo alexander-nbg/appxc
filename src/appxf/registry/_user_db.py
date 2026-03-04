@@ -43,14 +43,14 @@ class UserDatabase(Storable):
         # lookup.
         self._validation_key_map: dict[bytes, int] = {}
 
-    attributes = [
+    attributes = (
         "_version",
         "_next_id",
         "_unused_id_list",
         "_user_db",
         "_role_map",
         "_validation_key_map",
-    ]
+    )
     # TODO: should apply custom get_state to apply version check
 
     # TODO: next_id / unused_id_list should rather be re-created than stored

@@ -13,7 +13,7 @@ import functools
 import tkinter
 from collections.abc import Callable, Iterable
 from tkinter import ttk
-from typing import NamedTuple
+from typing import ClassVar, NamedTuple
 
 from appxf import logging
 
@@ -69,26 +69,25 @@ class GridFrame(tkinter.LabelFrame):
     """
 
     log = logging.get_logger(f"{__name__}.GridFrame")
+    # deriving classes are supposed to define which APPXF types they support in
+    # displayling:
+    supports: tuple[type, ...] = ()
 
     # Registry mapping APPXF object types to GridFrame subclasses
-    _registry: dict[type, type[GridFrame]] = {}
+    _registry: ClassVar[dict[type, type[GridFrame]]] = {}
 
     def __init_subclass__(cls, **kwargs):
         super().__init_subclass__(**kwargs)
         # If a subclass defines a class attribute 'supports', register it
-        supports = getattr(cls, "supports", None)
-        if supports:
-            # allow single type or iterable
-            types = (supports,) if isinstance(supports, type) else tuple(supports)
-            for t in types:
-                if not isinstance(t, type):
-                    raise TypeError("GridFrame.supports must contain types")
-                if t in GridFrame._registry:
-                    raise AppxfGuiError(
-                        f"GridFrame for type {t} already registered: "
-                        f"{GridFrame._registry[t]} vs {cls}"
-                    )
-                GridFrame._registry[t] = cls
+        for t in cls.supports:
+            if not isinstance(t, type):
+                raise TypeError("GridFrame.supports must contain types")
+            if t in GridFrame._registry:
+                raise AppxfGuiError(
+                    f"GridFrame for type {t} already registered: "
+                    f"{GridFrame._registry[t]} vs {cls}"
+                )
+            GridFrame._registry[t] = cls
 
     @classmethod
     def get_frame(cls, parent: tkinter.BaseWidget, appxf_object, **kwargs):
@@ -115,17 +114,24 @@ class GridFrame(tkinter.LabelFrame):
         sticky="EWNS", padx=0, pady=0, row_weight=1, column_weight=1
     )
 
-    classes_horizontal_stretch_setting = [tkinter.Entry, ttk.Entry, ttk.Combobox]
+    classes_horizontal_stretch_setting = (
+        tkinter.Entry,
+        ttk.Entry,
+        ttk.Combobox,
+    )
     item_horizontal_stretch_setting = GridSetting(
         sticky="EW", padx=5, pady=5, row_weight=0, column_weight=1
     )
 
-    classes_full_stretch_setting = [tkinter.Text, ttk.Entry]
+    classes_full_stretch_setting = (
+        tkinter.Text,
+        ttk.Entry,
+    )
     item_full_stretch_setting = GridSetting(
         sticky="EWNS", padx=5, pady=5, row_weight=1, column_weight=1
     )
 
-    classes_right_aligned_setting = [tkinter.Label]
+    classes_right_aligned_setting = (tkinter.Label,)
     item_right_aligned_setting = GridSetting(
         sticky="E", padx=5, pady=5, row_weight=0, column_weight=0
     )

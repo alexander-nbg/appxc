@@ -29,9 +29,9 @@ class Stateful:
 
     # There is no particular __init__ required but the deriving class should
     # update the attribute_mask:
-    attribute_mask: list[str] = []
+    attribute_mask: tuple[str, ...] = ()
     # or the attributes list:
-    attributes: list[str] = []
+    attributes: tuple[str, ...] = ()
     # They are used for the default implementaiton of get_state()/set_state().
 
     def get_state(self, **kwarg) -> object:

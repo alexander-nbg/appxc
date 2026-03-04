@@ -37,6 +37,8 @@ Apache-2.0 license applies with copyright by the contributors of APPXF
 Those files belong to the documentation:
  * doc/requirements.txt
  * doc/conf.py
+To avoid AI's needing to digest license information, it is not included:
+ * AGENTS.md
 
 No license
 ----------

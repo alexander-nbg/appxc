@@ -32,7 +32,7 @@ class NtpTime:  # pragma: no cover
     # default base server is europe
     base_server = "europe.pool.ntp.org"
     # default list of server prefixes
-    server_prefix_list = [0, 1, 2]
+    server_prefix_list = (0, 1, 2)
     # ensure we a last sync timestamp
     last_sync_as_datetime = None
     # time interval after which a re-sync is required
@@ -61,7 +61,7 @@ class NtpTime:  # pragma: no cover
             str(prefix) + "." + cls.base_server for prefix in cls.server_prefix_list
         ]
         tasks = [asyncio.Task(cls._request_server(server)) for server in servers]
-        done, pending = await asyncio.wait(tasks, return_when=asyncio.FIRST_COMPLETED)
+        done, _ = await asyncio.wait(tasks, return_when=asyncio.FIRST_COMPLETED)
         timestamp_two = datetime.utcnow()
 
         elapsed_time = timestamp_two - timestamp_one

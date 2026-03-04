@@ -70,15 +70,15 @@ class JsonSerializer(Serializer):
         if isinstance(obj, dict):
             if all(isinstance(key, cls.SimpleTypes) for key in obj):
                 return {
-                    key: cls.encode_transform(value, log_tree + [key])
+                    key: cls.encode_transform(value, [*log_tree, key])
                     for key, value in obj.items()
                 }
             dict_type = "__dict__"
             return {
                 dict_type: [
                     [
-                        cls.encode_transform(key, log_tree + [key]),
-                        cls.encode_transform(value, log_tree + [f"value for {key}"]),
+                        cls.encode_transform(key, [*log_tree, key]),
+                        cls.encode_transform(value, [*log_tree, f"value for {key}"]),
                     ]
                     for key, value in obj.items()
                 ]
@@ -86,7 +86,7 @@ class JsonSerializer(Serializer):
 
         if isinstance(obj, (list, tuple, set)):
             encoded_list = [
-                cls.encode_transform(element, log_tree + [str(element)])
+                cls.encode_transform(element, [*log_tree, str(element)])
                 for element in obj
             ]
             if type(obj) is list:
@@ -115,17 +115,17 @@ class JsonSerializer(Serializer):
             if key == "__bytes__":
                 return cls._decode_bytes(value)
             if key == "__tuple__":
-                return tuple(cls.decode_transform(value, log_tree + ["tuple"]))
+                return tuple(cls.decode_transform(value, [*log_tree, "tuple"]))
             if key == "__set__":
-                return set(cls.decode_transform(value, log_tree + ["set"]))
+                return set(cls.decode_transform(value, [*log_tree, "set"]))
             if key == "__dict__":
                 # this was a dict with non trivial key types that come as list
                 # of two-element lists:
                 decode_dict = OrderedDict(
                     (
-                        cls.decode_transform(dict_element[0], log_tree + [key]),
+                        cls.decode_transform(dict_element[0], [*log_tree, key]),
                         cls.decode_transform(
-                            dict_element[1], log_tree + ["value for key"]
+                            dict_element[1], [*log_tree, "value for key"]
                         ),
                     )
                     for dict_element in value
@@ -134,11 +134,11 @@ class JsonSerializer(Serializer):
 
         if isinstance(obj, dict):
             for key, value in obj.items():
-                obj[key] = cls.decode_transform(value, log_tree + [key])
+                obj[key] = cls.decode_transform(value, [*log_tree, key])
             return obj
         if isinstance(obj, list):
             return [
-                cls.decode_transform(element, log_tree + [str(element)])
+                cls.decode_transform(element, [*log_tree, str(element)])
                 for element in obj
             ]
         if isinstance(obj, cls.SimpleTypes):

@@ -7,7 +7,7 @@ from __future__ import annotations
 import base64
 import binascii
 import configparser
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any
 
 from email_validator import EmailNotValidError, validate_email
@@ -50,7 +50,12 @@ class SettingText(SettingString):
         """Options for SettingText"""
 
         display_height: int = 5
-        display_options = Setting.Options.display_options + ["display_height"]
+        display_options: list[str] = field(
+            default_factory=lambda: [
+                *Setting.Options().display_options,
+                "display_height",
+            ]
+        )
 
     @classmethod
     def get_supported_types(cls) -> list[type | str]:
@@ -95,10 +100,17 @@ class SettingPassword(SettingString):
         """Options for SettingText"""
 
         min_length: int = 6
-        value_options = Setting.Options.value_options + ["min_length"]
+        value_options: list[str] = field(
+            default_factory=lambda: [*Setting.Options().value_options, "min_length"]
+        )
 
         display_masked: bool = True
-        display_options = Setting.Options.display_options + ["display_masked"]
+        display_options: list[str] = field(
+            default_factory=lambda: [
+                *Setting.Options().display_options,
+                "display_masked",
+            ]
+        )
 
     options: Options
 
@@ -241,7 +253,9 @@ class SettingBase64(Setting[bytes]):
         """Options for SettingBase64"""
 
         size: int = 0
-        value_options = Setting.Options.value_options + ["size"]
+        value_options: list[str] = field(
+            default_factory=lambda: [*Setting.Options().value_options, "size"]
+        )
 
     options: Options
 

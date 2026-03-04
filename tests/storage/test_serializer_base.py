@@ -52,7 +52,7 @@ all_type_dict = {
     "string": "string",
     "none": None,
     b"a": b"b",
-    "list": all_type_list + [all_type_tuple, all_type_set],
+    "list": [*all_type_list, all_type_tuple, all_type_set],
     "tuple": all_type_tuple,
     "more_tuple": (all_type_list, all_type_set),
     "set": all_type_set,
@@ -186,7 +186,7 @@ def test_stateful_interface_contract():
                 # skip if type is already tested
                 if that_type in tree:
                     continue
-                verify_type_tested(that_type, test_samples, tree + [that_type])
+                verify_type_tested(that_type, test_samples, [*tree, that_type])
             return
 
         # we now extract the tested samples that match the origin or base type:
@@ -228,7 +228,7 @@ def test_stateful_interface_contract():
                 verify_type_tested(
                     that_type,
                     [sample for container in included for sample in container],
-                    tree + [type_origin, f"Element({that_type})"],
+                    [*tree, type_origin, f"Element({that_type})"],
                 )
             return
         if type_origin in [dict]:
@@ -241,7 +241,7 @@ def test_stateful_interface_contract():
                 verify_type_tested(
                     that_type,
                     [sample for some_dict in included for sample in some_dict],
-                    tree + [type_origin, f"Key({that_type})"],
+                    [*tree, type_origin, f"Key({that_type})"],
                 )
             # and into the arguments:
             if not isinstance(type_args[1], list):
@@ -252,7 +252,7 @@ def test_stateful_interface_contract():
                 verify_type_tested(
                     that_type,
                     [sample for some_dict in included for sample in some_dict.values()],
-                    tree + [type_origin, f"Value({that_type})"],
+                    [*tree, type_origin, f"Value({that_type})"],
                 )
             return
 

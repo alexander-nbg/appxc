@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from abc import ABCMeta, abstractmethod
 from collections import OrderedDict
-from dataclasses import dataclass
-from typing import Any, Generic, TypeVar
+from dataclasses import dataclass, field
+from typing import Any, ClassVar, Generic, TypeVar
 
 from appxf import Options, Stateful
 
@@ -71,19 +71,19 @@ class _SettingMeta(type):
     # map is used when generating a new Setting without the need to import all
     # classes seperately. Note, however, that custom Setting implementations
     # still need to be loaded to get registered.
-    type_map: dict[type | str | Setting[Any], type[Setting[Any]]] = {}
+    type_map: ClassVar[dict[type | str | Setting[Any], type[Setting[Any]]]] = {}
     # Settings also support setting extensions that are based on "normal" types
     # but extentding their behavior. The first example was SettingSelect
     # which defines a set of named values to select from. The base setting is
     # preserved, but limited to the named options.
-    extension_map: dict[str, type(Setting)] = {}
+    extension_map: ClassVar[dict[str, type[Setting[Any]]]] = {}
     # TODO: the above is not fully correct, the referenced type should be
     # SettingExtension but this was moved in separate module. However, this
     # concept is also to be reworked by #17.
 
     # List of known Setting implementations, mainly intended for logging.
-    implementation_names: list[str] = []
-    implementations: list[type[Setting[Any]]] = []
+    implementation_names: ClassVar[list[str]] = []
+    implementations: ClassVar[list[type[Setting[Any]]]] = []
 
     @classmethod
     def _register_setting_class(mcs, cls_register: type[Setting[Any]]):
@@ -330,14 +330,18 @@ class SettingOptions(Options):
     # a more specific concept is needed (see ExportOptions) - export groups are
     # defined to which the option fields must be added - any field not in an
     # export group cannot be exported (except name)
-    value_options = []
-    display_options = ["visible", "display_width"]
-    control_options = [
-        "mutable",
-        "value_options_mutable",
-        "display_options_mutable",
-        "control_options_mutable",
-    ]
+    value_options: list[str] = field(default_factory=list)
+    display_options: list[str] = field(
+        default_factory=lambda: ["visible", "display_width"]
+    )
+    control_options: list[str] = field(
+        default_factory=lambda: [
+            "mutable",
+            "value_options_mutable",
+            "display_options_mutable",
+            "control_options_mutable",
+        ]
+    )
 
     # with overwriting the get_state()/set_state(), the Stateful class
     # configuration for attribute/attribute_mask does not need to be changed

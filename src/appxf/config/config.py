@@ -96,7 +96,7 @@ class Config:
         self,
         section: str,
         storage_factory: Storage.Factory | None = None,
-        settings: Mapping[str, Any] = None,
+        settings: Mapping[str, Any] | None = None,
     ) -> SettingDict:
         """Add section if not yet existing."""
         # ensure section does not yet exist:

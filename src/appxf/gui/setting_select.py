@@ -309,7 +309,7 @@ class SettingSelectWindow(GridToplevel):
 
 
 class SettingSelectFrame(_DropdownOnly):
-    supports = [SettingSelect]
+    supports = (SettingSelect,)
     log = logging.get_logger(__name__ + ".SettingSelectFrame")
 
     def __init__(self, parent, setting: SettingSelect, **kwargs):

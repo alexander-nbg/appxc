@@ -43,7 +43,7 @@ class Storable(Stateful):
 
     # taking over get_state()/set_state() from Stateful but updating the
     # attribute_mask:
-    attribute_mask = ["_storage"]
+    attribute_mask = ("_storage",)
 
     def exists(self):
         """Storage file exists (call before load())"""

@@ -9,6 +9,7 @@ This module merges serializers with Storage as a basis for any file storage.
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
+from typing import ClassVar
 
 from .serializer import Serializer
 from .serializer_compact import CompactSerializer
@@ -25,7 +26,7 @@ class StorageToBytes(Storage, ABC):
 
     # To allow meta files to specify the serialization type, the following
     # dictionary is used:
-    _meta_serializer_dict: dict[str, type[Serializer]] = {}
+    _meta_serializer_dict: ClassVar[dict[str, type[Serializer]]] = {}
 
     # This dict will be the SAME even in derived classses. The following
     # interface will allow the setting:

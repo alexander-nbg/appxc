@@ -42,7 +42,7 @@ test-sandbox-root = "./.testing"
 [tool.ruff.lint]
 # Remark: The selected rules are not ciceled in stone. Start discussing, if there are
 # good reasons to change.
-select = ["B", "C4", "E", "F", "I", "N", "SIM", "UP", "W"]
+select = ["B", "C4", "E", "F", "I", "N", "RUF", "SIM", "UP", "W"]
 #  B -- flake8-bugbear (checks catching common bugs)
 #  C4 -- flake8-comprehensions ( unnecessary list/dict/set comprehensions)
 #  E -- pycodestyle errors; PEP8

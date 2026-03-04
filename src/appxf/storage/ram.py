@@ -4,17 +4,18 @@ from __future__ import annotations
 
 import uuid
 from copy import deepcopy
+from typing import ClassVar
 
 from .storage import AppxfStorageWarning, Storage
 
 
 class RamStorage(Storage):
     # store data and metadata in class data is accessed by _data[group][name]:
-    _data: dict[str, dict[str, object]] = {}
+    _data: ClassVar[dict[str, dict[str, object]]] = {}
     # meta is accessed by _meta[group][name][meta]. This order allows
     # pre-initializing the dicts in __init__ up to the point where we do not
     # know which meta will exist >> meta must be last.
-    _meta_data: dict[str, dict[str, dict[str, object]]] = {}
+    _meta_data: ClassVar[dict[str, dict[str, dict[str, object]]]] = {}
 
     def __init__(self, name: str | None = None, ram_area: str = ""):
         # It is possible to use RamStorage() as a functional dummy storage. In

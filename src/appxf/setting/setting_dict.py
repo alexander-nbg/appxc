@@ -11,7 +11,7 @@ from __future__ import annotations
 import warnings
 from collections import OrderedDict
 from collections.abc import Callable, Mapping, MutableMapping
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any
 
 from appxf.storage import RamStorage, Storable, Storage
@@ -58,7 +58,12 @@ class SettingDict(Setting[dict], Storable, MutableMapping[str, Setting]):
         #  * the default mutable is for adding, removing, rearranging or
         #    renaming items. No extra option (like mutable_dict is added)
 
-        display_options = Setting.Options.display_options + ["display_columns"]
+        display_options: list[str] = field(
+            default_factory=lambda: [
+                *Setting.Options().display_options,
+                "display_columns",
+            ]
+        )
 
     @dataclass(eq=False, order=False)
     class ExportOptions(Setting.ExportOptions):

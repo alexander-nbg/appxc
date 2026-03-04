@@ -59,7 +59,7 @@ class SettingDictSingleFrame(SettingFrameBase):
     providing a cancel button that uses restore() on the config.
     """
 
-    supports = [SettingDict]
+    supports = (SettingDict,)
     log = logging.get_logger(__name__ + ".SettingDictSingleFrame")
 
     def __init__(

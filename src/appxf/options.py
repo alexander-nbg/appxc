@@ -190,10 +190,10 @@ class Options(Stateful):
     # the attribute_mask:
     def get_state(self, **kwarg) -> OrderedDict[str, Any]:
         export_defaults = kwarg.pop("export_defaults", True)
-        attribute_mask = kwarg.pop("attribute_mask", self.attribute_mask.copy())
+        attribute_mask = tuple(kwarg.pop("attribute_mask", self.attribute_mask))
 
         if not export_defaults:
-            attribute_mask += self._get_fields_with_default_values()
+            attribute_mask += tuple(self._get_fields_with_default_values())
 
         # note: attributes option is just forwarded as part of **kwarg
         return self._get_state_default(attribute_mask=attribute_mask, **kwarg)

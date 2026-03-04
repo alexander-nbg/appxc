@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 from copy import deepcopy
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any
 
 from .setting import AppxfSettingError, Setting, _BaseTypeT
@@ -92,11 +92,14 @@ class SettingSelect(SettingExtension[_BaseSettingT, _BaseTypeT]):
         # enable all behavior is "people dont read the documentation" to know
         # what is possible. Once they see behavior they don't want, they should
         # be able to find the option to disable.
-        control_options = Setting.Options.control_options + [
-            "mutable_items",
-            "mutable_list",
-            "custom_value",
-        ]
+        control_options: list[str] = field(
+            default_factory=lambda: [
+                *Setting.Options().control_options,
+                "mutable_items",
+                "mutable_list",
+                "custom_value",
+            ]
+        )
 
     def __init__(
         self,

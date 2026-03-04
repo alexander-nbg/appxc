@@ -31,7 +31,7 @@ class SettingFrameBase(GridFrame, ABC):
 class SettingFrameDefault(SettingFrameBase):
     """Frame holding a single property."""
 
-    supports = [Setting]
+    supports: tuple[type] = (Setting,)
     log = logging.get_logger(__name__ + ".PropertyWidget")
 
     def __init__(self, parent, setting: Setting, **kwargs):
@@ -143,7 +143,7 @@ class SettingFrameDefault(SettingFrameBase):
 class SettingFrameBool(SettingFrameBase):
     """CheckBox frame for a single boolean."""
 
-    supports = [SettingBool]
+    supports = (SettingBool,)
     log = logging.get_logger(__name__ + ".BoolCheckBoxWidget")
 
     def __init__(self, parent, setting: Setting, **kwargs):
