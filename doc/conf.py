@@ -6,7 +6,7 @@ from pathlib import Path
 project = "APPXF"
 html_title = "APPXF"
 author = "the contributors of APPXF (github.com/alexander-nbg/appxf)"
-copyright = (
+copyright = (  # noqa: A001
     f"{date.today().year} the contributors of APPXF (github.com/alexander-nbg/appxf)"
 )
 

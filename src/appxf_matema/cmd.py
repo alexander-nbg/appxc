@@ -19,8 +19,8 @@ class CmdHelper:
 
     def print_case_summary(self):
         print("Summary on test cases in database: ")
-        map = self.database.get_path_to_case_map()
-        for path, cases in map.items():
+        case_map = self.database.get_path_to_case_map()
+        for path, cases in case_map.items():
             print(f"  {path}:")
             for case in cases:
                 print(f"    {case}")

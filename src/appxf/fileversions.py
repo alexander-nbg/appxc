@@ -53,7 +53,7 @@ set_locale.locale = "EN"
 
 
 def get_filename(
-    format: str,
+    name_format: str,
     date: datetime.date | None = None,
     directory: str = "./",
     existing: bool = False,
@@ -86,17 +86,17 @@ def get_filename(
     if date is None:
         date = datetime.date.today()
 
-    filename = _fill_date_pattern(format, date)
+    filename = _fill_date_pattern(name_format, date)
     log.debug(
         f'Filename is "{filename}" after applying date pattern to '
-        f'"{format}" with date={date}'
+        f'"{name_format}" with date={date}'
     )
     filename = _fill_version_pattern(filename, directory, existing)
     return filename
 
 
-def _fill_date_pattern(format: str, date: datetime.date):
-    outstr = format
+def _fill_date_pattern(name_format: str, date: datetime.date):
+    outstr = name_format
     # find first opening and closing brackets
     opening_index = -1
     closing_index = -1
@@ -110,12 +110,14 @@ def _fill_date_pattern(format: str, date: datetime.date):
         # error if opening braket count does not match closing braket count:
         if (opening < 0 and closing >= 0) or (opening >= 0 and closing < 0):
             raise ValueError(
-                f"Format string {format} does not have matching braket for "
+                f"Format string {name_format} does not have matching braket for "
                 f"{'opening' if opening > 0 else 'closing'} braket at "
                 f"position {opening if opening > 0 else closing}."
             )
         if opening > closing:
-            raise ValueError(f"Format string {format} close braket before opening.")
+            raise ValueError(
+                f"Format string {name_format} close braket before opening."
+            )
         else:
             # opening >= 0, opening > closing and opening != closing implies
             # closing > 0
@@ -125,7 +127,7 @@ def _fill_date_pattern(format: str, date: datetime.date):
                 # Error if we find this twice:
                 if opening_index >= 0 or closing_index >= 0:
                     raise ValueError(
-                        f"Format string {format} contains two indications "
+                        f"Format string {name_format} contains two indications "
                         'for indexing file versions like "(00)". '
                         "Only one is expected."
                     )
@@ -145,7 +147,7 @@ def _fill_date_pattern(format: str, date: datetime.date):
         if cycle_count <= 0:
             raise RuntimeError(
                 "Implementation error: format string "
-                f'"{format}" led to an infinite loop.'
+                f'"{name_format}" led to an infinite loop.'
             )
     # revert indexing brakets
     if opening_index >= 0:
@@ -159,7 +161,7 @@ def _fill_date_pattern(format: str, date: datetime.date):
     return outstr
 
 
-def _fill_version_pattern(filename: str, dir: str, existing: bool):
+def _fill_version_pattern(filename: str, path: str, existing: bool):
     # Note that _fill_date_pattern must always be called before. It contains
     # the error handling for brakets. After that execution, only one braked
     # pair is remaining for versioning (or none).
@@ -167,7 +169,7 @@ def _fill_version_pattern(filename: str, dir: str, existing: bool):
     closing = filename.find(")")
     # If there is no versioning pattern, we can return:
     if opening < 0 or closing < 0:
-        if existing and (not os.path.exists(os.path.join(dir, filename))):
+        if existing and (not os.path.exists(os.path.join(path, filename))):
             return None
         else:
             return filename
@@ -175,8 +177,8 @@ def _fill_version_pattern(filename: str, dir: str, existing: bool):
     regex = re.compile(filename[:opening] + r"(\d+)" + filename[closing + 1 :])
     version = -1
     # cycle filenames in directory:
-    if os.path.exists(dir):
-        for file in os.listdir(dir):
+    if os.path.exists(path):
+        for file in os.listdir(path):
             match = re.fullmatch(regex, file)
             if match is None:
                 continue

@@ -17,7 +17,7 @@ class UserId(Storable):
         self._id: int = -1
 
     @property
-    def id(self):
+    def user_id(self):
         """The USER ID
 
         Will be loaded from file if not yet done. Throws error
@@ -31,8 +31,8 @@ class UserId(Storable):
             self.load()
         return self._id
 
-    @id.setter
-    def id(self, user_id: int):
+    @user_id.setter
+    def user_id(self, user_id: int):
         self._id = user_id
         self.store()
 

@@ -37,7 +37,7 @@ from appxf.setting import setting as setting_module
 class SettingCase:
     def __init__(
         self,
-        input,
+        input,  # noqa: A002 setting internally uses _input, changing here is confusing
         value: Any | None = None,
         string: str | None = None,
         input_check: Any | None = None,

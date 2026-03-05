@@ -45,20 +45,20 @@ class Buffer(Storable):
             self.load()
             self.initially_loaded = True
 
-    def isbuffered(self, what: str, input: str):
+    def isbuffered(self, what: str, param: str):
         """Check if what/input is buffered"""
         self.ensure_loaded()
-        return bool(what in self.buffer and input in self.buffer[what])
+        return bool(what in self.buffer and param in self.buffer[what])
 
-    def get(self, what, input=""):
+    def get(self, what, param=""):
         """Get data from buffer for what(input)."""
         self.ensure_loaded()
-        if not self.isbuffered(what, input):
+        if not self.isbuffered(what, param):
             return None
-        self.log.debug(f"Retrieved buffer {what}({input})")
-        return deepcopy(self.buffer[what][input])
+        self.log.debug(f"Retrieved buffer {what}({param})")
+        return deepcopy(self.buffer[what][param])
 
-    def set(self, data, what, input=""):
+    def set(self, data, what, param=""):
         """Set data to buffer for what(input).
 
         This will overwrite existing data.
@@ -66,9 +66,9 @@ class Buffer(Storable):
         self.ensure_loaded()
         if what not in self.buffer:
             self.buffer[what] = {}
-        self.buffer[what][input] = deepcopy(data)
+        self.buffer[what][param] = deepcopy(data)
         self.store()
-        self.log.info(f"Buffered {what}({input})")
+        self.log.info(f"Buffered {what}({param})")
 
     def clear(self, what=""):
         self.ensure_loaded()

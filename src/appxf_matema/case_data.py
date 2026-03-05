@@ -100,16 +100,16 @@ class CaseData:
 
     def get_path_to_case_map(self) -> dict[str, str]:
         self.ensure_sorted()
-        map = OrderedDict()
+        case_map = OrderedDict()
         for case_name in self.case_data:
             path = self.get_case_path_string(case_name)
             case_name = self.get_case_name(case_name)
 
-            if path in map:
-                map[path] += [case_name]
+            if path in case_map:
+                case_map[path] += [case_name]
             else:
-                map[path] = [case_name]
-        return map
+                case_map[path] = [case_name]
+        return case_map
 
     def ensure_sorted(self):
         self.case_data.sort()

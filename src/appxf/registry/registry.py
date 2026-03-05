@@ -174,7 +174,7 @@ class Registry(RegistryBase):
     @property
     def user_id(self):
         # Documentation in RegistryBase
-        return self._user_id.id
+        return self._user_id.user_id
 
     def is_initialized(self) -> bool:
         # Documentation in RegistryBase
@@ -298,7 +298,7 @@ class Registry(RegistryBase):
             # TODO: why does only require access of _user_id an ensure_loaded()
             # but not access of _user_db above and below?
             self._ensure_loaded()
-            user_id = self._user_id.id
+            user_id = self._user_id.user_id
         return self._user_db.get_roles(user_id)
 
     def get_users(self, role: str = "") -> set[int]:
@@ -334,7 +334,7 @@ class Registry(RegistryBase):
         This function is expected to be called only once in the entire tool
         life cycle by user 0. New admins will inherit the existing data.
         """
-        self._user_id.id = self._user_db.init_user_db(
+        self._user_id.user_id = self._user_db.init_user_db(
             validation_key=self._security.get_signing_public_key(),
             encryption_key=self._security.get_encryption_public_key(),
         )
@@ -358,11 +358,11 @@ class Registry(RegistryBase):
         # construct data as tuples
         data = [
             (
-                id,
-                self._user_db.get_verification_key(id),
-                self._user_db.get_encryption_key(id),
+                user_id,
+                self._user_db.get_verification_key(user_id),
+                self._user_db.get_encryption_key(user_id),
             )
-            for id in admin_users
+            for user_id in admin_users
         ]
         return CompactSerializer.serialize(data)
 
@@ -548,7 +548,7 @@ class Registry(RegistryBase):
 
         # only store user_id after retrieving all configuration to keep
         # application "uninitialized" until then
-        self._user_id.id = response.user_id
+        self._user_id.user_id = response.user_id
         self._user_db.set_state(response.user_db_bytes)
         # set_state does not automatically store the user_db, hence a manual
         # call:
@@ -735,7 +735,7 @@ class Registry(RegistryBase):
         #
         # >> For the first sync, all admin public keys should be sent.
         if self.try_load():
-            is_admin = self._user_db.has_role(self._user_id.id, "admin")
+            is_admin = self._user_db.has_role(self._user_id.user_id, "admin")
             if mode == "receiving":
                 print(" -- receiving")
                 # receiving is ALWAYS overwriting local USER_DB

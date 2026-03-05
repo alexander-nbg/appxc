@@ -10,8 +10,8 @@ def assert_buffer_contains(buffer: Buffer, what: str, inputlist: list, exact=Tru
     assert what in whatlist
     assert len(whatlist) == 1
     # check "input"
-    for input in buffer.buffer[what]:
-        assert buffer.isbuffered(what, input)
+    for param in buffer.buffer[what]:
+        assert buffer.isbuffered(what, param)
     assert len(buffer.buffer[what].keys()) == len(inputlist)
 
 
