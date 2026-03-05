@@ -74,9 +74,7 @@ class Config:
     def __init__(
         self,
         default_storage_factory: Storage.Factory | None = None,
-        **kwargs,
     ):
-        super().__init__()
         self._default_storage_factory = default_storage_factory
         self._sections: dict[str, SettingDict] = {}
 
@@ -129,7 +127,7 @@ class Config:
         self._sections[section].get_state_kwargs = {"options": export_options}
         self._sections[section].set_state_kwargs = {"options": export_options}
 
-        self.log.info(f"added section: {section}")
+        self.log.info("added section: %s", section)
         return self._sections[section]
 
     def remove_section(self, section: str):

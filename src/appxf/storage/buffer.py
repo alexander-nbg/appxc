@@ -55,7 +55,7 @@ class Buffer(Storable):
         self.ensure_loaded()
         if not self.isbuffered(what, param):
             return None
-        self.log.debug(f"Retrieved buffer {what}({param})")
+        self.log.debug("Retrieved buffer %s(%s)", what, param)
         return deepcopy(self.buffer[what][param])
 
     def set(self, data, what, param=""):
@@ -68,7 +68,7 @@ class Buffer(Storable):
             self.buffer[what] = {}
         self.buffer[what][param] = deepcopy(data)
         self.store()
-        self.log.info(f"Buffered {what}({param})")
+        self.log.info("Buffered %s(%s)", what, param)
 
     def clear(self, what=""):
         self.ensure_loaded()

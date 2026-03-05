@@ -97,7 +97,7 @@ def activate_logging(
             app_logger.addHandler(file_handler)
             app_logger.setLevel(logging.DEBUG)
             app_logger.propagate = False
-            app_logger.debug(f"start logging ({this_scope})")
+            app_logger.debug("start logging (%s)", this_scope)
 
 
 def cleanup(directory: str, n_files: int = 5):
@@ -111,7 +111,6 @@ def cleanup(directory: str, n_files: int = 5):
 
     Keyword Arguments:
         n_files -- _description_ (default: {5})
-
     """
 
     def is_relevant(file: str):
@@ -120,7 +119,7 @@ def cleanup(directory: str, n_files: int = 5):
     files = filter(is_relevant, os.listdir(directory))
     files = [os.path.join(directory, f) for f in files]
     files.sort(key=lambda x: os.path.getmtime(x))
-    for file in files[:-5]:
+    for file in files[:-n_files]:
         os.remove(file)
 
 

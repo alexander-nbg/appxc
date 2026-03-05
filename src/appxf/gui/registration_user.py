@@ -136,11 +136,11 @@ class RegistrationUser:
             # Hook up events from button frames to wrapper methods that update status
             admin_buttons.bind(
                 f"<<{self._button_load_admin_keys}>>",
-                lambda event: self._on_load_admin_keys(),
+                lambda _event: self._on_load_admin_keys(),
             )
             admin_buttons.bind(
                 f"<<{self._button_initialize_as_admin}>>",
-                lambda event: self._on_initialize_as_admin(),
+                lambda _event: self._on_initialize_as_admin(),
             )
 
         # Registration frame (row 1)
@@ -157,11 +157,11 @@ class RegistrationUser:
 
         self._registration_buttons.bind(
             f"<<{self._button_write_request}>>",
-            lambda event: self._on_generate_request(),
+            lambda _event: self._on_generate_request(),
         )
         self._registration_buttons.bind(
             f"<<{self._button_load_response}>>",
-            lambda event: self._on_load_response(),
+            lambda _event: self._on_load_response(),
         )
 
         # call status updater at init
@@ -306,7 +306,7 @@ class RegistrationUser:
             self._update_admin_status()
             self._check_init_status()
         except Exception as e:
-            self.log.error("Failed to load admin keys: %s", e)
+            self.log.exception("Failed to load admin keys: %s", e)
             with contextlib.suppress(Exception):
                 messagebox.showerror(
                     "Error",

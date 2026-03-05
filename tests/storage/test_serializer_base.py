@@ -198,10 +198,7 @@ def test_stateful_interface_contract():
 
         print(f"Testing type {tree_to_str(tree)}")
         type_base = this_type if type_origin is None else type_origin
-        included = []
-        for this_sample in test_samples:
-            if isinstance(this_sample, type_base):
-                included.append(this_sample)
+        included = [sample for sample in test_samples if isinstance(sample, type_base)]
         # fail if not empty
         assert included, (
             f"Type is not (fully) covered by samples. "

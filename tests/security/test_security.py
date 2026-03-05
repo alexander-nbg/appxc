@@ -32,7 +32,7 @@ def test_setup(request):
     test_sandbox.init_test_sandbox_from_fixture(request, cleanup=True)
 
 
-@pytest.fixture()
+@pytest.fixture
 def sandbox_path(request):
     return test_sandbox.init_test_sandbox_from_fixture(request, cleanup=True)
 

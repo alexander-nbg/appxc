@@ -31,7 +31,7 @@ setting_dict = {
 class FrameForTesting(GridToplevel):
     def __init__(self, parent: tkinter.BaseWidget, setting):
         super().__init__(parent=parent, title="Testing Setting Lists")
-        self.bind("<<OK>>", lambda event: self._handle_ok())
+        self.bind("<<OK>>", lambda _event: self._handle_ok())
 
         self.setting = setting
         self.place_frame(SettingDictColumnFrame(self, setting, columns=2))

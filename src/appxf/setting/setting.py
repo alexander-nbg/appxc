@@ -402,7 +402,7 @@ class SettingOptions(Options):
 _BaseTypeT = TypeVar("_BaseTypeT", bound=object)
 
 
-class Setting(Generic[_BaseTypeT], Stateful, metaclass=_SettingMetaMerged):
+class Setting(Stateful, Generic[_BaseTypeT], metaclass=_SettingMetaMerged):
     """Abstract base class for settings
 
     Use Setting.new('str') to get matching appxf settings for known types. You
@@ -576,6 +576,7 @@ class Setting(Generic[_BaseTypeT], Stateful, metaclass=_SettingMetaMerged):
     # They may rely on instance specific configurations (like in select
     # settings)
 
+    @abstractmethod
     def _validated_conversion(self, value: Any) -> tuple[bool, _BaseTypeT]:
         """Validate a string to match the Setting's expectations
 
@@ -591,7 +592,6 @@ class Setting(Generic[_BaseTypeT], Stateful, metaclass=_SettingMetaMerged):
             2) The converted string
 
         """
-        return False, self.get_default()
 
     def to_string(self) -> str:
         """Return stored value as string"""

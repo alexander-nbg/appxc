@@ -137,7 +137,7 @@ def sync(
 def _sync_storage(storage_a: Storage, storage_b: Storage, only_a_to_b: bool):
     # TODO: theoretically, this one could sync storage of DIFFERENT names,
     # potentially causing confision.
-    log.debug(f"Syncing:\nA={storage_a.id()}\nB={storage_b.id()}")
+    log.debug("Syncing:\nA=%s\nB=%s", storage_a.id(), storage_b.id())
 
     # ## Decision Stage 1: File Existance
     exists_a = storage_a.exists()
@@ -145,8 +145,9 @@ def _sync_storage(storage_a: Storage, storage_b: Storage, only_a_to_b: bool):
     if not exists_a and not exists_b:
         # can happen if file was not created, yet
         log.debug(
-            f"Storage does not existing on both sides."
-            f"\nA: {storage_a.id()}\nB: {storage_b.id()}",
+            "Storage does not existing on both sides.\nA: %s\nB: %s",
+            storage_a.id(),
+            storage_b.id(),
         )
         return
     if not exists_a and only_a_to_b:
@@ -155,15 +156,17 @@ def _sync_storage(storage_a: Storage, storage_b: Storage, only_a_to_b: bool):
     if not exists_a:
         # b exists and it is not only_a_to_b, so we try to sync:
         log.debug(
-            f"Storage B does not existing on A"
-            f"\nA: {storage_a.id()}\nB: {storage_b.id()}",
+            "Storage B does not existing on A\nA: %s\nB: %s",
+            storage_a.id(),
+            storage_b.id(),
         )
         _execute_sync(storage_b, storage_a)
         return
     if not exists_b:
         log.debug(
-            f"Storage A does not existing on B"
-            f"\nA: {storage_a.id()}\nB: {storage_b.id()}",
+            "Storage A does not existing on B\nA: %s\nB: %s",
+            storage_a.id(),
+            storage_b.id(),
         )
         _execute_sync(storage_a, storage_b)
         return
@@ -207,12 +210,14 @@ def _sync_storage(storage_a: Storage, storage_b: Storage, only_a_to_b: bool):
         _execute_sync(storage_b, storage_a)
         # logging in _execute_sync
     else:
-        log.debug(f"Storages did not change.\nA: {storage_a.id()}\nB: {storage_b.id()}")
+        log.debug(
+            "Storages did not change.\nA: %s\nB: %s", storage_a.id(), storage_b.id()
+        )
 
 
 def _execute_sync(source: Storage, target: Storage):
 
-    log.info(f"Updating from {source.id()} to {target.id()}")
+    log.info("Updating from %s to %s", source.id(), target.id())
 
     # TODO UPGRADE: mark files "not readable" during sync
     # self.__mark_file_in_sync

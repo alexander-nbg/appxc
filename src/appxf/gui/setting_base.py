@@ -53,14 +53,14 @@ class SettingFrameDefault(SettingFrameBase):
         # like SettingBase64
         value = self.setting.to_string()
         self.sv = tkinter.StringVar(self, value)
-        self.sv.trace_add("write", lambda var, index, mode: self.value_update())
+        self.sv.trace_add("write", lambda _var, _index, _mode: self.value_update())
 
         entry_width = getattr(setting.options, "display_width", 15)
         entry_height = getattr(setting.options, "display_height", 1)
         if entry_height > 1:
             self.entry = tkinter.Text(self, width=entry_width, height=entry_height)
             self.entry.insert("1.0", self.setting.value)
-            self.entry.bind("<KeyRelease>", lambda event: self._text_field_changed())
+            self.entry.bind("<KeyRelease>", lambda _event: self._text_field_changed())
             entry_sticky = "NSEW"
             x_padding = (5, 0)
             self.rowconfigure(0, weight=1)
@@ -162,7 +162,7 @@ class SettingFrameBool(SettingFrameBase):
         self.checkbox = tkinter.Checkbutton(self, text="", variable=self.iv)
         self.place(self.checkbox, row=0, column=1)
 
-        self.iv.trace_add("write", lambda var, index, mode: self.value_update())
+        self.iv.trace_add("write", lambda _var, _index, _mode: self.value_update())
 
     def is_valid(self) -> bool:
         # Checkbox value will always be valid

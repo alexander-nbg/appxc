@@ -317,8 +317,8 @@ class SettingDictWindow(GridToplevel):
         self.update()
         self.dict_frame.adjust_left_columnwidth()
 
-        self.bind("<<Cancel>>", lambda event: self._handle_cancel_button())
-        self.bind("<<OK>>", lambda event: self._handle_ok_button())
+        self.bind("<<Cancel>>", lambda _event: self._handle_cancel_button())
+        self.bind("<<OK>>", lambda _event: self._handle_ok_button())
 
     def _handle_ok_button(self):
         self.log.debug("OK")

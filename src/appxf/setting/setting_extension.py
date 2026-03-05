@@ -19,7 +19,7 @@ from .setting import AppxfSettingError, Setting, _BaseTypeT
 _BaseSettingT = TypeVar("_BaseSettingT", bound=Setting)
 
 
-class SettingExtension(Generic[_BaseSettingT, _BaseTypeT], Setting[_BaseTypeT]):
+class SettingExtension(Setting[_BaseTypeT], Generic[_BaseSettingT, _BaseTypeT]):
     """Class for extended setting behavior
 
     Class behavior relies on a base_setting (maintained as an attribute).

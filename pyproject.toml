@@ -45,50 +45,44 @@ test-sandbox-root = "./.testing"
 select = ["ALL"]
 ignore = [
   # TODO: The following rules are currently reviewed for planning or adequate
-  # argumentation. They correspond to 1552 issues.
-    "ARG",
-  "BLE001",
-  "C901",
+  # argumentation. They correspond to 834 issues.
+  "ARG001", "ARG002",
   "COM812",
   "EM101", "EM102",
-  "ERA001",
   "EXE001", "EXE003", "EXE005",
   "FBT001", "FBT002", "FBT003",
-  "FIX002",
   "FURB110", "FURB171",
-  "G004",
   "INP001",
-  "LOG014",
-  "PERF401",
   "PGH003",
   "PGH004",
   "PIE790",
   "PLC0415",
   "PLR",
   "PLW",
-  "PT",
   "PTH",
-  "PYI019", "PYI059",
   "RET",
   "RSE102",
   "SLF001",
   "T201",
-  "TC001", "TC003", "TD002", "TD003",
-  "TD004",
+  "TC001", "TC003",
   "TRY",
   # TODO: The following rules still need to be resolved to conclude #12
   "DTZ", "ICN001",
-  # Even if APPXF reaches a version 1.0.0, TODO remarks remain being allowed if a
-  # corresponding ticket was created, is linked and still actove (TODO #42:). No other
-  # tag should be used (other FIX rules).
-  "FIX002",
-  # No hard rules on code complexity. Complexity shall be rated by reviewers:
-  "C901",
-  # TODO: type annotations as well as docstring annotation should be mandatory for all
-  # public functions. Further configuration like ignoring for tests and the section
-  # [tool.ruff.lint.flake8-annotations] already added but rule is not enabled due to too
-  # many open issues.
-  "ANN", "D"
+
+  # EXCLUDED RULES
+  # --------------
+  "FIX002", # Even in an APPXF v1.0.0, TODO remarks remain being allowed if a
+            # corresponding ticket was created, is linked and still actove (TODO #42).
+            # Despite TODO, no other tag should be used and other FIX rules remain in
+            # place.
+  "TD",     # TODO rules in APPXF do not follow this pattern
+  "C901",   # Complexity shall be rated by reviewers
+
+  # PENDING RULES: The activation/fixing of the following rules is delayed and a
+  # strategy to decrease numbers over time will be in place.
+  #
+  # TODO: the decrease over time strategy.
+  "ANN", "BLE001", "D", "ERA001", "PT", "PTH", "RUF100"
 ]
 
 [tool.ruff.format]
@@ -109,16 +103,18 @@ suppress-none-returning = true
 # as XY]), merging classes into appropriate longer module files would enable dropping
 # the module facade in __init__.py
 
-# Rules are relaxed for test case implementation which includes annotation and
-# particularly the asserts
+# Rules are relaxed for test case implementation
 "tests*/**/*.py" = [
-  "ANN",
-  "S"  # No security checks for test code
+  "ANN",    # relaxing on type annotations
+  "ARG",    # relaxing on unused arguments and alike
+  "ERA001", # commented out code is acceptable
+  "T201",   # print statements in tests are OK
+  "S"       # No security checks for test code
   ]
 
 # TODO: matema is generally in draft status and not usable. Disabling security schecks.
 "src/appxf_matema/**/*.py" = [
-  "S603", "S607"
+  "ARG", "S603", "S607"
 ]
 
 # TODO: development scripts are not part of the shipped library and are only running

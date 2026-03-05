@@ -128,14 +128,14 @@ class UserDatabase(Storable):
             if match_found == 1:
                 # return the negative user ID (we ensured that user IDs start
                 # with 1, not with 0)
-                self.log.info(f"new user keys already exist for user ID {user_id}")
+                self.log.info("new user keys already exist for user ID %s", user_id)
                 return -user_id
 
         # TODO: get determine new ID (implementation might already consider
         # sys.maxsize)
         user_id = self._next_id
         self._next_id += 1
-        self.log.info(f"adding new user with {user_id}, next: {self._next_id}")
+        self.log.info("adding new user with %s, next: %s", user_id, self._next_id)
 
         # forward to reuse function with init_user_db()
         self.add(

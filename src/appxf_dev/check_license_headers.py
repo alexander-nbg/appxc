@@ -85,7 +85,7 @@ def get_exclusion_patterns() -> list[str]:
     return pattern_list
 
 
-def is_excluded_file(file: str, repo_root: Path, patterns: list[str]) -> bool:
+def is_excluded_file(file: str, patterns: list[str]) -> bool:
     """Check if file matches an exclusion pattern"""
     return any(fnmatch(file, pattern) for pattern in patterns)
 
@@ -175,7 +175,7 @@ def verify_git_files() -> bool:
         if absolute_file.is_dir():
             continue
 
-        if is_excluded_file(file, repo_root, exclusion_patterns):
+        if is_excluded_file(file, exclusion_patterns):
             continue
 
         if not verify_file_header(absolute_file):

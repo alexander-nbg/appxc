@@ -89,8 +89,10 @@ def get_filename(
 
     filename = _fill_date_pattern(name_format, date)
     log.debug(
-        f'Filename is "{filename}" after applying date pattern to '
-        f'"{name_format}" with date={date}',
+        'Filename is "%s" after applying date pattern to "%s" with date=%s',
+        filename,
+        name_format,
+        date,
     )
     filename = _fill_version_pattern(filename, directory, existing)
     return filename

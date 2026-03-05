@@ -29,6 +29,9 @@ def test_setting_register_type_twice():
             def get_default(cls) -> str:
                 return ""
 
+            def _validated_conversion(self, value: str) -> tuple[bool, str]:
+                return False, self.get_default()
+
     assert "is already registered" in str(exc_info.value)
     assert "DummyAppxfString" in str(exc_info.value)
     assert "SettingEmail" in str(exc_info.value)
@@ -46,6 +49,9 @@ def test_setting_register_class_twice():
             def get_default(cls) -> str:
                 return ""
 
+            def _validated_conversion(self, value: str) -> tuple[bool, str]:
+                return False, self.get_default()
+
     assert "is already registered" in str(exc_info.value)
     assert "SettingEmail" in str(exc_info.value)
 
@@ -61,6 +67,9 @@ def test_setting_register_no_supported_type():
             @classmethod
             def get_default(cls) -> str:
                 return ""
+
+            def _validated_conversion(self, value: str) -> tuple[bool, str]:
+                return False, self.get_default()
 
     assert "does not return any supported type" in str(exc_info.value)
 

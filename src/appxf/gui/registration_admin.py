@@ -50,6 +50,7 @@ class RegistrationAdmin:
                       If None, window is Tk (root).
 
         """
+        super().__init__(**kwargs)
         self._registry = registry
         self._root_dir = root_dir
         self._parent = parent

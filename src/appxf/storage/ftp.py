@@ -37,10 +37,11 @@ def retry_method_with_reconnect(method):
     def method_wrapper(self, *args, **kwargs):
         try:
             return method(self, *args, **kwargs)
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001 should not trigger due to exc_info below
             self.log.warning(
-                f"Error on executing {method.__name__}, "
-                f"try reconnect and repeat. Error: {e}",
+                "Error on executing %s, try reconnect and repeat. Error: %s",
+                method.__name__,
+                e,
                 exc_info=True,
             )
         # reconnect and try again. This time failing with original errors.

@@ -122,15 +122,15 @@ class Login:
         # TODO: when leaving one pwd entry and both do not match, color the
         # repetition red
 
-        def ok_button_function(event=None):
+        def ok_button_function(_event=None):
             valid = True
             pwd_entry.config(foreground="black")
             pwd_rep_entry.config(foreground="black")
 
             if len(pwd_entry.get()) < self._pwd_min_length:
                 self.log.debug(
-                    "NOK, Passwort muss mindestens "
-                    f"{self._pwd_min_length} Zeichen haben",
+                    "NOK, Passwort muss mindestens %s Zeichen haben",
+                    self._pwd_min_length,
                 )
                 pwd_entry.config(foreground="red")
                 valid = False
@@ -178,7 +178,7 @@ class Login:
         pwd_entry = tkinter.Entry(gui_root, show="*", width=20)
         pwd_entry.grid(row=2, column=2, padx=5, pady=5, sticky="W")
 
-        def ok_button_function(event=None):
+        def ok_button_function(_event=None):
             try:
                 self._security.unlock_user(pwd_entry.get())
                 gui_root.destroy()

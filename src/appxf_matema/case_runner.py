@@ -143,7 +143,7 @@ class ManualCaseRunner:
         if self._logging_activated:
             return
         logging.activate_logging(self._logging_context, directory=".testing/log")
-        self.log.debug(f"Enabled logging via {__class__.__name__}")
+        self.log.debug("Enabled logging via %s", __class__.__name__)
         self._logging_activated = True
 
     def _write_result_file(self, result: str, gui: CaseRunnerGui = None):
@@ -196,7 +196,7 @@ class ManualCaseRunner:
         self._parse_process_hooks()
         self._start_case_runner()
 
-    def _start_case_runner(self, *args, **kwargs):
+    def _start_case_runner(self):
         """Handle startup and teardown for case runner execution.
 
         Calls setup() function from the tested module if it exists, executes

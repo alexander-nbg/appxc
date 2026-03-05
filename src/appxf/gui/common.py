@@ -229,7 +229,9 @@ class GridFrame(tkinter.LabelFrame):
             default_setting = self.item_right_aligned_setting
         else:
             default_setting = self.item_centered_setting
-        self.log.debug(f"Placing frame {type(widget)} with setting: {default_setting}")
+        self.log.debug(
+            "Placing frame %s with setting: %s", type(widget), default_setting
+        )
         # TODO: this handling (overwriting) just to get the type warnings that
         # would pop up below right is not sppropriate.
         widget.grid(
@@ -441,13 +443,13 @@ class _CommonWindow:
         if key_enter_as_button:
             self.bind(
                 "<Return>",
-                lambda event, b=key_enter_as_button: (
+                lambda _event, b=key_enter_as_button: (
                     self.button_frame.handle_button_press(b)
                 ),
             )
             self.bind(
                 "<KP_Enter>",
-                lambda event, b=key_enter_as_button: (
+                lambda _event, b=key_enter_as_button: (
                     self.button_frame.handle_button_press(b)
                 ),
             )
@@ -456,7 +458,7 @@ class _CommonWindow:
         for button in closing:
             self.button_frame.bind(
                 f"<<{button}>>",
-                lambda event: self.window.destroy(),
+                lambda _event: self.window.destroy(),
                 add=True,
             )
 

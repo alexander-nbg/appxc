@@ -50,7 +50,7 @@ class Email(MIMEMultipart):
             if key in ["Subject", "From"]:
                 self[key] = value
                 continue
-            log.warning(f'Parameter "{key}" is not supported (value: {value})')
+            log.warning('Parameter "%s" is not supported (value: %s)', key, value)
         for key in ["To", "CC", "BCC", "Subject", "From"]:
             if key not in kwargs:
                 self[key] = ""
@@ -67,11 +67,12 @@ class Email(MIMEMultipart):
             self.attach(part)
 
         log.debug(
-            f"Subject: {self['Subject']}, "
-            f"To: {self['To']}, "
-            f"CC: {self['CC']}, "
-            f"BCC: {self['BCC']}, "
-            f"files: {file_list}",
+            "Subject: %s, To: %s, CC: %s, BCC: %s, files: %s",
+            self["Subject"],
+            self["To"],
+            self["CC"],
+            self["BCC"],
+            file_list,
         )
 
     def send(self, config: dict):
@@ -105,10 +106,11 @@ def send(
             bcc = this_msg["BCC"].split(", ")
 
             log.debug(
-                f"subject: {this_msg['Subject']}, "
-                f"To: {' '.join(to)}, "
-                f"CC: {' '.join(cc)}, "
-                f"BCC: {' '.join(bcc)}",
+                "subject: %s, To: %s, CC: %s, BCC: %s",
+                this_msg["Subject"],
+                " ".join(to),
+                " ".join(cc),
+                " ".join(bcc),
             )
 
             target_list = (
@@ -117,13 +119,13 @@ def send(
             target = set(target_list)
             if debug_substituttion_email:
                 log.debug(
-                    f"Using substitution Email: "
-                    f"{debug_substituttion_email} "
-                    f"instead of {target}",
+                    "Using substitution Email: %s instead of %s",
+                    debug_substituttion_email,
+                    target,
                 )
                 target = [debug_substituttion_email]
             else:
-                log.debug(f"Sending to: {target}")
+                log.debug("Sending to: %s", target)
 
             if debug_send_email:
                 senderr = server.sendmail(

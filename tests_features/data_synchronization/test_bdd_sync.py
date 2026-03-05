@@ -29,7 +29,7 @@ def env(request):
     # commonly used objects:
     env["security"] = appxf_objects.get_security_unlocked(path=env["dir"])
     env["config"] = Config(
-        default_storage=LocalStorage.get_factory(
+        default_storage_factory=LocalStorage.get_factory(
             path=os.path.join(env["dir"], "config")
         )
     )

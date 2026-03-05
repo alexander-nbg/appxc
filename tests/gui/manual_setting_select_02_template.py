@@ -46,7 +46,7 @@ class WindowForTesting(GridToplevel):
         super().__init__(
             parent=parent, title="Testing Templated Text via SettingSelect"
         )
-        self.bind("<<OK>>", lambda event: self._handle_ok())
+        self.bind("<<OK>>", lambda _event: self._handle_ok())
         self.place_frame(SettingSelectDetailFrame(self, setting))
 
     def _handle_ok(self):

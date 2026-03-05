@@ -52,10 +52,10 @@ class NtpTime:  # pragma: no cover
     @classmethod
     def _update_time_sync(cls):
         loop = asyncio.get_event_loop()
-        loop.run_until_complete(cls._request_servers_and_update(loop))
+        loop.run_until_complete(cls._request_servers_and_update())
 
     @classmethod
-    async def _request_servers_and_update(cls, loop):
+    async def _request_servers_and_update(cls):
         timestamp_one = datetime.utcnow()
         servers = [
             str(prefix) + "." + cls.base_server for prefix in cls.server_prefix_list
@@ -67,7 +67,8 @@ class NtpTime:  # pragma: no cover
         elapsed_time = timestamp_two - timestamp_one
         if elapsed_time > timedelta(seconds=1):
             cls.log.warning(
-                f"Requesting servers took {elapsed_time.total_seconds()} seconds.",
+                "Requesting servers took %s seconds.",
+                elapsed_time.total_seconds(),
             )
 
         for task in done:
@@ -77,13 +78,15 @@ class NtpTime:  # pragma: no cover
                 cls.last_sync_as_ntp_recv = datetime.utcfromtimestamp(result.recv_time)
                 cls.offset = result.offset
                 cls.log.info(
-                    f"Sync system time [{cls.last_sync_as_datetime}], "
-                    f"NTP time [{cls.last_sync_as_ntp_recv}] "
-                    f"resulted in offset of {cls.offset} seconds.",
+                    "Sync system time [%s], NTP time [%s] "
+                    "resulted in offset of %s seconds.",
+                    cls.last_sync_as_datetime,
+                    cls.last_sync_as_ntp_recv,
+                    cls.offset,
                 )
                 return True
         message = f"None of the server requests succeeded: {servers}"
-        cls.log.error(message, exc_info=True)
+        cls.log.error(message)
         raise Exception(message)
 
     @classmethod
@@ -94,7 +97,9 @@ class NtpTime:  # pragma: no cover
             return response
         except ntplib.NTPException as e:
             cls.log.warning(
-                f"Error in retrieving NTP time from [{server}]. "
-                f"It likely timed out. Error: {e}",
+                "Error in retrieving NTP time from [%s]. "
+                "It likely timed out. Error: %s",
+                server,
+                e,
             )
             return None
