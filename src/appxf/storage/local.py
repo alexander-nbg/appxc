@@ -39,18 +39,24 @@ class LocalStorage(StorageToBytes):
             name=file,
             location=path,
             storage_init_fun=lambda: LocalStorage(
-                file=file, path=path, serializer=serializer
+                file=file,
+                path=path,
+                serializer=serializer,
             ),
         )
 
     @classmethod
     def get_factory(
-        cls, path: str, serializer: type[Serializer] = CompactSerializer
+        cls,
+        path: str,
+        serializer: type[Serializer] = CompactSerializer,
     ) -> Storage.Factory:
         return super().get_factory(
             location=path,
             storage_get_fun=lambda name: LocalStorage.get(
-                file=name, path=path, serializer=serializer
+                file=name,
+                path=path,
+                serializer=serializer,
             ),
         )
 

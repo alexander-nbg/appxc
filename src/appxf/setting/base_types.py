@@ -54,7 +54,7 @@ class SettingText(SettingString):
             default_factory=lambda: [
                 *Setting.Options().display_options,
                 "display_height",
-            ]
+            ],
         )
 
     @classmethod
@@ -101,7 +101,7 @@ class SettingPassword(SettingString):
 
         min_length: int = 6
         value_options: list[str] = field(
-            default_factory=lambda: [*Setting.Options().value_options, "min_length"]
+            default_factory=lambda: [*Setting.Options().value_options, "min_length"],
         )
 
         display_masked: bool = True
@@ -109,7 +109,7 @@ class SettingPassword(SettingString):
             default_factory=lambda: [
                 *Setting.Options().display_options,
                 "display_masked",
-            ]
+            ],
         )
 
     options: Options
@@ -130,7 +130,9 @@ class SettingPassword(SettingString):
 
 
 def validated_conversion_configparser(
-    string: str, res_type: type[_BaseTypeT], default: _BaseTypeT
+    string: str,
+    res_type: type[_BaseTypeT],
+    default: _BaseTypeT,
 ) -> tuple[bool, _BaseTypeT]:
     """Helper for common conversion by configparser
 
@@ -147,6 +149,7 @@ def validated_conversion_configparser(
         tuple of (1) a boolean that is True when the conversion was successful
         with (2) the conversion result. If the conversion failed, (1) False
         will be returned and the provided default value.
+
     """
     # avoid problems when string contains newlines:
     if "\n" in string:
@@ -254,7 +257,7 @@ class SettingBase64(Setting[bytes]):
 
         size: int = 0
         value_options: list[str] = field(
-            default_factory=lambda: [*Setting.Options().value_options, "size"]
+            default_factory=lambda: [*Setting.Options().value_options, "size"],
         )
 
     options: Options

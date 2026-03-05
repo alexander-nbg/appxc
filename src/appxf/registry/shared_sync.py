@@ -71,6 +71,6 @@ class SharedSync:
                 raise AppxfSharedSyncError(
                     f"Uni-directional sync is not supported, use has roles "
                     f"{user_roles_set} but would need one of "
-                    f"{sync_pair.writing}"
+                    f"{sync_pair.writing}",
                 )
             sync(sync_pair.local, sync_pair.remote)

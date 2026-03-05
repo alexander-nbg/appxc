@@ -33,7 +33,6 @@ EXCLUSION_START_MARKER = "FILES WITHOUT LICENSE TAGS"
 
 def get_git_repo_root() -> Path:
     """Identify root path of the current git repository"""
-
     root_result = subprocess.run(
         ["git", "rev-parse", "--show-toplevel"],
         cwd=Path.cwd(),
@@ -49,7 +48,6 @@ def get_git_files() -> list[Path]:
 
     The git repository is identified by the main caller's execution path.
     """
-
     # identify root of git repository:
     repo_root = get_git_repo_root()
     # get git tracked files separated by '\0' in one string (-z option):
@@ -189,7 +187,7 @@ def verify_git_files() -> bool:
         print(f"{not_verified_files} file(s) failed copyright/license verification.")
         print(
             "Please add corresonding information. If not applicable, add "
-            "files explicitly to the LICENSE text file."
+            "files explicitly to the LICENSE text file.",
         )
     else:
         print("Copyright/License information verified for all maintained files.")

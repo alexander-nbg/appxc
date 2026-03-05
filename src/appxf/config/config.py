@@ -72,7 +72,9 @@ class Config:
     log = logging.get_logger(__name__ + ".Config")
 
     def __init__(
-        self, default_storage_factory: Storage.Factory | None = None, **kwargs
+        self,
+        default_storage_factory: Storage.Factory | None = None,
+        **kwargs,
     ):
         super().__init__()
         self._default_storage_factory = default_storage_factory
@@ -88,7 +90,7 @@ class Config:
         if section not in self._sections:
             raise AppxfConfigError(
                 f"Cannot access section {section}, it does not exist. "
-                f"Existing are: {self.sections}."
+                f"Existing are: {self.sections}.",
             )
         return self._sections[section]
 
@@ -102,7 +104,7 @@ class Config:
         # ensure section does not yet exist:
         if section in self._sections:
             raise AppxfConfigError(
-                f"Cannot add section {section}, it does already exist."
+                f"Cannot add section {section}, it does already exist.",
             )
         # define storage
         if storage_factory is not None:
@@ -114,12 +116,15 @@ class Config:
         # construct section:
         #  * SettingDict will take over the section name
         self._sections[section] = SettingDict(
-            storage=storage, settings=settings, name=section
+            storage=storage,
+            settings=settings,
+            name=section,
         )
         #  * Config will, by default, not raise exceptions on import when
         #    a config option is new or missing
         export_options = SettingDict.ExportOptions(
-            exception_on_new_key=False, exception_on_missing_key=False
+            exception_on_new_key=False,
+            exception_on_missing_key=False,
         ).get_state()
         self._sections[section].get_state_kwargs = {"options": export_options}
         self._sections[section].set_state_kwargs = {"options": export_options}
@@ -134,7 +139,7 @@ class Config:
             self.log.info("removed section: %s", section)
         else:
             raise AppxfConfigError(
-                f"Cannot remove section, it does not exist: {section}"
+                f"Cannot remove section, it does not exist: {section}",
             )
 
     def store(self):

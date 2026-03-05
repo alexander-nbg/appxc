@@ -13,7 +13,11 @@ from ._registry_base import RegistryBase
 
 class PublicEncryption(Storable):
     def __init__(
-        self, storage: Storage, registry: RegistryBase, to_roles: str = "user", **kwargs
+        self,
+        storage: Storage,
+        registry: RegistryBase,
+        to_roles: str = "user",
+        **kwargs,
     ):
         super().__init__(storage, **kwargs)
         self._registry = registry

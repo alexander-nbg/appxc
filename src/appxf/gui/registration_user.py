@@ -49,6 +49,7 @@ class RegistrationUser:
             root_dir -- Default directory for file dialogs
             parent -- Optional parent widget. If provided, window is Toplevel.
                       If None, window is Tk (root).
+
         """
         super().__init__(**kwargs)
         self._registry = registry
@@ -62,7 +63,7 @@ class RegistrationUser:
             raise ValueError(
                 "hide_admin_keys is True but registry has no admin keys loaded. "
                 "Make sure you load admin keys before calling user registration "
-                "when hiding the admin keys section."
+                "when hiding the admin keys section.",
             )
 
     def check(self) -> bool:
@@ -88,11 +89,14 @@ class RegistrationUser:
         # Create root window (Tk) or toplevel (Toplevel) depending on parent
         if self._parent is None:
             self._gui_root = GridTk(
-                title=_("window", "Registry - User Registration"), buttons=[]
+                title=_("window", "Registry - User Registration"),
+                buttons=[],
             )
         else:
             self._gui_root = GridToplevel(
-                self._parent, title=_("window", "User Registration"), buttons=[]
+                self._parent,
+                title=_("window", "User Registration"),
+                buttons=[],
             )
         if self._gui_root.frame is None:
             raise RuntimeError("This should not happen")
@@ -123,7 +127,9 @@ class RegistrationUser:
             # Status text (unlabeled) to display admin status
             self._admin_status_var = tkinter.StringVar(value="")
             admin_status_label = tkinter.Label(
-                admin_frame, textvariable=self._admin_status_var, anchor="w"
+                admin_frame,
+                textvariable=self._admin_status_var,
+                anchor="w",
             )
             admin_frame.place(widget=admin_status_label, row=1, column=0)
 
@@ -154,7 +160,8 @@ class RegistrationUser:
             lambda event: self._on_generate_request(),
         )
         self._registration_buttons.bind(
-            f"<<{self._button_load_response}>>", lambda event: self._on_load_response()
+            f"<<{self._button_load_response}>>",
+            lambda event: self._on_load_response(),
         )
 
         # call status updater at init
@@ -167,13 +174,16 @@ class RegistrationUser:
 
         if self._registry.has_admin_keys():
             status = _(
-                "status", "Admin keys are already loaded to encrypt your user data."
+                "status",
+                "Admin keys are already loaded to encrypt your user data.",
             )
             self._registration_buttons.set_button_active(
-                self._button_write_request, True
+                self._button_write_request,
+                True,
             )
             self._registration_buttons.set_button_active(
-                self._button_load_response, True
+                self._button_load_response,
+                True,
             )
         else:
             status = _(
@@ -181,10 +191,12 @@ class RegistrationUser:
                 "You have to load admin keys to encrypt the user data in your request.",
             )
             self._registration_buttons.set_button_active(
-                self._button_write_request, False
+                self._button_write_request,
+                False,
             )
             self._registration_buttons.set_button_active(
-                self._button_load_response, False
+                self._button_load_response,
+                False,
             )
         if not self._hide_admin_keys:
             self._admin_status_var.set(status)
@@ -233,7 +245,8 @@ class RegistrationUser:
 
     def _on_load_response(self):
         """Handle Load Response button press:
-        apply registration response."""
+        apply registration response.
+        """
         file_path = filedialog.askopenfilename(
             parent=self._gui_root,
             title=_("dialog", "Select Registration Response File"),

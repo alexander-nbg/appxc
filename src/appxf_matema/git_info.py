@@ -13,7 +13,8 @@ class GitInfo:
     def user_name(self):
         try:
             name = subprocess.check_output(
-                ["git", "config", "user.name"], text=True
+                ["git", "config", "user.name"],
+                text=True,
             ).strip()
         except subprocess.CalledProcessError:
             name = "Unknown GIT User"
@@ -23,7 +24,8 @@ class GitInfo:
     def user_email(self):
         try:
             email = subprocess.check_output(
-                ["git", "config", "user.email"], text=True
+                ["git", "config", "user.email"],
+                text=True,
             ).strip()
         except subprocess.CalledProcessError:
             email = "Unknown GIT Email"

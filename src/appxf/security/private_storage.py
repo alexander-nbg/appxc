@@ -43,18 +43,22 @@ class SecurePrivateStorage(StorageToBytes):
             name=base_storage.name,
             location=base_storage.location,
             storage_init_fun=lambda: SecurePrivateStorage(
-                base_storage=base_storage, security=security
+                base_storage=base_storage,
+                security=security,
             ),
         )
 
     @classmethod
     def get_factory(
-        cls, base_storage_factory: Storage.Factory, security: Security
+        cls,
+        base_storage_factory: Storage.Factory,
+        security: Security,
     ) -> Storage.Factory:
         return super().get_factory(
             base_storage=base_storage_factory,
             storage_get_fun=lambda name: SecurePrivateStorage.get(
-                base_storage=base_storage_factory(name), security=security
+                base_storage=base_storage_factory(name),
+                security=security,
             ),
         )
 

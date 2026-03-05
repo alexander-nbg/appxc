@@ -1,8 +1,6 @@
 # Copyright 2025-2026 the contributors of APPXF (github.com/alexander-nbg/appxf)
 # SPDX-License-Identifier: Apache-2.0
-"""
-Provide GUI classes for APPXF Setting objects.
-"""
+"""Provide GUI classes for APPXF Setting objects."""
 
 import tkinter
 from abc import ABC, abstractmethod
@@ -88,7 +86,9 @@ class SettingFrameDefault(SettingFrameBase):
         scrollbar = getattr(setting.options, "scrollbar", bool(entry_height >= 3))
         if scrollbar and isinstance(self.entry, tkinter.Text):
             self.scrollbar = tkinter.Scrollbar(
-                self, orient=tkinter.VERTICAL, command=self.entry.yview
+                self,
+                orient=tkinter.VERTICAL,
+                command=self.entry.yview,
             )  # type: ignore (entry is Text)
             self.place(
                 self.scrollbar,
@@ -102,11 +102,10 @@ class SettingFrameDefault(SettingFrameBase):
         if self.read_only:
             if deactivate:
                 self.entry.config(state="normal")
+            elif isinstance(self.entry, tkinter.Text):
+                self.entry.config(state="disabled")
             else:
-                if isinstance(self.entry, tkinter.Text):
-                    self.entry.config(state="disabled")
-                else:
-                    self.entry.config(state="readonly")
+                self.entry.config(state="readonly")
 
     def update(self):
         self._handle_read_only(deactivate=True)

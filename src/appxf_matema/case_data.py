@@ -24,7 +24,7 @@ class CaseEntry:
                     mutable_items=False,
                     custom_value=False,
                 ),
-            }
+            },
         )
 
 
@@ -48,7 +48,8 @@ class CaseData:
         super().__init__(**kwargs)
         self.root_path = path
         self.storage_factory = LocalStorage.get_factory(
-            path=path, serializer=JsonSerializer
+            path=path,
+            serializer=JsonSerializer,
         )
         # initialize data as SettingDict:
         self.case_data = SettingDict(storage=self.storage_factory("database"))

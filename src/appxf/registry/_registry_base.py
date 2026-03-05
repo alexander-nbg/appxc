@@ -35,14 +35,17 @@ class RegistryBase(ABC):
         roles are case insensitive and 'USER' as well as 'ADMIN' being default
         roles always being present.
 
-        Keyword arguments:
+        Keyword Arguments:
         user_id -- a valid positive user ID -OR- 0 for the roles of current
             user -OR- '' or None for all known roles
+
         """
 
     @abstractmethod
     def hybrid_encrypt(
-        self, data: bytes, roles: str | list[str]
+        self,
+        data: bytes,
+        roles: str | list[str],
     ) -> tuple[bytes, dict[int, bytes]]:
         """Hybrid encryption returning encrypted data and key blob dict
 
@@ -53,12 +56,13 @@ class RegistryBase(ABC):
 
         All admins and yourself are always added to the encryption keys.
 
-        Keyword arguments:
+        Keyword Arguments:
         data -- the data to encrypt
         roles -- the roles which shall be able to read the data
 
         Returns: a tuple of the encrypted bytes and a dictionary mapping the
             USER IDs to the key blobs.
+
         """
 
     @abstractmethod
@@ -70,7 +74,8 @@ class RegistryBase(ABC):
         from the key blob. Afterwards, the data will be decrypted by this
         symmeric key.
 
-        Keyword arguments:
+        Keyword Arguments:
         data -- the data to be decrypted
         key_blob_dict -- a dictionary of key blobs, indexed by USER ID
+
         """

@@ -81,6 +81,7 @@ def get_filename(
 
     Returns:
         File name with date and version.
+
     """
     # Input handling
     if date is None:
@@ -89,7 +90,7 @@ def get_filename(
     filename = _fill_date_pattern(name_format, date)
     log.debug(
         f'Filename is "{filename}" after applying date pattern to '
-        f'"{name_format}" with date={date}'
+        f'"{name_format}" with date={date}',
     )
     filename = _fill_version_pattern(filename, directory, existing)
     return filename
@@ -112,42 +113,38 @@ def _fill_date_pattern(name_format: str, date: datetime.date):
             raise ValueError(
                 f"Format string {name_format} does not have matching braket for "
                 f"{'opening' if opening > 0 else 'closing'} braket at "
-                f"position {opening if opening > 0 else closing}."
+                f"position {opening if opening > 0 else closing}.",
             )
         if opening > closing:
             raise ValueError(
-                f"Format string {name_format} close braket before opening."
+                f"Format string {name_format} close braket before opening.",
             )
+        # opening >= 0, opening > closing and opening != closing implies
+        # closing > 0
+        datestr = outstr[(opening + 1) : (closing)]
+        # skip zeros (index part)
+        if datestr.find("0") >= 0:
+            # Error if we find this twice:
+            if opening_index >= 0 or closing_index >= 0:
+                raise ValueError(
+                    f"Format string {name_format} contains two indications "
+                    'for indexing file versions like "(00)". '
+                    "Only one is expected.",
+                )
+            opening_index = opening
+            closing_index = closing
+            # Overwrite with non-braket to find next format string in
+            # next loop
+            outstr = outstr[:opening] + "." + datestr + "." + outstr[closing + 1 :]
         else:
-            # opening >= 0, opening > closing and opening != closing implies
-            # closing > 0
-            datestr = outstr[(opening + 1) : (closing)]
-            # skip zeros (index part)
-            if datestr.find("0") >= 0:
-                # Error if we find this twice:
-                if opening_index >= 0 or closing_index >= 0:
-                    raise ValueError(
-                        f"Format string {name_format} contains two indications "
-                        'for indexing file versions like "(00)". '
-                        "Only one is expected."
-                    )
-                else:
-                    opening_index = opening
-                    closing_index = closing
-                    # Overwrite with non-braket to find next format string in
-                    # next loop
-                    outstr = (
-                        outstr[:opening] + "." + datestr + "." + outstr[closing + 1 :]
-                    )
-            else:
-                datestr = format_date(date, datestr, locale=set_locale.locale)
-                outstr = outstr[:opening] + datestr + outstr[closing + 1 :]
+            datestr = format_date(date, datestr, locale=set_locale.locale)
+            outstr = outstr[:opening] + datestr + outstr[closing + 1 :]
         # avoid freezing programs due to programming errors
         cycle_count -= 1
         if cycle_count <= 0:
             raise RuntimeError(
                 "Implementation error: format string "
-                f'"{name_format}" led to an infinite loop.'
+                f'"{name_format}" led to an infinite loop.',
             )
     # revert indexing brakets
     if opening_index >= 0:
@@ -171,8 +168,7 @@ def _fill_version_pattern(filename: str, path: str, existing: bool):
     if opening < 0 or closing < 0:
         if existing and (not os.path.exists(os.path.join(path, filename))):
             return None
-        else:
-            return filename
+        return filename
     # If there is one, this is the regexp to match files and see the
     regex = re.compile(filename[:opening] + r"(\d+)" + filename[closing + 1 :])
     version = -1
@@ -182,12 +178,10 @@ def _fill_version_pattern(filename: str, path: str, existing: bool):
             match = re.fullmatch(regex, file)
             if match is None:
                 continue
-            else:
-                # No error handling, int() should convert always since group is
-                # \d+
-                this_version = int(match.group(1))
-                if this_version > version:
-                    version = this_version
+            # No error handling, int() should convert always since group is
+            # \d+
+            this_version = int(match.group(1))
+            version = max(version, this_version)
     else:
         # Nothing to do, file does not exist if directory does not exist
         pass
@@ -195,7 +189,7 @@ def _fill_version_pattern(filename: str, path: str, existing: bool):
     if existing and version < 0:
         # We cannot return a file name if an existing file is expected
         return None
-    elif not existing:
+    if not existing:
         # We need to use the next version:
         version += 1
     versionstr = ("{:0" + str(closing - opening - 1) + "}").format(version)

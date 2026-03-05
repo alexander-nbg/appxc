@@ -48,6 +48,7 @@ class RegistrationAdmin:
             root_dir -- Default directory for file dialogs
             parent -- Optional parent widget. If provided, window is Toplevel.
                       If None, window is Tk (root).
+
         """
         self._registry = registry
         self._root_dir = root_dir
@@ -88,7 +89,10 @@ class RegistrationAdmin:
 
         # ==== SECTION 1: Action Buttons ====
         section1_frame = tkinter.LabelFrame(
-            self._admin_window, text="Actions", padx=10, pady=10
+            self._admin_window,
+            text="Actions",
+            padx=10,
+            pady=10,
         )
         section1_frame.pack(fill="x", padx=10, pady=10)
 
@@ -121,11 +125,12 @@ class RegistrationAdmin:
             {
                 key: Setting.new(self._user_config.get_setting(key).get_type())
                 for key in self._user_config
-            }
+            },
         )
 
         self._user_data_frame = SettingDictSingleFrame(
-            section2_frame, setting=self._user_data_dict
+            section2_frame,
+            setting=self._user_data_dict,
         )
         self._user_data_frame.pack(fill="both", expand=True)
 
@@ -133,7 +138,7 @@ class RegistrationAdmin:
         # Get available roles from registry
         available_roles = self._registry.get_roles()
         self._roles_setting_dict = SettingDict(
-            {role: (bool, role == "user") for role in available_roles}
+            {role: (bool, role == "user") for role in available_roles},
         )
 
         section3_frame = SettingDictColumnFrame(
@@ -215,7 +220,7 @@ class RegistrationAdmin:
             try:
                 # Get response bytes from registry
                 response_bytes = self._registry.get_response_bytes(
-                    self._current_user_id
+                    self._current_user_id,
                 )
 
                 # Ask user where to save the file
@@ -241,7 +246,9 @@ class RegistrationAdmin:
             except (ValueError, KeyError, OSError) as e:
                 self.log.error("Failed to write response: %s", e)
                 messagebox.showerror(
-                    "Error", f"Failed to write response: {e}", parent=self._admin_window
+                    "Error",
+                    f"Failed to write response: {e}",
+                    parent=self._admin_window,
                 )
 
         close_btn = tkinter.Button(
@@ -299,7 +306,9 @@ class RegistrationAdmin:
         except OSError as e:
             self.log.error("Failed to write admin keys to %s: %s", file_path, e)
             messagebox.showerror(
-                "Error", f"Failed to write file: {e}", parent=self._admin_window
+                "Error",
+                f"Failed to write file: {e}",
+                parent=self._admin_window,
             )
             return
 
@@ -325,7 +334,9 @@ class RegistrationAdmin:
         except OSError as e:
             self.log.error("Failed to read request file: %s", e)
             messagebox.showerror(
-                "Error", f"Failed to read file: {e}", parent=self._admin_window
+                "Error",
+                f"Failed to read file: {e}",
+                parent=self._admin_window,
             )
 
     def _load_request_ui(self, request_bytes: bytes):
@@ -333,14 +344,16 @@ class RegistrationAdmin:
 
         Arguments:
             request_bytes -- Serialized registration request bytes
-        """
 
+        """
         try:
             request = self._registry.get_request_data(request_bytes)
         except (ValueError, KeyError) as e:
             self.log.error("Failed to parse registration request: %s", e)
             messagebox.showerror(
-                "Error", f"Invalid request format: {e}", parent=self._admin_window
+                "Error",
+                f"Invalid request format: {e}",
+                parent=self._admin_window,
             )
             return
 

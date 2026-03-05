@@ -162,7 +162,7 @@ class Storage(ABC):
     def __init_subclass__(cls):
         """Deriving class providing additional class information"""
         cls.log = logging.getLogger(
-            f"{cls.__class__.__module__}.{cls.__class__.__name__}"
+            f"{cls.__class__.__module__}.{cls.__class__.__name__}",
         )
 
         # register the class
@@ -200,7 +200,8 @@ class Storage(ABC):
 
         @abstractmethod
         def __call__(
-            self, name: str | Storage.FactoryBehavior
+            self,
+            name: str | Storage.FactoryBehavior,
         ) -> Storage | list[Storage]:
             """Factory to construct Storage objects"""
 
@@ -227,11 +228,11 @@ class Storage(ABC):
         ):
             raise AppxfStorageError(
                 "Storage.get_factory() needs either base_storage or "
-                "location being defined."
+                "location being defined.",
             )
         if base_storage is not None and not isinstance(base_storage, Storage.Factory):
             raise AppxfStorageError(
-                "base_storage must be a storage factory in context of get_factory()"
+                "base_storage must be a storage factory in context of get_factory()",
             )
         if base_storage is None:
 
@@ -349,7 +350,7 @@ class Storage(ABC):
                 'You locked object creation by switch_context("") '
                 "after starting using the context feature. "
                 "Either keep a valid context, or reconsider the usage of "
-                "switch_context()"
+                "switch_context()",
             )
 
         if cls.is_registered(name, location=location):
@@ -372,7 +373,7 @@ class Storage(ABC):
                     raise AppxfStorageError(
                         f"Context switch not allowed if storage was already "
                         f"created without context. "
-                        f"Storages registered for: {this_cls.__name__}"
+                        f"Storages registered for: {this_cls.__name__}",
                     )
         # handle context change in all storage classes
         for this_cls in Storage._storage_class_registry:
@@ -431,15 +432,19 @@ class Storage(ABC):
             and not override
         ):
             raise AppxfStorageError(
-                f"{self.id()} is already registered in {self.__class__.__name__}"
+                f"{self.id()} is already registered in {self.__class__.__name__}",
             )
         if override is None:
             self._register_storage(
-                name=self._name, location=self._location, instance=self
+                name=self._name,
+                location=self._location,
+                instance=self,
             )
         else:
             self._register_storage(
-                name=self._name, location=self._location, instance=override
+                name=self._name,
+                location=self._location,
+                instance=override,
             )
 
     def unregister(self):
@@ -526,6 +531,7 @@ class Storage(ABC):
                 existing storage. This Storage class already handles
                 initialization and registration with this base storage for
                 derived classes.
+
         """
         # Cannot construct if locked by context:
         if Storage._context_locked:
@@ -533,7 +539,7 @@ class Storage(ABC):
                 'You locked object creation by switch_context("") '
                 "after starting using the context feature. "
                 "Either keep a valid context, or reconsider the usage of "
-                "switch_context()"
+                "switch_context()",
             )
         # Cannot construct an already registered object:
         if (
@@ -541,7 +547,7 @@ class Storage(ABC):
             and name in self._storage_registry[location]
         ):
             raise AppxfStorageError(
-                f"{self.__class__.__name__} already knows a storage {location}::{name}"
+                f"{self.__class__.__name__} already knows a storage {location}::{name}",
             )
 
         # construction

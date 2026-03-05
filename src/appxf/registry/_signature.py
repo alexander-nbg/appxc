@@ -38,9 +38,12 @@ class Signature(Storable):
     def verify(self, data: bytes):
         """Verify loaded signature
 
-        load() has to be executed, before."""
+        load() has to be executed, before.
+        """
         return self._security.verify_signature(
-            data=data, signature=self.signature, public_key_bytes=self.pub_key
+            data=data,
+            signature=self.signature,
+            public_key_bytes=self.pub_key,
         )
         # TODO: there is no verification if the signing key was actually
         # authorized to write the data
@@ -48,6 +51,7 @@ class Signature(Storable):
     def sign(self, data: bytes):
         """Sign data based on public key in Security object
 
-        Intended is to store() the signature afterwards"""
+        Intended is to store() the signature afterwards
+        """
         self.pub_key = self._security.get_signing_public_key()
         self.signature = self._security.sign(data)

@@ -35,7 +35,7 @@ class RamStorage(Storage):
             raise AppxfStorageWarning(
                 f"RAM storage for {ram_area}::{name} already exists: risk of "
                 f"writing to same storage. You should use RamStorage.get() "
-                f"instead of RamStorage() constructor."
+                f"instead of RamStorage() constructor.",
             )
             # TODO: the error message is wrong unless we keep get()
 

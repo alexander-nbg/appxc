@@ -6,14 +6,11 @@ from __future__ import annotations
 
 from collections import OrderedDict
 from dataclasses import MISSING, Field, dataclass, fields
-from typing import Any, TypeVar
+from typing import Any
+
+from typing_extensions import Self
 
 from .stateful import Stateful
-
-# This TypeVar is required for correct type hints when using new_from_kwarg().
-# The resulting Options object must be of the derived Options class to contain
-# the expected options.
-_OptionTypeT = TypeVar("_OptionTypeT", bound="Options")
 
 
 @dataclass(eq=False, order=False)
@@ -37,9 +34,10 @@ class Options(Stateful):
 
     @classmethod
     def new_from_kwarg(
-        cls: type[_OptionTypeT], kwarg_dict: dict[str, Any]
-    ) -> _OptionTypeT:
-        """consume any valid argument from kwargs and return options instance
+        cls,
+        kwarg_dict: dict[str, Any],
+    ) -> Self:
+        """Consume any valid argument from kwargs and return options instance
 
         Arguments that are matching fields are applied to this option class and
         a new instance is returned. The arguments are removed from kwarg_dict.
@@ -58,8 +56,8 @@ class Options(Stateful):
         return options
 
     @classmethod
-    def new(cls: type[_OptionTypeT], **kwarg) -> _OptionTypeT:
-        """new options from kwarg
+    def new(cls, **kwarg) -> Self:
+        """New options from kwarg
 
         Calls new_from_kwarg() followed by raise_error_on_non_empty_kwarg().
         See those functions for details.
@@ -69,7 +67,7 @@ class Options(Stateful):
         return out
 
     def update_from_kwarg(self, kwarg_dict: dict[str, Any]):
-        """get updated option
+        """Get updated option
 
         Arguments work the same as for new_from_kwarg().
         """
@@ -81,7 +79,7 @@ class Options(Stateful):
         self._apply_kwarg(normal_kwarg)
 
     def update(self, **kwarg):
-        """update options
+        """Update options
 
         See update_from_kwarg. This function also calls
         raise_error_on_non_empty_kwarg afterwards.
@@ -90,7 +88,7 @@ class Options(Stateful):
         self.raise_error_on_non_empty_kwarg(kwarg)
 
     def reset(self):
-        """reset options to default values"""
+        """Reset options to default values"""
         for field in fields(self):
             if field.default is not MISSING:
                 setattr(self, field.name, field.default)
@@ -103,12 +101,12 @@ class Options(Stateful):
                 raise TypeError(
                     f"This should not happen: neither a default value or a "
                     f"default_factors is set for field {field.name} of "
-                    f"{self.__class__}"
+                    f"{self.__class__}",
                 )
 
     @classmethod
     def raise_error_on_non_empty_kwarg(cls, kwarg_dict: dict[str, Any]):
-        """shortcut error handling
+        """Shortcut error handling
 
         This function is recommended after manual calls to new_from_kwargs()
         or update_from_kwargs()
@@ -116,7 +114,7 @@ class Options(Stateful):
         for key in kwarg_dict:
             raise AttributeError(
                 f"Argument [{key}] is unknown, {cls} supports "
-                f"{[field.name for field in fields(cls)] + ['options']}."
+                f"{[field.name for field in fields(cls)] + ['options']}.",
             )
 
     # #####################
@@ -158,7 +156,7 @@ class Options(Stateful):
                 raise AttributeError(
                     f"Argument options must be {cls} or "
                     f"a dictionary with valid keys, you provided "
-                    f"{options.__class__.__name__}"
+                    f"{options.__class__.__name__}",
                 )
         else:
             update_dict = {}
@@ -170,17 +168,17 @@ class Options(Stateful):
     def _is_default(self, field: Field) -> bool:
         if field.default is not MISSING:
             return getattr(self, field.name) == field.default
-        elif field.default_factory is not MISSING:
+        if field.default_factory is not MISSING:
             return getattr(self, field.name) == field.default_factory()
-        else:  # pragma: no cover
-            # this branch is should not be reachable since the dataclass cannot
-            # contain options without default values after Options already
-            # defining some:
-            raise TypeError(
-                f"This should not happen: could not determine if field "
-                f"{field.name} uses default value or not "
-                f"(default: {field.default})."
-            )
+        # pragma: no cover
+        # this branch is should not be reachable since the dataclass cannot
+        # contain options without default values after Options already
+        # defining some:
+        raise TypeError(
+            f"This should not happen: could not determine if field "
+            f"{field.name} uses default value or not "
+            f"(default: {field.default}).",
+        )
 
     # ##########################
     # adjust Stateful behavior

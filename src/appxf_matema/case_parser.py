@@ -56,5 +56,5 @@ class CaseParser:
             f"path: {self.caller_module_path}\n"
             f"functions: {self.caller_module_functions}\n"
             f"as map: {self.caller_module_function_map}\n"
-            f"docstring: {self.caller_module_docstring}"
+            f"docstring: {self.caller_module_docstring}",
         )

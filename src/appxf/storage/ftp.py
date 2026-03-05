@@ -66,6 +66,7 @@ class FtpLocation(StorageToBytes):
             host -- _description_
             user -- _description_
             password -- _description_
+
         """
         # Simple sanity checks:
         if not host:
@@ -101,7 +102,7 @@ class FtpLocation(StorageToBytes):
             self.connection = FTPHost(self.host, self.user, self.password)
         except Exception as e:
             raise Exception(
-                f"Not able to initialize FTP object for [{self.host}]: {e}."
+                f"Not able to initialize FTP object for [{self.host}]: {e}.",
             ) from e
 
         # TODO LATER: ensure login to FTP server is possible and things are

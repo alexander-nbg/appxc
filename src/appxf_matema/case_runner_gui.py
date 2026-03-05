@@ -65,7 +65,7 @@ class CaseRunnerGui:
             raise ValueError(
                 f"CaseRunner and CaseRunnerGui "
                 f"must be called with tkinter.Tk as parent but parent "
-                f"hat type {type(self._parent)}."
+                f"hat type {type(self._parent)}.",
             )
         return self._parent
 
@@ -96,7 +96,10 @@ class CaseRunnerGui:
 
         # Test case explanations:
         instruction_label = tkinter.Label(
-            root, text="Test Instructions:", padx=0, pady=0
+            root,
+            text="Test Instructions:",
+            padx=0,
+            pady=0,
         )
         instruction_label.pack(anchor="w", padx=5, pady=0)
         instruction_frame = tkinter.Frame(root, bd=1, relief="sunken")
@@ -177,7 +180,10 @@ class CaseRunnerGui:
         return gui_structure
 
     def _get_markdown_label(
-        self, parent, markdown_text: str, width: int = 400
+        self,
+        parent,
+        markdown_text: str,
+        width: int = 400,
     ) -> tkinter.Widget:
         """Get label displaying markdown formatted text"""
         # Convert markdown to HTML
@@ -208,7 +214,8 @@ class CaseRunnerGui:
         label: str,
     ):
         """Add a button that spawns a subprocess to execute a
-        process function."""
+        process function.
+        """
         button = tkinter.Button(
             self.gui_structure.process_button_frame,
             text=label,

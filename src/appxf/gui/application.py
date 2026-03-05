@@ -108,15 +108,16 @@ class AppxfApplication(tkinter.Tk):
         Arguments:
             name -- Name to be used in content selection menu
             cls -- Frame class to be displayed
+
         """
         if not issubclass(cls, (tkinter.Frame, tkinter.LabelFrame)):
             raise TypeError(
                 f"Provided class [cls] must be a subclass of "
-                f"tkinter's Frame but is: {cls}"
+                f"tkinter's Frame but is: {cls}",
             )
         if name in self._frames:
             raise ValueError(
-                f"A frame for {name} was already registered: {self._frames[name].cls}"
+                f"A frame for {name} was already registered: {self._frames[name].cls}",
             )
 
         self._frames[name] = FrameInfo(cls, args, kwargs, None)
@@ -131,6 +132,7 @@ class AppxfApplication(tkinter.Tk):
 
         Arguments:
             name -- name of the frame as per register_frame
+
         """
         frame_info = self._get_frame_info(name)
         if frame_info.frame is None:
@@ -144,7 +146,7 @@ class AppxfApplication(tkinter.Tk):
         # Update window size to fit the frame's minimum content
         self.update_idletasks()
         self.geometry(
-            f"{self._main_frame.winfo_reqwidth()}x{self._main_frame.winfo_reqheight()}"
+            f"{self._main_frame.winfo_reqwidth()}x{self._main_frame.winfo_reqheight()}",
         )
 
     def _create_frame(self, name):
@@ -162,6 +164,6 @@ class AppxfApplication(tkinter.Tk):
             return self._dummy_frame
         if name not in self._frames:
             raise KeyError(
-                f"{name} was not registered as frame. I know of: {self._frames.keys()}"
+                f"{name} was not registered as frame. I know of: {self._frames.keys()}",
             )
         return self._frames[name]

@@ -85,7 +85,9 @@ class Login:
         gui_root.columnconfigure(1, weight=1)
 
         user_config = SettingDictSingleFrame(
-            gui_root, setting=self._user_config, frame_label=False
+            gui_root,
+            setting=self._user_config,
+            frame_label=False,
         )
         user_config.grid(row=0, column=0, sticky="NSWE", columnspan=2)
         left_min_size_config = user_config.get_left_col_min_width()
@@ -128,7 +130,7 @@ class Login:
             if len(pwd_entry.get()) < self._pwd_min_length:
                 self.log.debug(
                     "NOK, Passwort muss mindestens "
-                    f"{self._pwd_min_length} Zeichen haben"
+                    f"{self._pwd_min_length} Zeichen haben",
                 )
                 pwd_entry.config(foreground="red")
                 valid = False
@@ -148,7 +150,9 @@ class Login:
                 gui_root.destroy()
 
         ok_button = tkinter.Button(
-            gui_root, text=_("button", "OK"), command=ok_button_function
+            gui_root,
+            text=_("button", "OK"),
+            command=ok_button_function,
         )
         ok_button.grid(row=4, column=1, padx=5, pady=5, sticky="E")
 
@@ -180,12 +184,15 @@ class Login:
                 gui_root.destroy()
             except Exception:
                 self.log.debug(
-                    "Password verification failed because of:", exc_info=True
+                    "Password verification failed because of:",
+                    exc_info=True,
                 )
                 self.log.warning("Password wrong, but we continue.")
 
         ok_button = tkinter.Button(
-            gui_root, text=_("button", "OK"), command=ok_button_function
+            gui_root,
+            text=_("button", "OK"),
+            command=ok_button_function,
         )
         ok_button.grid(row=3, column=2, padx=5, pady=5, sticky="E")
 

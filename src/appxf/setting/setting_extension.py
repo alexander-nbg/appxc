@@ -28,7 +28,10 @@ class SettingExtension(Generic[_BaseSettingT, _BaseTypeT], Setting[_BaseTypeT]):
     setting_extension = ""
 
     def __init__(
-        self, base_setting: _BaseSettingT, value: _BaseTypeT | None = None, **kwargs
+        self,
+        base_setting: _BaseSettingT,
+        value: _BaseTypeT | None = None,
+        **kwargs,
     ):
         # base_setting has to be available during __init__ of Setting
         # since it will validate the value which should rely on the
@@ -42,7 +45,7 @@ class SettingExtension(Generic[_BaseSettingT, _BaseTypeT], Setting[_BaseTypeT]):
         if isinstance(base_setting, type):
             raise AppxfSettingError(
                 f"base_setting input must be a Setting instance, not "
-                f"just a type. You provided {base_setting}"
+                f"just a type. You provided {base_setting}",
             )
         self.base_setting = base_setting
         super().__init__(value=value, **kwargs)

@@ -31,7 +31,8 @@ class AppxfSettingConversionError(Exception):
     """AppxfSetting conversion error
 
     It is used when the Setting is not able to validate an input or convert it
-    to the base type."""
+    to the base type.
+    """
 
     def __init__(self, setting_class: type[Setting[Any]], value, **kwargs):
         super().__init__(**kwargs)
@@ -91,14 +92,14 @@ class _SettingMeta(type):
         # check class
         if cls_register.__name__ in mcs.implementation_names:
             raise AppxfSettingError(
-                f"Setting {cls_register.__name__} is already registered."
+                f"Setting {cls_register.__name__} is already registered.",
             )
         # check completeness of implementation:
         if cls_register.__abstractmethods__:
             raise AppxfSettingError(
                 f"Setting {cls_register.__name__} still has abstract methods: "
                 f"{cls_register.__abstractmethods__} "
-                f"that need implementation."
+                f"that need implementation.",
             )
         # I cannot use issubclass to differentiate an SettingExtension from an
         # Setting since the classes are not yet known. We rely on the attribute
@@ -118,7 +119,7 @@ class _SettingMeta(type):
                 f"supported type. Consider returning at least some "
                 f"["
                 "your special type"
-                "] from get_supported_types()."
+                "] from get_supported_types().",
             )
         if not isinstance(supported_types[0], str):
             raise AppxfSettingError(
@@ -126,7 +127,7 @@ class _SettingMeta(type):
                 f"as the default setting type name. It is used in context of "
                 f"SettingDict to store/load settings including their type "
                 f"in a human readable format. "
-                f"You defined {supported_types[0]}"
+                f"You defined {supported_types[0]}",
             )
         # verify that no supported type already being registered
         for setting_type in supported_types:
@@ -134,7 +135,7 @@ class _SettingMeta(type):
                 other_cls = mcs.type_map[setting_type].__name__
                 raise AppxfSettingError(
                     f"Setting {cls_register.__name__} supported type "
-                    f"{setting_type} is already registered for {other_cls}."
+                    f"{setting_type} is already registered for {other_cls}.",
                 )
         # Adding stuff only after ALL checks
         # add class
@@ -142,7 +143,7 @@ class _SettingMeta(type):
         mcs.implementations.append(cls_register)
         # add setting types
         mcs.type_map.update(
-            dict.fromkeys(cls_register.get_supported_types(), cls_register)
+            dict.fromkeys(cls_register.get_supported_types(), cls_register),
         )
 
     @classmethod
@@ -186,7 +187,7 @@ class _SettingMeta(type):
                 raise AppxfSettingError(
                     f"You need to provide a fully implemented class like "
                     f"SettingString. {requested_type.__name__} is not "
-                    f"fully implemented"
+                    f"fully implemented",
                 )
             return requested_type, None
         # requested type is now either a string or a type, before handling
@@ -210,14 +211,14 @@ class _SettingMeta(type):
             if type_split[0] not in cls.extension_map:
                 raise AppxfSettingError(
                     f"Extention [{type_split[0]}] is unknown. "
-                    f"Known are: {list(cls.extension_map.keys())}"
+                    f"Known are: {list(cls.extension_map.keys())}",
                 )
             extension_type = cls.extension_map[type_split[0]]
             # get base setting type
             if type_split[1] not in cls.type_map:
                 raise AppxfSettingError(
                     f"Base type [{type_split[1]}] is unknown. "
-                    f"Known are: {list(cls.type_map.keys())}"
+                    f"Known are: {list(cls.type_map.keys())}",
                 )
             base_setting_type = cls.type_map[type_split[1]]
             return extension_type, base_setting_type
@@ -225,37 +226,43 @@ class _SettingMeta(type):
         raise AppxfSettingError(
             f"Setting type [{requested_type}] is unknown. Did you import the "
             f"Setting implementations you wanted to use? Supported are: "
-            f"{_SettingMeta.type_map.keys()}"
+            f"{_SettingMeta.type_map.keys()}",
         )
 
     @classmethod
     def get_setting(
-        cls, requested_type: str | type, value: Any, name: str, **kwargs
+        cls,
+        requested_type: str | type,
+        value: Any,
+        name: str,
+        **kwargs,
     ) -> Setting[Any]:
         """Get Setting type from string or base type
 
         The type may also be an Setting directly
         """
         setting_type, base_setting_type = cls.get_setting_type(
-            requested_type=requested_type
+            requested_type=requested_type,
         )
 
         if base_setting_type is None:
             # this is a normal setting
             return setting_type(value=value, name=name, **kwargs)
-        else:
-            # this is a setting extension and we need to prepare the kwarg
-            # options for extended settings and the settings.
-            extension_options = {
-                key: val for key, val in kwargs.items() if key != "base_setting_options"
-            }
-            base_options = kwargs.get("base_setting_options", {})
-            base_setting = base_setting_type(**base_options)
-            if value is None:
-                value = base_setting.get_default()
-            return setting_type(
-                name=name, value=value, base_setting=base_setting, **extension_options
-            )
+        # this is a setting extension and we need to prepare the kwarg
+        # options for extended settings and the settings.
+        extension_options = {
+            key: val for key, val in kwargs.items() if key != "base_setting_options"
+        }
+        base_options = kwargs.get("base_setting_options", {})
+        base_setting = base_setting_type(**base_options)
+        if value is None:
+            value = base_setting.get_default()
+        return setting_type(
+            name=name,
+            value=value,
+            base_setting=base_setting,
+            **extension_options,
+        )
 
 
 # The custom metaclass from registration and the ABC metaclass for abstract
@@ -332,7 +339,7 @@ class SettingOptions(Options):
     # export group cannot be exported (except name)
     value_options: list[str] = field(default_factory=list)
     display_options: list[str] = field(
-        default_factory=lambda: ["visible", "display_width"]
+        default_factory=lambda: ["visible", "display_width"],
     )
     control_options: list[str] = field(
         default_factory=lambda: [
@@ -340,14 +347,16 @@ class SettingOptions(Options):
             "value_options_mutable",
             "display_options_mutable",
             "control_options_mutable",
-        ]
+        ],
     )
 
     # with overwriting the get_state()/set_state(), the Stateful class
     # configuration for attribute/attribute_mask does not need to be changed
 
     def get_state(
-        self, options: SettingExportOptions | None = None, **kwargs
+        self,
+        options: SettingExportOptions | None = None,
+        **kwargs,
     ) -> OrderedDict[str, Any]:
         if options is None:
             options = SettingExportOptions()
@@ -367,7 +376,10 @@ class SettingOptions(Options):
         )
 
     def set_state(
-        self, data: object, options: SettingExportOptions | None = None, **kwargs
+        self,
+        data: object,
+        options: SettingExportOptions | None = None,
+        **kwargs,
     ):
         if options is None:
             options = SettingExportOptions()
@@ -378,7 +390,10 @@ class SettingOptions(Options):
             + (self.control_options if options.control_options else [])
         )
         return self._set_state_default(
-            data=data, attributes=attributes, attribute_mask=[], **kwargs
+            data=data,
+            attributes=attributes,
+            attribute_mask=[],
+            **kwargs,
         )
 
 
@@ -433,16 +448,15 @@ class Setting(Generic[_BaseTypeT], Stateful, metaclass=_SettingMetaMerged):
         if value is None:
             self._input = self.get_default()
             self._value = self.get_default()
+        elif self.options.mutable:
+            self.value = value
         else:
-            if self.options.mutable:
-                self.value = value
-            else:
-                # bypass mutable being False during initialization:
-                self.options.mutable = True
-                # set value
-                self.value = value
-                # restore mutable
-                self.options.mutable = False
+            # bypass mutable being False during initialization:
+            self.options.mutable = True
+            # set value
+            self.value = value
+            # restore mutable
+            self.options.mutable = False
             # remarks: alternative would be to call _set_value() deriving
             # classes may overwrite only the toplevel property setter (example:
             # SettingDict)
@@ -534,7 +548,7 @@ class Setting(Generic[_BaseTypeT], Stateful, metaclass=_SettingMetaMerged):
         if not self.options.mutable:
             name = "(" + self.options.name + ")" if self.options.name else "(no name)"
             raise AppxfSettingError(
-                f"{self.__class__.__name__}{name} is set to be not mutable."
+                f"{self.__class__.__name__}{name} is set to be not mutable.",
             )
         self._set_value(value)
 
@@ -575,6 +589,7 @@ class Setting(Generic[_BaseTypeT], Stateful, metaclass=_SettingMetaMerged):
         Returns:
             1) The check result
             2) The converted string
+
         """
         return False, self.get_default()
 

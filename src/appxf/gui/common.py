@@ -85,7 +85,7 @@ class GridFrame(tkinter.LabelFrame):
             if t in GridFrame._registry:
                 raise AppxfGuiError(
                     f"GridFrame for type {t} already registered: "
-                    f"{GridFrame._registry[t]} vs {cls}"
+                    f"{GridFrame._registry[t]} vs {cls}",
                 )
             GridFrame._registry[t] = cls
 
@@ -96,7 +96,8 @@ class GridFrame(tkinter.LabelFrame):
         Frame selection is based on class registration. Valid frame classes
         must (1) derive from GridFrame, (2) define the supported classes as
         class attribute "supports" and (3) must loaded since the registration
-        happens upon class definition."""
+        happens upon class definition.
+        """
         obj_type = type(appxf_object)
         for candidate in obj_type.__mro__:
             frame_cls = cls._registry.get(candidate)
@@ -104,14 +105,18 @@ class GridFrame(tkinter.LabelFrame):
                 # try common constructor signatures:
                 return frame_cls(parent, appxf_object, **kwargs)
         raise AppxfGuiError(
-            f"No registered frame for object of type {obj_type.__name__}"
+            f"No registered frame for object of type {obj_type.__name__}",
         )
 
     # Note that the weights are read from it's Frame contents. If it contains
     # widgets, they may sum up to zero. If they contain nothing, the frame
     # weight will be 1.
     frame_setting = GridSetting(
-        sticky="EWNS", padx=0, pady=0, row_weight=1, column_weight=1
+        sticky="EWNS",
+        padx=0,
+        pady=0,
+        row_weight=1,
+        column_weight=1,
     )
 
     classes_horizontal_stretch_setting = (
@@ -120,7 +125,11 @@ class GridFrame(tkinter.LabelFrame):
         ttk.Combobox,
     )
     item_horizontal_stretch_setting = GridSetting(
-        sticky="EW", padx=5, pady=5, row_weight=0, column_weight=1
+        sticky="EW",
+        padx=5,
+        pady=5,
+        row_weight=0,
+        column_weight=1,
     )
 
     classes_full_stretch_setting = (
@@ -128,17 +137,29 @@ class GridFrame(tkinter.LabelFrame):
         ttk.Entry,
     )
     item_full_stretch_setting = GridSetting(
-        sticky="EWNS", padx=5, pady=5, row_weight=1, column_weight=1
+        sticky="EWNS",
+        padx=5,
+        pady=5,
+        row_weight=1,
+        column_weight=1,
     )
 
     classes_right_aligned_setting = (tkinter.Label,)
     item_right_aligned_setting = GridSetting(
-        sticky="E", padx=5, pady=5, row_weight=0, column_weight=0
+        sticky="E",
+        padx=5,
+        pady=5,
+        row_weight=0,
+        column_weight=0,
     )
 
     # applies to anything else
     item_centered_setting = GridSetting(
-        sticky="", padx=5, pady=5, row_weight=0, column_weight=0
+        sticky="",
+        padx=5,
+        pady=5,
+        row_weight=0,
+        column_weight=0,
     )
 
     def __init__(
@@ -229,7 +250,7 @@ class GridFrame(tkinter.LabelFrame):
         self._apply_weights()
 
     def _apply_weights(self):
-        """apply row/column weights
+        """Apply row/column weights
 
         If row_spread/column_spread is True, the rows/columns will get weight=1
         to ensure they are spreading.
@@ -321,6 +342,7 @@ class ButtonFrame(GridFrame):
 
         Provides Events:
             <<Button Name>> according to provided button names.
+
         """
         super().__init__(parent, row_spread=spread, **kwargs)
         self.last_event = None
@@ -408,7 +430,7 @@ class _CommonWindow:
         # be filled:
         self.frame = None
         self.place_frame(
-            frame=GridFrame(parent=self.window, row_spread=True, column_spread=True)
+            frame=GridFrame(parent=self.window, row_spread=True, column_spread=True),
         )
 
         # second row -- button frame (stretch only if frame does not stretch)
@@ -433,14 +455,16 @@ class _CommonWindow:
         # Buttons to close the window:
         for button in closing:
             self.button_frame.bind(
-                f"<<{button}>>", lambda event: self.window.destroy(), add=True
+                f"<<{button}>>",
+                lambda event: self.window.destroy(),
+                add=True,
             )
 
         # Closing via window manager
         self.window.protocol(
             "WM_DELETE_WINDOW",
             lambda: self.button_frame.handle_button_press(
-                closing[0] if closing else "WM_DELETE_WINDOW"
+                closing[0] if closing else "WM_DELETE_WINDOW",
             ),
         )
 

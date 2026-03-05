@@ -98,7 +98,7 @@ class SettingSelect(SettingExtension[_BaseSettingT, _BaseTypeT]):
                 "mutable_items",
                 "mutable_list",
                 "custom_value",
-            ]
+            ],
         )
 
     def __init__(
@@ -218,13 +218,13 @@ class SettingSelect(SettingExtension[_BaseSettingT, _BaseTypeT]):
             raise AppxfSettingError(
                 f'Cannot delete item "{option}" '
                 f"since it does not exist for "
-                f'"{self.options.name}".'
+                f'"{self.options.name}".',
             )
         if not self.options.mutable_list:
             raise AppxfSettingError(
                 f'Cannot delete item "{option}" '
                 f"since mutable_list is False for "
-                f'"{self.options.name}".'
+                f'"{self.options.name}".',
             )
         original_options = self.get_select_keys()
         if option in self.select_map:
@@ -240,7 +240,10 @@ class SettingSelect(SettingExtension[_BaseSettingT, _BaseTypeT]):
                 self.value = new_list[-1]
 
     def add_select_item(
-        self, option: str, value: Any, ignore_mutable_options: bool = False
+        self,
+        option: str,
+        value: Any,
+        ignore_mutable_options: bool = False,
     ):
         """Add a new item to the select list by key and value"""
         if option not in self.select_map:
@@ -248,22 +251,21 @@ class SettingSelect(SettingExtension[_BaseSettingT, _BaseTypeT]):
                 raise AppxfSettingError(
                     f'Cannot add the new item "{option}" '
                     f"since mutable_list is False for "
-                    f'"{self.options.name}".'
+                    f'"{self.options.name}".',
                 )
             # no check for mutable_item since a complete new one is added
-        else:
-            # no check for mutable_list since an existing one is being altered:
-            if not self.options.mutable_items and not ignore_mutable_options:
-                raise AppxfSettingError(
-                    f'Cannot change item "{option}" since '
-                    f"mutable_items is False for "
-                    f'"{self.options.name}".'
-                )
+        # no check for mutable_list since an existing one is being altered:
+        elif not self.options.mutable_items and not ignore_mutable_options:
+            raise AppxfSettingError(
+                f'Cannot change item "{option}" since '
+                f"mutable_items is False for "
+                f'"{self.options.name}".',
+            )
         # We try to set the value and take error message from there:
         if not self.base_setting.validate(value):
             raise AppxfSettingError(
                 f"Cannot add option [{option}] with value {value} of type "
-                f"{value.__class__.__name__} because the value is not valid."
+                f"{value.__class__.__name__} because the value is not valid.",
             )
         # We also take the readily transformed value, not just the input
         self.select_map[option] = value

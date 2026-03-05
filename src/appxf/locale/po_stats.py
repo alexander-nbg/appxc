@@ -13,6 +13,7 @@ def read_context_from_pot(pot_file):
 
     Returns:
         set: All context tags found in the file
+
     """
     contexts = set()
 
@@ -36,6 +37,7 @@ def analyze_po_file(po_file):
     Returns:
         dict: Statistics with context as key and dict with
         'translated' and 'total' counts
+
     """
     stats = {}
     current_context = None
@@ -95,6 +97,7 @@ def get_incomplete_contexts(po_file):
 
     Returns:
         dict: Only contexts with incomplete translations
+
     """
     stats = analyze_po_file(po_file)
     incomplete = {
@@ -125,11 +128,13 @@ def main():
     import argparse
 
     parser = argparse.ArgumentParser(
-        description="Statistics and analysis tools for gettext PO/POT files."
+        description="Statistics and analysis tools for gettext PO/POT files.",
     )
     parser.add_argument("file", help="Path to PO or POT file")
     parser.add_argument(
-        "--contexts", action="store_true", help="Print all contexts from a POT file"
+        "--contexts",
+        action="store_true",
+        help="Print all contexts from a POT file",
     )
     parser.add_argument(
         "--incomplete",

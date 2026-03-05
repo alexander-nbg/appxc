@@ -26,7 +26,6 @@ SettingInput: TypeAlias = Setting | SettingDict | dict[str, Any] | Iterable[Sett
 
 def input_type_to_setting_dict(setting: SettingInput) -> SettingDict:
     """Convert allowed compound setting inputs to a SettingDict"""
-
     if isinstance(setting, SettingDict):
         return setting
     # The following two should also not already be a setging dict (which is
@@ -42,7 +41,7 @@ def input_type_to_setting_dict(setting: SettingInput) -> SettingDict:
         return SettingDict(
             settings={
                 this_setting.options.name: this_setting for this_setting in setting
-            }
+            },
         )
 
     if isinstance(setting, Setting):
@@ -105,7 +104,8 @@ class SettingDictSingleFrame(SettingFrameBase):
         self.place(setting_frame, row=len(self.frame_list), column=0)
         # apply row weight from underlying frame:
         self.rowconfigure(
-            len(self.frame_list), weight=setting_frame.get_total_row_weight()
+            len(self.frame_list),
+            weight=setting_frame.get_total_row_weight(),
         )
 
         self.frame_list.append(setting_frame)
@@ -114,12 +114,14 @@ class SettingDictSingleFrame(SettingFrameBase):
         """Get minimum width of left column.
 
         Can only be called after placing the widget (e.g. using grid()).
+
         Example:
         ```
             w = SettingDictFrame(root, property_dict)
             w.grid(row=0, column=0)
             min_width = w.get_left_col_min_width()
         ```
+
         """
         # TODO: docstring above is not correct anymore after grid() is
         # substituted by place(). When touching this, I may reconsider
@@ -137,8 +139,7 @@ class SettingDictSingleFrame(SettingFrameBase):
             # get label size
             size = label_widget.winfo_width()
             # update min size
-            if size > min_size:
-                min_size = size
+            min_size = max(min_size, size)
         # we can simply add 10 here since we know the hard coded
         # padding.
         return min_size + 10
@@ -211,7 +212,7 @@ class SettingDictColumnFrame(SettingFrameBase):
         else:
             raise ValueError(
                 f'"column_direction" only supports "down" or '
-                f'"right", you provided "{direction}"'
+                f'"right", you provided "{direction}"',
             )
 
         # fill property dictionaries
@@ -225,12 +226,16 @@ class SettingDictColumnFrame(SettingFrameBase):
         for prop_dict in prop_dict_list:
             self.columnconfigure(len(self.frame_list), weight=1)
             this_frame = SettingDictSingleFrame(
-                self, prop_dict, frame_label=False, **kwargs
+                self,
+                prop_dict,
+                frame_label=False,
+                **kwargs,
             )
             self.place(this_frame, row=0, column=len(self.frame_list))
             self.frame_list.append(this_frame)
-            if this_frame.get_total_row_weight() > max_row_weight_over_columns:
-                max_row_weight_over_columns = this_frame.get_total_row_weight()
+            max_row_weight_over_columns = max(
+                max_row_weight_over_columns, this_frame.get_total_row_weight()
+            )
         # column weights are configured above in the for loop. The weight of
         # the one row containing all columns equals the maximum row weight of
         # the columns. If no column needs vertical resizing, this ColumnFrame
@@ -265,9 +270,7 @@ class SettingDictWindow(GridToplevel):
         appxf_options: dict | None = None,
         **kwargs,
     ):
-        """
-        Create GUI window to edit a dictionary of properties.
-        """
+        """Create GUI window to edit a dictionary of properties."""
         super().__init__(
             parent,
             title=title,
@@ -286,7 +289,7 @@ class SettingDictWindow(GridToplevel):
             self.property_dict = SettingDict(settings={setting.options.name: setting})
         else:
             raise AppxfGuiError(
-                f"Setting must be AppxfSetting or SettingDict but is {type(setting)}"
+                f"Setting must be AppxfSetting or SettingDict but is {type(setting)}",
             )
         # Ensure values are stored. If congiuration fails, values will be
         # reloaded.

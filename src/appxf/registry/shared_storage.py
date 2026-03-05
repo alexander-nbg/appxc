@@ -64,10 +64,12 @@ class SecureSharedStorage(StorageToBytes):
         # knows _user and may already act accordingly.
 
         self._signature = Signature(
-            storage=base_storage.get_meta("signature"), security=security
+            storage=base_storage.get_meta("signature"),
+            security=security,
         )
         self._public_encryption = PublicEncryption(
-            storage=base_storage.get_meta("keys"), registry=registry
+            storage=base_storage.get_meta("keys"),
+            registry=registry,
         )
 
     # TODO: update documentation below. Put elsewhere??
@@ -145,7 +147,7 @@ class SecureSharedStorage(StorageToBytes):
     def exists(self) -> bool:
         if self.base_storage is None:
             raise AppxfStorageError(
-                f"{self.__class__.__name__} required a base storage but you used None."
+                f"{self.__class__.__name__} required a base storage but you used None.",
             )
         # security and registry must have appropriate states
         if not self.ensure_usable():
@@ -165,7 +167,7 @@ class SecureSharedStorage(StorageToBytes):
         if not self.ensure_usable():
             raise AppxfStorageError(
                 "Store on SecureSharedStorage is only possible with "
-                "unlocked security and initialized registry."
+                "unlocked security and initialized registry.",
             )
         # encryption
         data_bytes = self._public_encryption.encrypt(data)
@@ -179,7 +181,7 @@ class SecureSharedStorage(StorageToBytes):
         if not self.ensure_usable():
             raise AppxfStorageError(
                 "Load on SecureSharedStorage is only possible with "
-                "unlocked security and initialized registry."
+                "unlocked security and initialized registry.",
             )
         # load raw
         data_bytes: bytes = self.base_storage.load_raw()

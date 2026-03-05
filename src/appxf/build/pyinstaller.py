@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 # Copyright 2026 the contributors of APPXF (github.com/alexander-nbg/appxf)
 # SPDX-License-Identifier: Apache-2.0
-"""
-Cross-platform PyInstaller build script.
+"""Cross-platform PyInstaller build script.
 
 This script provides a unified way to build Python applications using PyInstaller
 across different platforms (Linux, Windows, macOS). It handles virtual environment
@@ -50,7 +49,7 @@ class _StepLogger:
         return False
 
 
-def run_command(
+def _run_command(
     cmd: list[str],
     shell: bool = False,
     check: bool = True,
@@ -62,24 +61,23 @@ def run_command(
         print(f"Running: {' '.join(cmd)}")
 
     # Suppress output unless verbose or capture_output is set
-    if not verbose and "capture_output" not in kwargs:
-        result = subprocess.run(
-            cmd,
-            shell=shell,
-            check=check,
-            capture_output=True,
-            text=True,
-            **kwargs,
-        )
-        # Only print if there's an error or warning
-        if result.stderr:
-            print(result.stderr, file=sys.stderr)
-        return result
-    else:
-        if verbose:
-            return subprocess.run(cmd, shell=shell, check=check, **kwargs)
-        else:
-            return subprocess.run(cmd, shell=shell, check=check, **kwargs)
+    should_capture = not verbose and "capture_output" not in kwargs
+
+    run_kwargs = {
+        "shell": shell,
+        **kwargs,
+    }
+    if should_capture:
+        run_kwargs["capture_output"] = True
+        run_kwargs["text"] = True
+
+    result = subprocess.run(cmd, check=check, **run_kwargs)  # noqa: S603 cmd originating from internal function.
+
+    # Only print if there's an error or warning
+    if should_capture and result.stderr:
+        print(result.stderr, file=sys.stderr)
+
+    return result
 
 
 def create_venv(cleanup: bool = False, verbose: bool = False) -> None:
@@ -94,7 +92,7 @@ def create_venv(cleanup: bool = False, verbose: bool = False) -> None:
 
     # Use system default Python
     if not ENV_PATH.exists():
-        run_command(["python", "-m", "venv", str(ENV_PATH)], verbose=verbose)
+        _run_command(["python", "-m", "venv", str(ENV_PATH)], verbose=verbose)
         print(f"  Virtual environment created at {ENV_PATH}")
     else:
         print(f"  Virtual environment already exists at {ENV_PATH}")
@@ -104,12 +102,13 @@ def get_activation_script() -> str:
     """Get the activation script command for the virtual environment."""
     if platform.system() == "Windows":
         return str(ENV_PATH / "Scripts" / "activate.bat")
-    else:
-        return f"source {ENV_PATH / 'bin' / 'activate'}"
+    return f"source {ENV_PATH / 'bin' / 'activate'}"
 
 
-def run_in_venv(
-    cmd: list[str], verbose: bool = False, **kwargs
+def _run_in_venv(
+    cmd: list[str],
+    verbose: bool = False,
+    **kwargs,
 ) -> subprocess.CompletedProcess:
     """Run a command within the virtual environment."""
     # Use the full path to the venv executables (works on all platforms)
@@ -124,18 +123,20 @@ def run_in_venv(
     if cmd[0] in ["python", "pip", "pyinstaller"]:
         cmd[0] = str(venv_bin / f"{cmd[0]}{exe_suffix}")
 
-    return run_command(cmd, verbose=verbose, **kwargs)
+    return _run_command(cmd, verbose=verbose, **kwargs)
 
 
 def install_requirements(
-    requirements_files: list[Path], editable_packages: list[Path], verbose: bool = False
+    requirements_files: list[Path],
+    editable_packages: list[Path],
+    verbose: bool = False,
 ) -> None:
     """Install requirements in the virtual environment."""
     # Install requirements files
     for req_file in requirements_files:
         if req_file.exists():
             print(f"  Installing from {req_file}")
-            run_in_venv(["pip", "install", "-r", str(req_file)], verbose=verbose)
+            _run_in_venv(["pip", "install", "-r", str(req_file)], verbose=verbose)
         else:
             print(f"  Warning: Requirements file {req_file} not found, skipping")
 
@@ -143,13 +144,13 @@ def install_requirements(
     for package in editable_packages:
         if package.exists():
             print(f"  Installing editable package from {package}")
-            run_in_venv(["pip", "install", "-e", str(package)], verbose=verbose)
+            _run_in_venv(["pip", "install", "-e", str(package)], verbose=verbose)
         else:
             print(f"  Warning: Editable package path {package} not found, skipping")
 
     # Install PyInstaller
     print("  Installing PyInstaller")
-    run_in_venv(["pip", "install", "pyinstaller"], verbose=verbose)
+    _run_in_venv(["pip", "install", "pyinstaller"], verbose=verbose)
 
 
 def build(
@@ -187,7 +188,7 @@ def build(
     # Set dist path
     cmd.extend(["--distpath", str(DIST_PATH)])
 
-    run_in_venv(cmd, verbose=verbose)
+    _run_in_venv(cmd, verbose=verbose)
 
 
 def copy_additional_files(files: list[Path]) -> None:
@@ -210,14 +211,20 @@ def save_build_info(verbose: bool = False) -> None:
 
     with open(info_file, "w") as f:
         # Get Python version
-        result = run_in_venv(
-            ["python", "--version"], capture_output=True, text=True, verbose=verbose
+        result = _run_in_venv(
+            ["python", "--version"],
+            capture_output=True,
+            text=True,
+            verbose=verbose,
         )
         f.write(result.stdout)
 
         # Get pip freeze
-        result = run_in_venv(
-            ["pip", "freeze"], capture_output=True, text=True, verbose=verbose
+        result = _run_in_venv(
+            ["pip", "freeze"],
+            capture_output=True,
+            text=True,
+            verbose=verbose,
         )
         f.write(result.stdout)
 
@@ -244,7 +251,11 @@ Build outputs:
 
     # Mandatory arguments
     parser.add_argument(
-        "-m", "--main-file", required=True, type=Path, help="Main Python file to build"
+        "-m",
+        "--main-file",
+        required=True,
+        type=Path,
+        help="Main Python file to build",
     )
 
     # Optional arguments
@@ -275,19 +286,30 @@ Build outputs:
         help="Paths to packages to install in editable mode (default: appxf)",
     )
     parser.add_argument(
-        "--hidden-imports", nargs="*", default=[], help="Hidden imports for PyInstaller"
+        "--hidden-imports",
+        nargs="*",
+        default=[],
+        help="Hidden imports for PyInstaller",
     )
     parser.add_argument(
-        "--no-strip", action="store_true", help="Disable strip option for PyInstaller"
+        "--no-strip",
+        action="store_true",
+        help="Disable strip option for PyInstaller",
     )
     parser.add_argument(
-        "--debug", action="store_true", help="Also create a debug build"
+        "--debug",
+        action="store_true",
+        help="Also create a debug build",
     )
     parser.add_argument(
-        "--clean", action="store_true", help="Clean build directory before building"
+        "--clean",
+        action="store_true",
+        help="Clean build directory before building",
     )
     parser.add_argument(
-        "--verbose", action="store_true", help="Show detailed command output"
+        "--verbose",
+        action="store_true",
+        help="Show detailed command output",
     )
 
     args = parser.parse_args()
@@ -296,23 +318,15 @@ Build outputs:
     main_file = args.main_file.resolve()
 
     # Set default requirements if none provided
-    requirements_files = (
-        args.requirements
-        if args.requirements
-        else [
-            Path("requirements.txt"),
-            Path("appxf/requirements.txt"),
-        ]
-    )
+    requirements_files = args.requirements or [
+        Path("requirements.txt"),
+        Path("appxf/requirements.txt"),
+    ]
 
     # Set default editable packages if none provided
-    editable_packages = (
-        args.editable_packages
-        if args.editable_packages
-        else [
-            Path("appxf"),
-        ]
-    )
+    editable_packages = args.editable_packages or [
+        Path("appxf"),
+    ]
 
     print(f"{'=' * 60}")
     print("PyInstaller Build Script")
@@ -344,7 +358,9 @@ Build outputs:
         # Install requirements
         with _StepLogger("Installing requirements"):
             install_requirements(
-                requirements_files, editable_packages, verbose=args.verbose
+                requirements_files,
+                editable_packages,
+                verbose=args.verbose,
             )
 
         # Build with PyInstaller (release)
@@ -352,7 +368,7 @@ Build outputs:
             build(
                 main_file,
                 debug_build=False,
-                hidden_imports=args.hidden_imports if args.hidden_imports else None,
+                hidden_imports=args.hidden_imports or None,
                 strip=not args.no_strip,
                 verbose=args.verbose,
             )
@@ -363,7 +379,7 @@ Build outputs:
                 build(
                     main_file,
                     debug_build=True,
-                    hidden_imports=args.hidden_imports if args.hidden_imports else None,
+                    hidden_imports=args.hidden_imports or None,
                     strip=not args.no_strip,
                     verbose=args.verbose,
                 )
@@ -379,7 +395,7 @@ Build outputs:
 
         print(f"\n{'=' * 60}")
         print(
-            f"Build completed successfully! (Total time: {elapsed_time(start_total)})"
+            f"Build completed successfully! (Total time: {elapsed_time(start_total)})",
         )
         print(f"{'=' * 60}")
 

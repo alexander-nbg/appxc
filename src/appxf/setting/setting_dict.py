@@ -22,8 +22,6 @@ from .setting import AppxfSettingConversionError, AppxfSettingError, Setting
 class AppxfSettingWarning(Warning):
     """Warning for AppxfSettings"""
 
-    pass
-
 
 class SettingDict(Setting[dict], Storable, MutableMapping[str, Setting]):
     """Maintain a dictionary of settings
@@ -62,7 +60,7 @@ class SettingDict(Setting[dict], Storable, MutableMapping[str, Setting]):
             default_factory=lambda: [
                 *Setting.Options().display_options,
                 "display_columns",
-            ]
+            ],
         )
 
     @dataclass(eq=False, order=False)
@@ -168,18 +166,17 @@ class SettingDict(Setting[dict], Storable, MutableMapping[str, Setting]):
             raise AppxfSettingError(
                 f"SettingDict items that are tuples must contain a "
                 f"Setting type as the first element. And, optionally "
-                f"a value as the second type. You provided {t}."
+                f"a value as the second type. You provided {t}.",
             )
         tmp_type = t[0]
         tmp_value = t[1] if len(t) > 1 else None
 
         if tmp_value is None:
             return Setting.new(tmp_type)
-        else:
-            return Setting.new(tmp_type, value=tmp_value)
+        return Setting.new(tmp_type, value=tmp_value)
 
     def _set_item(self, key, value):
-        """separated behavior to avoid too deep nesting
+        """Separated behavior to avoid too deep nesting
 
         Note that this is called from __init__() and __setitem__ in a
         try/except to add further error details. Intend of this function is
@@ -189,7 +186,7 @@ class SettingDict(Setting[dict], Storable, MutableMapping[str, Setting]):
         if not isinstance(key, str):
             raise AppxfSettingError(
                 f"Only string keys are supported. "
-                f"You provided: {key} of type {type(key)}"
+                f"You provided: {key} of type {type(key)}",
             )
         # reject new keys AND key replacement if not mutable:
         if not self.options.mutable:
@@ -198,7 +195,7 @@ class SettingDict(Setting[dict], Storable, MutableMapping[str, Setting]):
                     f"SettingDict({self.options.name}) "
                     f"mutable option is False. "
                     f"New keys cannot be added. You provided "
-                    f"key {key} as new key"
+                    f"key {key} as new key",
                 )
             if (
                 isinstance(value, Setting)
@@ -209,7 +206,7 @@ class SettingDict(Setting[dict], Storable, MutableMapping[str, Setting]):
                     f"SettingDict({self.options.name}) "
                     f"mutable option is False and "
                     f"settings cannot be replaced. "
-                    f"You provided for key {key}: {value}"
+                    f"You provided for key {key}: {value}",
                 )
         if isinstance(value, Setting):
             # transfering key name to setting if setting name is empty
@@ -251,7 +248,7 @@ class SettingDict(Setting[dict], Storable, MutableMapping[str, Setting]):
         except (AppxfSettingError, AppxfSettingConversionError) as err:
             raise AppxfSettingError(
                 f"Cannot set {key} in SettingDict({self.options.name}). "
-                f"You provided value {value} of type {value.__class__}."
+                f"You provided value {value} of type {value.__class__}.",
             ) from err
 
     def __delitem__(self, key):
@@ -262,7 +259,7 @@ class SettingDict(Setting[dict], Storable, MutableMapping[str, Setting]):
                 f"SettingDict({self.options.name}) "
                 f"mutable option is False and "
                 f"items cannot be deleted. "
-                f"You tried to delete key {key}"
+                f"You tried to delete key {key}",
             )
 
     def get_setting(self, key) -> Setting:
@@ -272,7 +269,7 @@ class SettingDict(Setting[dict], Storable, MutableMapping[str, Setting]):
     def sort(self, reverse: bool = False):
         """Sort the keys of the SettingDict"""
         self._value = OrderedDict(
-            sorted(self._value.items(), key=lambda item: item[0], reverse=reverse)
+            sorted(self._value.items(), key=lambda item: item[0], reverse=reverse),
         )
 
     # ## Storage Behavior
@@ -284,7 +281,9 @@ class SettingDict(Setting[dict], Storable, MutableMapping[str, Setting]):
     _state_version = 2
 
     def get_state(
-        self, options: SettingDict.ExportOptions | None = None, **kwargs
+        self,
+        options: SettingDict.ExportOptions | None = None,
+        **kwargs,
     ) -> object:
         # handle export options:
         if options is None:
@@ -322,13 +321,12 @@ class SettingDict(Setting[dict], Storable, MutableMapping[str, Setting]):
                         this_data.move_to_end("type", last=False)
                     else:
                         this_data = OrderedDict(
-                            {"type": self.get_type(), "_settings": this_data}
+                            {"type": self.get_type(), "_settings": this_data},
                         )
-            else:
-                # only if value is not a dict, the value field is stripped
-                # (simplified JSON export) if it's the only field:
-                if list(this_data.keys()) == ["value"]:
-                    this_data = this_data["value"]
+            # only if value is not a dict, the value field is stripped
+            # (simplified JSON export) if it's the only field:
+            elif list(this_data.keys()) == ["value"]:
+                this_data = this_data["value"]
 
             settings[key] = this_data
         # settings are not yet put into data - this will depend on the point
@@ -354,7 +352,10 @@ class SettingDict(Setting[dict], Storable, MutableMapping[str, Setting]):
         return data
 
     def set_state(
-        self, data: Mapping, options: SettingDict.ExportOptions | None = None, **kwargs
+        self,
+        data: Mapping,
+        options: SettingDict.ExportOptions | None = None,
+        **kwargs,
     ):
         # handle export options:
         if options is None:
@@ -370,12 +371,12 @@ class SettingDict(Setting[dict], Storable, MutableMapping[str, Setting]):
         if "_version" not in data:
             raise AppxfSettingError(
                 "Cannot determine data version, "
-                'input data is not a dict with field "_version".'
+                'input data is not a dict with field "_version".',
             )
         if not data["_version"] == self._state_version:
             raise AppxfSettingError(
                 f"Cannot handle version {data['_version']} of data, "
-                f"supported is version {self._state_version} only."
+                f"supported is version {self._state_version} only.",
             )
 
         # obtain the settings (either directly in data, or in "_settings")
@@ -457,10 +458,9 @@ class SettingDict(Setting[dict], Storable, MutableMapping[str, Setting]):
                                 f"SettingDict({self.options.name}) "
                                 f"but import data does not include "
                                 f"type information. "
-                                f"Data only comprises: {settings[key]}"
+                                f"Data only comprises: {settings[key]}",
                             )
-                        else:
-                            self._value[key] = self.default_constructor()
+                        self._value[key] = self.default_constructor()
                     else:
                         self._value[key] = Setting.new(settings[key]["type"])
                     # also restore setting name:
@@ -494,7 +494,7 @@ class SettingDict(Setting[dict], Storable, MutableMapping[str, Setting]):
                             f"Setting is of type "
                             f"{self._value[key].__class__.__name__} "
                             f"while provided type is "
-                            f"{this_setting_data['type']}."
+                            f"{this_setting_data['type']}.",
                         )
 
                 # ensure _version being available in nested dicts. Note that
@@ -511,7 +511,8 @@ class SettingDict(Setting[dict], Storable, MutableMapping[str, Setting]):
                 # the right name.
 
     def set_default_constructor_for_new_keys(
-        self, default_constructor: None | Callable[[], Setting]
+        self,
+        default_constructor: None | Callable[[], Setting],
     ):
         """Set the constructor for new keys upon set_state/load
 
@@ -550,7 +551,7 @@ class SettingDict(Setting[dict], Storable, MutableMapping[str, Setting]):
             raise AppxfSettingError(
                 f"Cannot set value of type {type(value)} "
                 f"for SettingDict({self.options.name}): "
-                f"{value}. See subsequent error message."
+                f"{value}. See subsequent error message.",
             ) from err
         # detect removed keys:
         if not self.options.mutable:
@@ -560,7 +561,7 @@ class SettingDict(Setting[dict], Storable, MutableMapping[str, Setting]):
                         f"SettingDict({self.options.name}) mutable option "
                         f"is False and "
                         f"items cannot be deleted. "
-                        f"Input value did not contain key {key}."
+                        f"Input value did not contain key {key}.",
                     )
 
         # validation already confirmed the input being a mapping
@@ -583,13 +584,13 @@ class SettingDict(Setting[dict], Storable, MutableMapping[str, Setting]):
         # returned detailed error.
         if not isinstance(value, Mapping):
             return False, AppxfSettingError(
-                f"Value must be a Mapping. You provided {value} of type {type(value)}."
+                f"Value must be a Mapping. You provided {value} of type {type(value)}.",
             )
         for key, setting in value.items():
             if not isinstance(key, str):
                 return False, AppxfSettingError(
                     f"Only string keys are supported. "
-                    f"You provided: {key} of type {type(key)}"
+                    f"You provided: {key} of type {type(key)}",
                 )
             if isinstance(setting, Setting):
                 continue
@@ -618,7 +619,7 @@ class SettingDict(Setting[dict], Storable, MutableMapping[str, Setting]):
                     # message.
                     raise AppxfSettingError(
                         f"Value for {key} was invalid but did not throw an "
-                        f"error when trying to set. This should not happen"
+                        f"error when trying to set. This should not happen",
                     )
 
         return True, None

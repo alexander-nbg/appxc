@@ -1,8 +1,6 @@
 # Copyright 2024-2026 the contributors of APPXF (github.com/alexander-nbg/appxf)
 # SPDX-License-Identifier: Apache-2.0
-"""
-Provide GUI classes for yagni_cft Config objects.
-"""
+"""Provide GUI classes for yagni_cft Config objects."""
 
 import tkinter
 
@@ -64,7 +62,7 @@ class ConfigMenu(tkinter.Menu):
                 "Registry object provided to ConfigMenu but not initialized."
                 "Consider using Login, RegistrationUser and RegistrationAdmin "
                 "GUIs to prepare and unlock Security and Registry objects "
-                "before launching the GUI of your application."
+                "before launching the GUI of your application.",
             )
             return
 
@@ -82,7 +80,8 @@ class ConfigMenu(tkinter.Menu):
             # contain a frame with status, that one could be used for updates.
 
         self.add_command(
-            label=_("menu", "Load Config Update"), command=load_config_update
+            label=_("menu", "Load Config Update"),
+            command=load_config_update,
         )
 
         if "admin" in self._registry.get_roles(user_id=0):
@@ -121,7 +120,8 @@ class ConfigMenu(tkinter.Menu):
                 # a FileLocation (or a set of FileLocations).
 
             self.add_command(
-                label=_("menu", "Write Config Update"), command=write_config_update
+                label=_("menu", "Write Config Update"),
+                command=write_config_update,
             )
 
             # Add user registration menu
@@ -134,5 +134,6 @@ class ConfigMenu(tkinter.Menu):
                 registration.show()
 
             self.add_command(
-                label=_("menu", "User Registration"), command=open_user_registration
+                label=_("menu", "User Registration"),
+                command=open_user_registration,
             )

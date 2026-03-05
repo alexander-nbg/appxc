@@ -66,10 +66,11 @@ class UserDatabase(Storable):
         return user_id
 
     def get_users(self, role: str = "") -> set[int]:
-        """get users IDs as set
+        """Get users IDs as set
 
         Keyword Arguments:
             role {str} -- only users having role, '' ignores (default: '')
+
         """
         if role:
             role = role.lower()
@@ -82,9 +83,10 @@ class UserDatabase(Storable):
         return set(self._user_db.keys())
 
     def get_user_by_validation_key(self, key: bytes) -> int | None:
-        """get user ID from validation key
+        """Get user ID from validation key
 
-        Returns None if no user is found"""
+        Returns None if no user is found
+        """
         return self._validation_key_map.get(key)
 
     def add_new(
@@ -93,7 +95,7 @@ class UserDatabase(Storable):
         encryption_key: bytes,
         roles: list[str] | str = "user",
     ) -> int:
-        """add user with UNKNOWN user Id, returning new user ID
+        """Add user with UNKNOWN user Id, returning new user ID
 
         Negative user IDs are invalid: Existing keys are checked. If the keys
         already exist and are consistent, the existing user ID is returned and
@@ -197,7 +199,6 @@ class UserDatabase(Storable):
         Using this should ensure that there is no data present anymore that
         needs to be authenticated against this user's signing key.
         """
-
         if user_id not in self._user_db:
             self.log.warning("Trying to purge USER ID %i which does not exist", user_id)
             return
@@ -247,6 +248,7 @@ class UserDatabase(Storable):
 
         Keyword Arguments:
         user_id -- Return roles for this user ID or, if None, return all roles
+
         """
         if user_id is None:
             # admin and user will always be present given that _role_map is
@@ -257,7 +259,7 @@ class UserDatabase(Storable):
         return entry["roles"]
 
     def set_roles(self, user_id: int, roles: list[str] | str):
-        """set roles for user ID"""
+        """Set roles for user ID"""
         if user_id not in self._user_db:
             raise ValueError(f"User ID {user_id} is not registered.")
 

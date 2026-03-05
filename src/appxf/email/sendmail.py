@@ -12,7 +12,7 @@ from appxf.setting import SettingDict
 log = logging.get_logger(__name__)
 
 config_property_template = SettingDict(
-    {"server": (str,), "port": (str,), "user": (str,), "password": ("password",)}
+    {"server": (str,), "port": (str,), "user": (str,), "password": ("password",)},
 )
 # TODO: Properties could add "URL"
 
@@ -71,7 +71,7 @@ class Email(MIMEMultipart):
             f"To: {self['To']}, "
             f"CC: {self['CC']}, "
             f"BCC: {self['BCC']}, "
-            f"files: {file_list}"
+            f"files: {file_list}",
         )
 
     def send(self, config: dict):
@@ -108,7 +108,7 @@ def send(
                 f"subject: {this_msg['Subject']}, "
                 f"To: {' '.join(to)}, "
                 f"CC: {' '.join(cc)}, "
-                f"BCC: {' '.join(bcc)}"
+                f"BCC: {' '.join(bcc)}",
             )
 
             target_list = (
@@ -119,7 +119,7 @@ def send(
                 log.debug(
                     f"Using substitution Email: "
                     f"{debug_substituttion_email} "
-                    f"instead of {target}"
+                    f"instead of {target}",
                 )
                 target = [debug_substituttion_email]
             else:
@@ -127,7 +127,9 @@ def send(
 
             if debug_send_email:
                 senderr = server.sendmail(
-                    this_msg["From"], list(target), this_msg.as_string()
+                    this_msg["From"],
+                    list(target),
+                    this_msg.as_string(),
                 )
                 if senderr:
                     log.debug("Emails sending with error:")

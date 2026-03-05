@@ -17,7 +17,7 @@ class CaseInfo:
 
     @cached_property
     def explanation(self):
-        """test case description"""
+        """Test case description"""
         self._ensure_parsed()
 
         if self._case_parser:
@@ -41,7 +41,7 @@ class CaseInfo:
             self._case_parser.parse()
 
     def get_symbol_from_case_module(self, function_name: str):
-        """get symbol by name from test case module
+        """Get symbol by name from test case module
 
         Initial use case was getting hook functions like: process_*() or
         setup() from the function model.
@@ -52,6 +52,7 @@ class CaseInfo:
             raise ValueError("Parsing was disabled")
         if not hasattr(self._case_parser.module, function_name):
             raise ValueError(
-                f"Function {function_name} does not exist in {self._case_parser.module}"
+                f"Function {function_name} does not exist ",
+                f"in {self._case_parser.module}",
             )
         return getattr(self._case_parser.module, function_name)

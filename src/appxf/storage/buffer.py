@@ -83,7 +83,8 @@ class Buffer(Storable):
 
     def _set_bytestream(self, data: bytes):
         if data:
-            self.buffer = pickle.loads(data)
+            self.buffer = pickle.loads(data)  # noqa: S301
+            # TODO: The S301 is quite correct and the implementation must be adopted.
 
 
 def get_positional_arguments(func, *args, **kwargs):
@@ -103,17 +104,15 @@ def get_positional_arguments(func, *args, **kwargs):
         if argname in kwargs:
             return kwargs[argname]
         # .. or from the corresponding default value
-        else:
-            nodefault_count = len(argumentlist) - len(default_value_list)
-            # it is possible that the default value does not exist
-            if iarg < nodefault_count:
-                raise Exception(
-                    f"Function {func.__qualname__} must use "
-                    f"{nodefault_count} parameters, "
-                    f" only {len(args)} provided."
-                )
-            else:
-                return default_value_list[iarg - nodefault_count]
+        nodefault_count = len(argumentlist) - len(default_value_list)
+        # it is possible that the default value does not exist
+        if iarg < nodefault_count:
+            raise Exception(
+                f"Function {func.__qualname__} must use "
+                f"{nodefault_count} parameters, "
+                f" only {len(args)} provided.",
+            )
+        return default_value_list[iarg - nodefault_count]
 
     return tuple(getvalue(iarg, argname) for iarg, argname in enumerate(argumentlist))
 
@@ -130,7 +129,7 @@ def buffered(buffer: Buffer | typing.Callable[..., Buffer]):
             raise Exception(
                 "appxf cannot deal with default arguments for "
                 "kwargs. Check if you can use Buffer class "
-                "directly"
+                "directly",
             )
 
         @functools.wraps(func)
@@ -148,7 +147,7 @@ def buffered(buffer: Buffer | typing.Callable[..., Buffer]):
                     "Buffer decorator must have either a buffer or a "
                     "function as input. The function must have the "
                     "same parameters like the decorated function and "
-                    "it must return a buffer"
+                    "it must return a buffer",
                 )
                 raise e
 

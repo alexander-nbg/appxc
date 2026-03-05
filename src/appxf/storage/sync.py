@@ -22,7 +22,8 @@ class AppxfStorageSyncError(Exception):
 
 class AppxfChangeOnBothSidesError(Exception):
     """Files were changed on both storage locations sides when executing
-    synchronization."""
+    synchronization.
+    """
 
 
 StorageToBytes.set_meta_serializer("sync", JsonSerializer)
@@ -116,7 +117,8 @@ def sync(
     if isinstance(storage_a, Storage) and isinstance(storage_b, Storage):
         return _sync_storage(storage_a, storage_b, only_a_to_b)
     if isinstance(storage_a, Storage.Factory) and isinstance(
-        storage_b, Storage.Factory
+        storage_b,
+        Storage.Factory,
     ):
         # TODO: this case is not "fair" it could also take all from B and then
         # constract in A.
@@ -128,7 +130,7 @@ def sync(
         raise AppxfStorageSyncError(
             f"Sync between types {type(storage_a)} (A) and {type(storage_b)} "
             f"(B) is not supported. Both must be either a Storage or a "
-            f"storage factory"
+            f"storage factory",
         )
 
 
@@ -144,7 +146,7 @@ def _sync_storage(storage_a: Storage, storage_b: Storage, only_a_to_b: bool):
         # can happen if file was not created, yet
         log.debug(
             f"Storage does not existing on both sides."
-            f"\nA: {storage_a.id()}\nB: {storage_b.id()}"
+            f"\nA: {storage_a.id()}\nB: {storage_b.id()}",
         )
         return
     if not exists_a and only_a_to_b:
@@ -154,14 +156,14 @@ def _sync_storage(storage_a: Storage, storage_b: Storage, only_a_to_b: bool):
         # b exists and it is not only_a_to_b, so we try to sync:
         log.debug(
             f"Storage B does not existing on A"
-            f"\nA: {storage_a.id()}\nB: {storage_b.id()}"
+            f"\nA: {storage_a.id()}\nB: {storage_b.id()}",
         )
         _execute_sync(storage_b, storage_a)
         return
     if not exists_b:
         log.debug(
             f"Storage A does not existing on B"
-            f"\nA: {storage_a.id()}\nB: {storage_b.id()}"
+            f"\nA: {storage_a.id()}\nB: {storage_b.id()}",
         )
         _execute_sync(storage_a, storage_b)
         return
@@ -191,12 +193,12 @@ def _sync_storage(storage_a: Storage, storage_b: Storage, only_a_to_b: bool):
             f"Storage exists on both locations but at least one SyncData did "
             f"not return a UUID. This should not happen. Workaround is to "
             f"remove the file from one of the locations."
-            f"\nA: {storage_a.id()}\nB: {storage_b.id()}"
+            f"\nA: {storage_a.id()}\nB: {storage_b.id()}",
         )
     if meta_a.uuid != last_uuid_a and meta_b.uuid != last_uuid_b:
         raise AppxfChangeOnBothSidesError(
             f"Storage changed on both sides. Not yet supported."
-            f"\nA: {storage_a.id()}\nB: {storage_b.id()}"
+            f"\nA: {storage_a.id()}\nB: {storage_b.id()}",
         )
     if meta_a.uuid != last_uuid_a:
         _execute_sync(storage_a, storage_b)
@@ -244,7 +246,6 @@ def _execute_sync(source: Storage, target: Storage):
 
 def _get_sync_data(storage: Storage) -> SyncData:
     """Get SyncData from Storage"""
-
     file_storage = storage.get_meta("sync")
 
     sync_data = SyncData(this_storage=storage, meta_storage=file_storage)

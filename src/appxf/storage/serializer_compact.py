@@ -42,7 +42,7 @@ class _RestrictedUnpickler(pickle.Unpickler):
         # Forbid everything else.
         raise TypeError(
             f'Cannot deserialize "{module}.{name}". To protect from code '
-            f"injection, serialization/deserialization was limited in APPXF"
+            f"injection, serialization/deserialization was limited in APPXF",
         )
 
 
@@ -52,7 +52,6 @@ class _RestrictedPickler(pickle.Pickler):
         if type(obj) not in supported_types:
             raise TypeError(f"Cannot serialize {obj} of type {type(obj)}")
         # Just return none since nothing special is required
-        return None
 
 
 class CompactSerializer(Serializer):

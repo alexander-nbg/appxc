@@ -19,11 +19,12 @@ def handle_manual_config_update_load(
 ):
     """File dialog for loading a manual config update file
 
-    Keyword arguments:
+    Keyword Arguments:
         parent -- Parent tkinter window
         registry -- Registry object for config update interface
         initial_path -- Initial path for file dialog
         initial_file -- Initial file name for file dialog
+
     """
     file_path = filedialog.askopenfilename(
         parent=parent,
@@ -65,7 +66,7 @@ def handle_manual_config_update_write(
 ):
     """File dialog for writing a manual config update file.
 
-    Keyword arguments:
+    Keyword Arguments:
         parent -- Parent tkinter window
         registry -- Registry object for config update interface
         initial_path -- Initial path for file dialog
@@ -74,6 +75,7 @@ def handle_manual_config_update_write(
             sections except 'USER' are included.
         include_user_db -- Whether to include the user database in the update
             {default: True}
+
     """
     if sections is None:
         sections = registry._config.sections
@@ -92,7 +94,8 @@ def handle_manual_config_update_write(
 
     try:
         update_bytes = registry.get_manual_config_update_bytes(
-            sections=sections, include_user_db=include_user_db
+            sections=sections,
+            include_user_db=include_user_db,
         )
         with open(file_path, "wb") as fh:
             fh.write(update_bytes)

@@ -35,7 +35,7 @@ class StorageToBytes(Storage, ABC):
         if meta in cls._meta_serializer_dict:
             raise AppxfStorageError(
                 f"Serializer {cls._meta_serializer_dict[meta].__name__} is "
-                f"already defined as serializer for {meta}"
+                f"already defined as serializer for {meta}",
             )
         cls._meta_serializer_dict[meta] = serializer
 

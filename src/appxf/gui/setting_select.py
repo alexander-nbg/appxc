@@ -69,7 +69,7 @@ class _DropdownOnly(SettingFrameBase):
         super().update()
 
     def show_tooltip(self):
-        "Display text in tooltip window"
+        """Display text in tooltip window"""
         text = self.setting.value
 
         if self.tipwindow is not None:
@@ -137,11 +137,13 @@ class _DropdownWithButtons(SettingFrameBase):
         self.place(self.button_frame, row=0, column=1)
         if "Delete" in button_list:
             self.button_frame.bind(
-                "<<Delete>>", lambda event: self.event_generate("<<Delete>>")
+                "<<Delete>>",
+                lambda event: self.event_generate("<<Delete>>"),
             )
         if "Save" in button_list:
             self.button_frame.bind(
-                "<<Save>>", lambda event: self.event_generate("<<Save>>")
+                "<<Save>>",
+                lambda event: self.event_generate("<<Save>>"),
             )
 
         self.rowconfigure(0, weight=1)
@@ -151,7 +153,8 @@ class _DropdownWithButtons(SettingFrameBase):
         self.dropdown = _DropdownOnly(self, setting=self.setting)
         self.place(widget=self.dropdown, row=0, column=0)
         self.dropdown.bind(
-            "<<ValueUpdated>>", lambda event: self.event_generate("<<ValueUpdated>>")
+            "<<ValueUpdated>>",
+            lambda event: self.event_generate("<<ValueUpdated>>"),
         )
 
     def update(self):
@@ -196,15 +199,19 @@ class SettingSelectDetailFrame(SettingFrameBase):
         self.dropdown_frame.place(self.dropdown_frame, row=0, column=0)
 
         self.setting_frame = GridFrame.get_frame(
-            self, setting.base_setting, read_only=(not setting.options.custom_value)
+            self,
+            setting.base_setting,
+            read_only=(not setting.options.custom_value),
         )
         self.place(self.setting_frame, row=1, column=0)
 
         self.dropdown_frame.bind(
-            "<<ValueUpdated>>", lambda event: self._handle_dropdown_update()
+            "<<ValueUpdated>>",
+            lambda event: self._handle_dropdown_update(),
         )
         self.dropdown_frame.bind(
-            "<<Delete>>", lambda event: self._handle_delete_option()
+            "<<Delete>>",
+            lambda event: self._handle_delete_option(),
         )
         self.dropdown_frame.bind("<<Save>>", lambda event: self._handle_save_option())
 
@@ -212,14 +219,14 @@ class SettingSelectDetailFrame(SettingFrameBase):
         # TODO: value should not be printed here if it's a password.
         self.log.debug(
             f"Setting [{self.setting.options.name}] updated: "
-            f"{self.setting.base_setting.value}"
+            f"{self.setting.base_setting.value}",
         )
         self.setting_frame.update()
 
     def _handle_delete_option(self):
         self.log.debug(
             f"Deleting Option [{self.setting.input}] "
-            f"from setting [{self.setting.options.name}]"
+            f"from setting [{self.setting.options.name}]",
         )
         # Delete current selection from the options
         self.setting.delete_select_key(self.setting.input)
@@ -232,7 +239,7 @@ class SettingSelectDetailFrame(SettingFrameBase):
     def _handle_save_option(self):
         if not self.setting_frame.is_valid():
             self.log.warning(
-                f"Current value for setting [{self.setting.options.name}] is not valid"
+                f"Current value for setting [{self.setting.options.name}] is not valid",
             )
             return
 
@@ -240,10 +247,14 @@ class SettingSelectDetailFrame(SettingFrameBase):
             # adding new items is allowed and the user needs to enter this new
             # item name (but may keep the current one)
             new_option_setting = Setting.new(
-                str, value=self.setting.input, name="Option Name"
+                str,
+                value=self.setting.input,
+                name="Option Name",
             )
             popup = GridToplevel(
-                parent=self, title="Save setting as ...", closing=["Cancel", "OK"]
+                parent=self,
+                title="Save setting as ...",
+                closing=["Cancel", "OK"],
             )
             popup_frame = SettingFrameDefault(parent=popup, setting=new_option_setting)
             popup.place_frame(popup_frame)
@@ -258,12 +269,13 @@ class SettingSelectDetailFrame(SettingFrameBase):
             new_option = self.setting.input
 
         self.setting.add_select_item(
-            option=new_option, value=self.setting.base_setting.input
+            option=new_option,
+            value=self.setting.base_setting.input,
         )
         self.setting.value = new_option
         # Update all frames
         self.log.debug(
-            f"Added Option [{new_option}] for setting [{self.setting.options.name}]"
+            f"Added Option [{new_option}] for setting [{self.setting.options.name}]",
         )
         self.dropdown_frame.update()
         self.setting_frame.update()

@@ -120,6 +120,7 @@ class Registry(RegistryBase):
                 user database is stored for all users to sync with. A typical
                 use case is FtpStorage while also LocalStorage may be used.
                 Registry employs a SecureSharedStorage on top for stored files.
+
         """
         super().__init__(**kwargs)
         self._loaded = False
@@ -142,7 +143,8 @@ class Registry(RegistryBase):
 
         # USER_DB must be secured
         self._local_user_db_storage = SecurePrivateStorage(
-            base_storage=local_storage_factory("USER_DB"), security=security
+            base_storage=local_storage_factory("USER_DB"),
+            security=security,
         )
         self._user_db = UserDatabase(self._local_user_db_storage)
         # Matching remote storage
@@ -182,7 +184,7 @@ class Registry(RegistryBase):
 
     def _ensure_loaded(self):
         if self._loaded:
-            return None
+            return
         if not self.try_load():
             AppxfRegistryUnitializedError("Registry is not initialized.")
 
@@ -235,18 +237,20 @@ class Registry(RegistryBase):
          * The user matching the signing key must have matching role
          * The signature for the data must be verified
 
-        Keyword arguments:
+        Keyword Arguments:
         data -- bytes of data that were signed
         signature -- signature of data
         signing_user -- the user which signed
         roles -- the signing user must have one of the roles in this list
+
         """
         self._ensure_loaded()
 
         # user must exist
         if not self._user_db.is_registered(signing_user):
             self.log.warning(
-                "Signing user %i is not available in USER DB.", signing_user
+                "Signing user %i is not available in USER DB.",
+                signing_user,
             )
             return False
 
@@ -271,10 +275,13 @@ class Registry(RegistryBase):
         # verify signature:
         public_key = self._user_db.get_verification_key(user_id=signing_user)
         if not self._security.verify_signature(
-            data=data, signature=signature, public_key_bytes=public_key
+            data=data,
+            signature=signature,
+            public_key_bytes=public_key,
         ):
             self.log.warning(
-                "Signature from user %i could not be verified.", signing_user
+                "Signature from user %i could not be verified.",
+                signing_user,
             )
             return False
 
@@ -292,7 +299,7 @@ class Registry(RegistryBase):
         if user_id < 0:
             raise ValueError(
                 f"User ID {user_id} is unexpected. "
-                f"Expected are: None, 0 or positive user ID"
+                f"Expected are: None, 0 or positive user ID",
             )
         if user_id == 0:
             # TODO: why does only require access of _user_id an ensure_loaded()
@@ -302,10 +309,11 @@ class Registry(RegistryBase):
         return self._user_db.get_roles(user_id)
 
     def get_users(self, role: str = "") -> set[int]:
-        """get users IDs as set
+        """Get users IDs as set
 
         Keyword Arguments:
             role {str} -- only users having role, '' ignores (default: '')
+
         """
         return self._user_db.get_users(role=role)
 
@@ -435,7 +443,9 @@ class Registry(RegistryBase):
         return RegistrationRequest.from_request(bytes_decrypted)
 
     def add_user_from_request(
-        self, request: RegistrationRequest, roles: list[str] | None = None
+        self,
+        request: RegistrationRequest,
+        roles: list[str] | None = None,
     ) -> int:
         """Store user in databse and get user ID
 
@@ -447,7 +457,7 @@ class Registry(RegistryBase):
             roles = ["user"]
         if not self._loaded:
             raise AppxfRegistryUnitializedError(
-                "registry is not yet loaded, cannot add user"
+                "registry is not yet loaded, cannot add user",
             )
         # ensure synced state before update - exception being that the admin is
         # still the only existant user in which case, there is nothing to get
@@ -483,7 +493,7 @@ class Registry(RegistryBase):
         for section in self._response_config_sections:
             if section not in self._config.sections:
                 raise AppxfRegistryUnknownConfigSectionError(
-                    f"Section {section} does not exist."
+                    f"Section {section} does not exist.",
                 )
         response = RegistrationResponse.new(
             user_id=user_id,
@@ -536,7 +546,7 @@ class Registry(RegistryBase):
         response_bytes = self._security.hybrid_decrypt(
             data=response_encrypted,
             key_blob_dict={
-                self._security.get_encryption_public_key(): response_data["key_blob"]
+                self._security.get_encryption_public_key(): response_data["key_blob"],
             },
         )
 
@@ -580,7 +590,9 @@ class Registry(RegistryBase):
     # They are wrapping the Security methods with additional registry steps.
 
     def hybrid_encrypt(
-        self, data: bytes, roles: str | list[str]
+        self,
+        data: bytes,
+        roles: str | list[str],
     ) -> tuple[bytes, dict[int, bytes]]:
         # Documentation in RegistryBase
         self._ensure_loaded()
@@ -605,7 +617,9 @@ class Registry(RegistryBase):
         self._ensure_loaded()
 
         return self._security.hybrid_decrypt(
-            data=data, key_blob_dict=key_blob_dict, blob_identifier=self.user_id
+            data=data,
+            key_blob_dict=key_blob_dict,
+            blob_identifier=self.user_id,
         )
 
     # ############################/
@@ -613,9 +627,11 @@ class Registry(RegistryBase):
     # /
 
     def get_manual_config_update_bytes(
-        self, sections: list[str] | None = None, include_user_db: bool = True
+        self,
+        sections: list[str] | None = None,
+        include_user_db: bool = True,
     ) -> bytes:
-        """get manual configuration update bytes
+        """Get manual configuration update bytes
 
         Config sections are exported with their full state. Settings would be
         added or removed and all options (like visibility) are included.
@@ -629,7 +645,7 @@ class Registry(RegistryBase):
 
         if "admin" not in self.get_roles(user_id=0):
             raise AppxfRegistryRoleError(
-                "Only admin users can generate manual configuration updates."
+                "Only admin users can generate manual configuration updates.",
             )
 
         data = {"config_sections": {}, "obsolete_config_sections": []}
@@ -638,7 +654,7 @@ class Registry(RegistryBase):
                 data["obsolete_config_sections"].append(section)
                 continue
             data["config_sections"][section] = self._config.section(section).get_state(
-                options=SettingDict.FullExport
+                options=SettingDict.FullExport,
             )
         if include_user_db:
             data["user_db"] = self._user_db.get_state()
@@ -648,12 +664,12 @@ class Registry(RegistryBase):
         return self._security.hybrid_signed_encrypt(
             data=data_bytes,
             public_keys=self._user_db.get_encryption_key_dict(
-                roles=self._user_db.get_roles()
+                roles=self._user_db.get_roles(),
             ),
         )
 
     def set_manual_config_update_bytes(self, data: bytes):
-        """update configuration and user db
+        """Update configuration and user db
 
         Bytes are obtained from get_manual_config_update_bytes() on admin side.
         """
@@ -669,11 +685,11 @@ class Registry(RegistryBase):
         author_id = self._user_db.get_user_by_validation_key(author_key)
         if author_id is None:
             raise AppxfRegistryUnknownUserError(
-                "Author of manual configuration update is unknown."
+                "Author of manual configuration update is unknown.",
             )
         if not self._user_db.has_role(author_id, "admin"):
             raise AppxfRegistryRoleError(
-                "Author of manual configuration update is not an admin."
+                "Author of manual configuration update is not an admin.",
             )
 
         # unpack data
@@ -686,7 +702,8 @@ class Registry(RegistryBase):
             if section not in self._config.sections:
                 self._config.add_section(section)
             self._config.section(section).set_state(
-                section_state, options=SettingDict.FullExport
+                section_state,
+                options=SettingDict.FullExport,
             )
             self._config.section(section).store()
         # update user db

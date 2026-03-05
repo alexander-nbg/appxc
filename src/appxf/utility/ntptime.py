@@ -67,7 +67,7 @@ class NtpTime:  # pragma: no cover
         elapsed_time = timestamp_two - timestamp_one
         if elapsed_time > timedelta(seconds=1):
             cls.log.warning(
-                f"Requesting servers took {elapsed_time.total_seconds()} seconds."
+                f"Requesting servers took {elapsed_time.total_seconds()} seconds.",
             )
 
         for task in done:
@@ -79,7 +79,7 @@ class NtpTime:  # pragma: no cover
                 cls.log.info(
                     f"Sync system time [{cls.last_sync_as_datetime}], "
                     f"NTP time [{cls.last_sync_as_ntp_recv}] "
-                    f"resulted in offset of {cls.offset} seconds."
+                    f"resulted in offset of {cls.offset} seconds.",
                 )
                 return True
         message = f"None of the server requests succeeded: {servers}"
@@ -95,6 +95,6 @@ class NtpTime:  # pragma: no cover
         except ntplib.NTPException as e:
             cls.log.warning(
                 f"Error in retrieving NTP time from [{server}]. "
-                f"It likely timed out. Error: {e}"
+                f"It likely timed out. Error: {e}",
             )
             return None

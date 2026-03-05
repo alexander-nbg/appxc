@@ -39,7 +39,9 @@ class JsonSerializer(Serializer):
     @classmethod
     def serialize(cls, data: object) -> bytes:
         json_out = json.dumps(
-            cls.encode_transform(data), indent=4, separators=(",", ": ")
+            cls.encode_transform(data),
+            indent=4,
+            separators=(",", ": "),
         )
         # postprocessing to remove newlines for custom type JSON objects like
         # "__bytes__":
@@ -52,7 +54,7 @@ class JsonSerializer(Serializer):
     @classmethod
     def deserialize(cls, data: bytes):
         return cls.decode_transform(
-            json.loads(data.decode("utf-8"), object_pairs_hook=OrderedDict)
+            json.loads(data.decode("utf-8"), object_pairs_hook=OrderedDict),
         )
 
     SimpleTypes = (bool, int, float, str, type(None))
@@ -81,7 +83,7 @@ class JsonSerializer(Serializer):
                         cls.encode_transform(value, [*log_tree, f"value for {key}"]),
                     ]
                     for key, value in obj.items()
-                ]
+                ],
             }
 
         if isinstance(obj, (list, tuple, set)):
@@ -125,7 +127,8 @@ class JsonSerializer(Serializer):
                     (
                         cls.decode_transform(dict_element[0], [*log_tree, key]),
                         cls.decode_transform(
-                            dict_element[1], [*log_tree, "value for key"]
+                            dict_element[1],
+                            [*log_tree, "value for key"],
                         ),
                     )
                     for dict_element in value
@@ -146,7 +149,7 @@ class JsonSerializer(Serializer):
         # the following error should never be reached since a decoded JSON will
         # only containt he above checked types
         raise TypeError(
-            f"Cannot decode object {obj} of type {obj}, trace: {log_tree}"
+            f"Cannot decode object {obj} of type {obj}, trace: {log_tree}",
         )  # pragma: no cover
 
     @classmethod

@@ -70,7 +70,9 @@ class ManualCaseRunner:
     @cached_property
     def gui(self):
         return CaseRunnerGui(
-            case_info=self.case_info, git_info=self.git_info, parent=self._parent
+            case_info=self.case_info,
+            git_info=self.git_info,
+            parent=self._parent,
         )
 
     @cached_property
@@ -97,7 +99,7 @@ class ManualCaseRunner:
                 "You have to call ensure_case_parser() before using "
                 "anything dependentet on the case_parser (like case_info)."
                 "Rationale: you have to provide the required stack index"
-                "to identify the right test case module."
+                "to identify the right test case module.",
             )
         # TODO: theoretically, I can traverse the whole stack until I find the
         # first module named "manual_*" but this would make the naming
@@ -124,7 +126,7 @@ class ManualCaseRunner:
         pass
 
     def _handle_process_calls(self) -> bool:
-        """execute process call and return true if existent"""
+        """Execute process call and return true if existent"""
         process_arg = None
         for arg in sys.argv:
             if arg.startswith("--process_"):
@@ -188,7 +190,7 @@ class ManualCaseRunner:
         else:
             raise TypeError(
                 f"Provided item class {item.__class__} "
-                "is not supported. Supported are: TopLevel, Frame."
+                "is not supported. Supported are: TopLevel, Frame.",
             )
 
         self._parse_process_hooks()
@@ -230,7 +232,7 @@ class ManualCaseRunner:
             if function_name.startswith("process_"):
                 self.gui.add_process_button(
                     command=self._get_process_hook(function_name, summary),
-                    label=summary if summary else function_name,
+                    label=summary or function_name,
                 )
 
             # update the window:

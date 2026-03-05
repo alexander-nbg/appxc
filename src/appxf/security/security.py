@@ -93,12 +93,12 @@ class Security:
         """
         if "version" not in self._key_dict:
             raise AppxfSecurityError(
-                "Not an APPXF security file: no version information"
+                "Not an APPXF security file: no version information",
             )
         if self._key_dict["version"] != 1:
             raise AppxfSecurityError(
                 f"Keys stored in version {self._key_dict['version']}, "
-                f"expected is version 1"
+                f"expected is version 1",
             )
 
     def _load_keys(self):
@@ -108,7 +108,7 @@ class Security:
         """
         data_encrypted = self._storage.load_raw()
         data = self._decrypt_from_bytes(self._derived_key, data_encrypted)
-        self._key_dict = pickle.loads(data)
+        self._key_dict = pickle.loads(data)  # noqa: S301 since it loads symmetrically encrypted data
         self._verify_version()
 
     def is_user_initialized(self):
@@ -161,7 +161,7 @@ class Security:
     def _get_symmetric_key(self):
         if not self.is_user_unlocked():
             raise AppxfSecurityError(
-                "Trying to access symmetric keys before succeeding with unlock_user()"
+                "Trying to access symmetric keys before succeeding with unlock_user()",
             )
         return self._key_dict["symmetric_key"]
 
@@ -201,7 +201,7 @@ class Security:
         """
         if not self.is_user_unlocked():
             raise AppxfSecurityError(
-                "Trying to access public key before succeeding with unlock_user()"
+                "Trying to access public key before succeeding with unlock_user()",
             )
         self._ensure_signing_keys_exist()
         return self._key_dict["signing_pub_key"]
@@ -214,7 +214,7 @@ class Security:
         """
         if not self.is_user_unlocked():
             raise AppxfSecurityError(
-                "Trying to access public key before succeeding with unlock_user()"
+                "Trying to access public key before succeeding with unlock_user()",
             )
         self._ensure_encryption_keys_exist()
         return self._key_dict["encryption_pub_key"]
@@ -232,7 +232,8 @@ class Security:
             or not self._key_dict["signing_priv_key"]
         ):
             raise AppxfSecurityError(
-                "Only public or private validation key are set. This should not happen."
+                "Only public or private validation key are set. "
+                "This should not happen.",
             )
 
     def _ensure_encryption_keys_exist(self):
@@ -248,7 +249,8 @@ class Security:
             or not self._key_dict["encryption_priv_key"]
         ):
             raise AppxfSecurityError(
-                "Only public or private encryption key are set. This should not happen."
+                "Only public or private encryption key are set. "
+                "This should not happen.",
             )
 
     def _generate_signing_keys(self):
@@ -286,7 +288,7 @@ class Security:
         if not isinstance(key, rsa.RSAPublicKey):
             raise AppxfSecurityError(
                 f"Unexpected key class {key.__class__.__name__}. "
-                f"Expected RSAPrivateKey."
+                f"Expected RSAPrivateKey.",
             )
         return key
 
@@ -304,7 +306,7 @@ class Security:
         if not isinstance(key, rsa.RSAPrivateKey):
             raise AppxfSecurityError(
                 f"Unexpected key class {key.__class__.__name__}. "
-                f"Expected RSAPrivateKey."
+                f"Expected RSAPrivateKey.",
             )
         return key
 
@@ -314,18 +316,20 @@ class Security:
         The data is signed with the private signing key. Others typically check
         the signature the public verification keys stored in the user registry.
 
-        Keyword arguments:
+        Keyword Arguments:
         data -- the to be signed data
+
         """
         self._ensure_signing_keys_exist()
         private_key = Security._deserialize_private_key(
-            self._key_dict["signing_priv_key"]
+            self._key_dict["signing_priv_key"],
         )
 
         return private_key.sign(
             data,
             padding.PSS(
-                mgf=padding.MGF1(hashes.SHA256()), salt_length=padding.PSS.MAX_LENGTH
+                mgf=padding.MGF1(hashes.SHA256()),
+                salt_length=padding.PSS.MAX_LENGTH,
             ),
             hashes.SHA256(),
         )
@@ -337,10 +341,11 @@ class Security:
         If you need to verify your own signature, you need to call:
         verify_signature(data, signature, security.get_signing_public_key())
 
-        Keyword arguments:
+        Keyword Arguments:
         data -- the data which was signed
         signature -- the signature
         public_key_bytes -- public key {bytes} to be used for verification
+
         """
         public_key = Security._deserialize_public_key(public_key_bytes)
 
@@ -372,7 +377,7 @@ class Security:
 
     def _decrypt_with_private_key_from_byes(self, data: bytes):
         private_key = self._deserialize_private_key(
-            self._key_dict["encryption_priv_key"]
+            self._key_dict["encryption_priv_key"],
         )
         return private_key.decrypt(
             data,
@@ -397,7 +402,7 @@ class Security:
         by either the public keys (if public keys are provided by a list) or by
         the keys used when public keys are provided via a dictionary.
 
-        Keyword arguments:
+        Keyword Arguments:
         data -- the data to encrypt
         public_key_list -- either a list of public keys OR a dictionary of
             public keys where the dictionary keys will be used to index the
@@ -405,6 +410,7 @@ class Security:
 
         Returns: a tuple of the encrypted bytes and a dictionary mapping the
             dict keys or public keys to the key blobs.
+
         """
         symmetric_key = cls._generate_key()
         data_encrypted = cls._encrypt_to_bytes(symmetric_key, data)
@@ -413,7 +419,8 @@ class Security:
         if isinstance(public_keys, dict):
             for label, key in public_keys.items():
                 key_encrypted = cls._encrypt_with_public_key_to_bytes(
-                    symmetric_key, key
+                    symmetric_key,
+                    key,
                 )
                 key_blob_dict[label] = key_encrypted
         else:
@@ -421,14 +428,18 @@ class Security:
             public_keys = set(*public_keys)
             for key in public_keys:
                 key_encrypted = cls._encrypt_with_public_key_to_bytes(
-                    symmetric_key, key
+                    symmetric_key,
+                    key,
                 )
                 key_blob_dict[key] = key_encrypted
 
         return data_encrypted, key_blob_dict
 
     def hybrid_decrypt(
-        self, data: bytes, key_blob_dict: dict[Any, bytes], blob_identifier: Any = None
+        self,
+        data: bytes,
+        key_blob_dict: dict[Any, bytes],
+        blob_identifier: Any = None,
     ) -> bytes:
         """Hybrid decryption returning decrypted data
 
@@ -447,7 +458,7 @@ class Security:
         if blob_identifier not in key_blob_dict:
             raise AppxfSecurityError(
                 f"Key blobs do not include one for identity: {blob_identifier}. "
-                f"Available are: {list(key_blob_dict.keys())}"
+                f"Available are: {list(key_blob_dict.keys())}",
             )
         key_blob = key_blob_dict[blob_identifier]
 
@@ -500,14 +511,17 @@ class Security:
 
         # encrypt signed data
         encrypted_data_bytes, key_blob_dict = self.hybrid_encrypt(
-            data=signed_data_bytes, public_keys=public_keys
+            data=signed_data_bytes,
+            public_keys=public_keys,
         )
         return CompactSerializer.serialize(
-            {"data": encrypted_data_bytes, "key_blob_dict": key_blob_dict}
+            {"data": encrypted_data_bytes, "key_blob_dict": key_blob_dict},
         )
 
     def hybrid_signed_decrypt(
-        self, data: bytes, blob_identifier: Any = None
+        self,
+        data: bytes,
+        blob_identifier: Any = None,
     ) -> tuple[bytes, bytes]:
         """Hybrid decryption with signature verification
 
@@ -531,7 +545,9 @@ class Security:
 
         # decrypt to signed data:
         signed_data_bytes = self.hybrid_decrypt(
-            encrypted_data_bytes, key_blob_dict, blob_identifier
+            encrypted_data_bytes,
+            key_blob_dict,
+            blob_identifier,
         )
         signed_data: dict = CompactSerializer.deserialize(signed_data_bytes)
 
@@ -540,7 +556,7 @@ class Security:
         author_pub_key = signed_data["author"]
         signature = signed_data["signature"]
         if not Security.verify_signature(data, signature, author_pub_key):
-            raise AppxfSecuritySignatureError()
+            raise AppxfSecuritySignatureError
 
         return data, author_pub_key
 

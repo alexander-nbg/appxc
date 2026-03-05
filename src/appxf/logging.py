@@ -20,7 +20,8 @@ file_formatter = logging.Formatter(
     "%H:%M:%S",
 )
 console_formatter = logging.Formatter(
-    "%(asctime)s.%(msecs)03d %(levelname)7s: %(message)s", "%H:%M:%S"
+    "%(asctime)s.%(msecs)03d %(levelname)7s: %(message)s",
+    "%H:%M:%S",
 )
 
 console_handler = logging.StreamHandler(stream=sys.stdout)
@@ -58,6 +59,7 @@ def activate_logging(
         app_scope -- your application package (default: {None})
         directory -- directory to store the log files (default: {'./data'})
         n_files -- number of log files to retain (default: {5})
+
     """
     # Ensure we also capture messages from warnings module:
     _couple_to_warnings()
@@ -66,7 +68,8 @@ def activate_logging(
         os.mkdir(directory)
     cleanup(directory, n_files)
     filename = fileversions.get_filename(
-        "logging_(yyyyMMdd)_(00).log", directory=directory
+        "logging_(yyyyMMdd)_(00).log",
+        directory=directory,
     )
     filename = os.path.join(directory, filename)
 
@@ -108,6 +111,7 @@ def cleanup(directory: str, n_files: int = 5):
 
     Keyword Arguments:
         n_files -- _description_ (default: {5})
+
     """
 
     def is_relevant(file: str):

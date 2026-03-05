@@ -29,7 +29,8 @@ class RegistrationRequest:
         """DO NOT USE directly
 
         Use either new() or from_bytes() class methods to construct a
-        Registration Response"""
+        Registration Response
+        """
         super().__init__(**kwargs)
         self._data = data
 
@@ -56,6 +57,7 @@ class RegistrationRequest:
 
         Returns:
             constructed RegistrationRequest class
+
         """
         data: RegistrationRequestData = {
             "version": 1,
@@ -80,6 +82,7 @@ class RegistrationRequest:
 
         Returns:
             constructed RegistrationRequest class
+
         """
         data = CompactSerializer.deserialize(request_bytes)
         return cls(data)
