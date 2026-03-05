@@ -42,26 +42,52 @@ test-sandbox-root = "./.testing"
 [tool.ruff.lint]
 # Remark: The selected rules are not ciceled in stone. Start discussing, if there are
 # good reasons to change.
-select = ["A", "B", "C4", "E", "F", "I", "N", "RUF", "SIM", "UP", "W", "YTT"]
-#  B -- flake8-bugbear (checks catching common bugs)
-#  C4 -- flake8-comprehensions ( unnecessary list/dict/set comprehensions)
-#  E -- pycodestyle errors; PEP8
-#  F -- pyflakes; flake8 defaults
-#  I -- isort import ordering
-#  N -- pep8 naming conventions (variables, functions, class names)
-#  RUF -- ruff added checks
-#  SIM -- flake8-simplify (suggest simpler code constructs)
-#  UP -- pyupgrade: enforce modern Python syntax
-#  W -- pycodestyle (whitespace, blank lines)
-#  YTT -- details on using sys.version
+select = ["ALL"]
+ignore = [
+  # TODO: The following rules are currently reviewed for planning or adequate
+  # argumentation. They correspond to 4000 issues.
+  "ARG",
+  "BLE001",
+  "C901",
+  "COM812",
+  "D",
+  "DTZ",
+  "EM101", "EM102",
+  "ERA001",
+  "EXE001", "EXE003", "EXE005",
+  "FBT001", "FBT002", "FBT003",
+  "FIX002",
+  "FURB110", "FURB171",
+  "G004",
+  "ICN001",
+  "INP001",
+  "LOG014",
+  "PERF401",
+  "PGH003",
+  "PGH004",
+  "PIE790",
+  "PLC0415",
+  "PLR",
+  "PLW",
+  "PT",
+  "PTH",
+  "PYI019", "PYI059",
+  "RET",
+  "RSE102",
+  "S",
+  "SLF001",
+  "T201",
+  "TC001", "TC003", "TD002", "TD003",
+  "TD004",
+  "TRY",
+  # TODO: ANN -- type annotations should be mandatory for all public
+  # functions. Further configuration like ignoring for tests and the section
+  # [tool.ruff.lint.flake8-annotations] already added but rule is not enabled due to too
+  # many open issues.
+  "ANN",
+]
 
-# TODO: ANN -- type annotations should be mandatory for all public functions. Further
-# configuration like ignoring for tests and the section
-# [tool.ruff.lint.flake8-annotations] already added but rule is not enabled due to too
-# many open issues.
 
-# TODO: Review and consider the following further checks:
-# "RUF"- ruff-specific rules (misc. best-practice checks)
 
 [tool.ruff.format]
 # no specific settings here, yet
