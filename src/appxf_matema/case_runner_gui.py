@@ -62,7 +62,7 @@ class CaseRunnerGui:
         if isinstance(self.wm, tkinter.Tk):
             return self.wm
         if not isinstance(self._parent, tkinter.Tk):
-            raise ValueError(
+            raise TypeError(
                 f"CaseRunner and CaseRunnerGui "
                 f"must be called with tkinter.Tk as parent but parent "
                 f"hat type {type(self._parent)}.",

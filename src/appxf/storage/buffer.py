@@ -107,7 +107,7 @@ def get_positional_arguments(func, *args, **kwargs):
         nodefault_count = len(argumentlist) - len(default_value_list)
         # it is possible that the default value does not exist
         if iarg < nodefault_count:
-            raise Exception(
+            raise ValueError(
                 f"Function {func.__qualname__} must use "
                 f"{nodefault_count} parameters, "
                 f" only {len(args)} provided.",
@@ -126,10 +126,10 @@ def buffered(buffer: Buffer | typing.Callable[..., Buffer]):
     def _buffered(func):
         """The decorator which will use buffer to wrap the function."""
         if func.__kwdefaults__:
-            raise Exception(
-                "appxf cannot deal with default arguments for "
+            raise NotImplementedError(
+                "APPXF cannot deal with default arguments for "
                 "kwargs. Check if you can use Buffer class "
-                "directly",
+                "directly.",
             )
 
         @functools.wraps(func)
@@ -143,13 +143,14 @@ def buffered(buffer: Buffer | typing.Callable[..., Buffer]):
                 elif callable(buffer):
                     this_buffer = buffer(*args, **kwargs)
             except Exception as e:
-                log.exception(
+                msg = (
                     "Buffer decorator must have either a buffer or a "
                     "function as input. The function must have the "
                     "same parameters like the decorated function and "
-                    "it must return a buffer",
+                    "it must return a buffer"
                 )
-                raise e
+                log.exception(msg)
+                raise ValueError(msg) from e
 
             val = this_buffer.get(func.__name__, argstring)
             if val is None:

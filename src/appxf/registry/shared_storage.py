@@ -192,11 +192,10 @@ class SecureSharedStorage(StorageToBytes):
             # TODO: test case for failing signature
             # TODO: AppxfError
             # TODO: extend error message with infos like file
-            raise Exception("Verification signature failed")
+            raise Exception("Verification signature failed")  # noqa: TRY002
         # decryption
         self._public_encryption.load()
-        data_bytes = self._public_encryption.decrypt(data_bytes)
-        return data_bytes
+        return self._public_encryption.decrypt(data_bytes)
 
     # TODO: id() logged the user under which the registry was opened. User and
     # role details may be reasonable added logging. But here is also no logging

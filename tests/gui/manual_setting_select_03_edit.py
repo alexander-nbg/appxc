@@ -54,7 +54,9 @@ setting_a.base_setting.options.diplay_height = 20
 setting_a.base_setting.options.display_width = 60
 
 setting_b = Setting.new(
-    "select::int", select_map={"1 Eins": 1, "2 Zwei": 2, "3 Drei": 3}, name="Integers"
+    "select::int",
+    select_map={"1 Eins": 1, "2 Zwei": 2, "3 Drei": 3},
+    name="Integers",
 )
 
 setting = SettingDict(settings={"SelectString": setting_a, "Integer": setting_b})

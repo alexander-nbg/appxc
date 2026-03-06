@@ -44,7 +44,8 @@ setting = Setting.new(
 class WindowForTesting(GridToplevel):
     def __init__(self, parent: tkinter.BaseWidget):
         super().__init__(
-            parent=parent, title="Testing Templated Text via SettingSelect"
+            parent=parent,
+            title="Testing Templated Text via SettingSelect",
         )
         self.bind("<<OK>>", lambda _event: self._handle_ok())
         self.place_frame(SettingSelectDetailFrame(self, setting))

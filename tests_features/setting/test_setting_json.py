@@ -86,8 +86,8 @@ def test_setting_json_simple():
                             mutable_list=False,
                         ),
                     ),
-                ]
-            )
+                ],
+            ),
         ),
         export_options=SettingDict.ExportOptions(),
         expected_json="""
@@ -116,7 +116,7 @@ def test_setting_json_single_display_option():
                 display_width=42,
                 custom_value=False,
             ),
-        }
+        },
     )
 
     verify_json(
@@ -147,7 +147,7 @@ def test_setting_json_full_options_export():
                 value="01",
                 select_map={"01": "Value"},
                 custom_value=True,
-            )
+            ),
         },
         # TODO: integer and select had "options_stored" set to True
         display_columns=3,
@@ -211,7 +211,7 @@ def test_setting_json_full_options_and_type():
                 value="01",
                 select_map={"01": "Value"},
                 custom_value=True,
-            )
+            ),
         },
         # TODO: integer and select had "options_stored" set to True
         storage=RamStorage.get(name="setting_dict", ram_area="test"),
@@ -278,15 +278,15 @@ def test_setting_json_dict_of_dict_simple():
                 settings={
                     "string_one": (str, "one"),
                     "integer_one": (int, "01"),
-                }
+                },
             ),
             "dict_two": SettingDict(
                 settings={
                     "string_two": (str, "two"),
                     "integer_two": (int, 2),
-                }
+                },
             ),
-        }
+        },
     )
     verify_json(
         setting_dict,
@@ -372,18 +372,20 @@ def test_setting_json_dict_of_dict_type_recovery():
                 settings={
                     "string_one": (str, "one"),
                     "integer_one": (int, "01"),
-                }
+                },
             ),
             "dict_two": SettingDict(
                 settings={
                     "string_two": (str, "two"),
                     "integer_two": (int, 2),
-                }
+                },
             ),
-        }
+        },
     )
     export_options = SettingDict.ExportOptions(
-        type=True, add_new_keys=True, exception_on_new_key=False
+        type=True,
+        add_new_keys=True,
+        exception_on_new_key=False,
     )
     verify_json(
         setting_dict,

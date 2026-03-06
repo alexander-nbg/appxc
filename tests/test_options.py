@@ -41,7 +41,13 @@ def test_init_containers():
 def test_init_named_option_via_class():
     """Initialize via named option as class"""
     options = DefaultTestOptions.new_from_kwarg(
-        {"options": DefaultTestOptions(test_int=40, test_string="40", test_list=["40"])}
+        {
+            "options": DefaultTestOptions(
+                test_int=40,
+                test_string="40",
+                test_list=["40"],
+            ),
+        },
     )
     assert options.test_int == 40
     assert options.test_string == "40"
@@ -51,7 +57,7 @@ def test_init_named_option_via_class():
 def test_init_named_option_via_dict():
     """Initialize via named option as dict"""
     options = DefaultTestOptions.new_from_kwarg(
-        {"options": {"test_int": 40, "test_string": "40", "test_list": ["40"]}}
+        {"options": {"test_int": 40, "test_string": "40", "test_list": ["40"]}},
     )
     assert options.test_int == 40
     assert options.test_string == "40"

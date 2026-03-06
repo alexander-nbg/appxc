@@ -26,7 +26,8 @@ from tests._fixtures.test_sandbox import project_version
 def get_fresh_application(request, user: str = "user") -> AppHarness:
     # ensure initialized test directory:
     test_root_path = tests._fixtures.test_sandbox.init_test_sandbox_from_fixture(
-        request, cleanup=False
+        request,
+        cleanup=False,
     )
     # just create the application mock which generates requried folders:
     return AppHarness(test_root_path, user, registry_enabled=True)
@@ -35,7 +36,8 @@ def get_fresh_application(request, user: str = "user") -> AppHarness:
 def get_application_login_initialized(request, user: str = "user") -> AppHarness:
     # initialize test directory:
     test_root_path = tests._fixtures.test_sandbox.init_test_sandbox_from_fixture(
-        request, cleanup=False
+        request,
+        cleanup=False,
     )
     # ensure base context is available
     app_context_path = _init_app_context_login_initialized(user=user)
@@ -47,11 +49,13 @@ def get_application_login_initialized(request, user: str = "user") -> AppHarness
 
 
 def get_application_registration_admin_initialized(
-    request, user: str = "user"
+    request,
+    user: str = "user",
 ) -> AppHarness:
     # initialize test directory:
     test_root_path = tests._fixtures.test_sandbox.init_test_sandbox_from_fixture(
-        request, cleanup=False
+        request,
+        cleanup=False,
     )
     # ensure base context is available
     app_context_path = _init_app_context_registration_admin_initialized(user=user)

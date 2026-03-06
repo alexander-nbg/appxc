@@ -170,7 +170,7 @@ class _SettingMeta(type):
     def __new__(mcs, clsname, bases, attrs):
         newclass = super().__new__(mcs, clsname, bases, attrs)
         # Register only non abstract classes:
-        if clsname != "Setting" and clsname != "SettingExtension":
+        if clsname not in {"Setting", "SettingExtension"}:
             mcs._register_setting_class(newclass)
         # TODO: the check above should go against __abstractmethods__ and not
         # against plain names.

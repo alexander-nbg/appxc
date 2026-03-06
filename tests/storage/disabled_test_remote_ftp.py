@@ -24,8 +24,7 @@ passwd = os.environ.get("APPXF_FTP_PASSWORD")
 @pytest.fixture
 def remote_connection():
     print(f"[{host}] with [{user}] and [{passwd}]")
-    location = FtpLocation(host=host, user=user, password=passwd)
-    return location
+    return FtpLocation(host=host, user=user, password=passwd)
 
 
 # TODO UPGRADE: activate testing again (github fails)

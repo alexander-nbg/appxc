@@ -14,6 +14,7 @@ import shutil
 import subprocess
 import sys
 import time
+import traceback
 from pathlib import Path
 
 # Build directory paths (module-level constants)
@@ -404,7 +405,6 @@ Build outputs:
         sys.exit(1)
     except Exception as e:
         print(f"\nError: {e}")
-        import traceback
 
         traceback.print_exc()
         sys.exit(1)

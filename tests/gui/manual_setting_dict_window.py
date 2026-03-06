@@ -29,7 +29,7 @@ setting_dict = SettingDict(
         "Email of the master of disaster": SettingEmail(),
         "Boolean Value": SettingBool(),
         "Base64 (3bytes)": SettingBase64(value=b"\x01\x02\x03", size=3),
-    }
+    },
 )
 
 ManualCaseRunner().run(SettingDictWindow, "Edit Window Title", setting_dict)

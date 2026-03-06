@@ -71,11 +71,11 @@ class FtpLocation(StorageToBytes):
         """
         # Simple sanity checks:
         if not host:
-            raise Exception("Provided host is empty.")
+            raise ValueError("Provided host is empty.")
         if not user:
-            raise Exception("Provided user is empty.")
+            raise ValueError("Provided user is empty.")
         if not password:
-            raise Exception("Provided password is empty.")
+            raise ValueError("Provided password is empty.")
         # store away input
         self.host = host
         self.user = user
@@ -101,10 +101,11 @@ class FtpLocation(StorageToBytes):
         # try connecting
         try:
             self.connection = FTPHost(self.host, self.user, self.password)
-        except Exception as e:
-            raise Exception(
+        except Exception as e:  # noqa: TRY203
+            raise Exception(  # noqa: TRY002
                 f"Not able to initialize FTP object for [{self.host}]: {e}.",
             ) from e
+            # TODO: improve error handling: will catching the bare Exception help?
 
         # TODO LATER: ensure login to FTP server is possible and things are
         # operational. An initial stat of the location could be of interes.
@@ -113,11 +114,11 @@ class FtpLocation(StorageToBytes):
         file = os.path.join(self.path, file)
         try:
             return self.connection.path.exists(file)
-        except Exception as e:
+        except Exception as e:  # noqa: TRY203
             # TODO UPGRADE: better error handling: message, retrieve info from
             # ftplib object. Consider collecting from obsolete pycurl
             # implementation.
-            raise e
+            raise e  # noqa: TRY201
 
     @retry_method_with_reconnect
     def load_raw(self, file: str) -> bytes:
@@ -125,11 +126,11 @@ class FtpLocation(StorageToBytes):
         try:
             with self.connection.open(file, "rb") as remote_file:
                 data = remote_file.read()
-        except Exception as e:
+        except Exception as e:  # noqa: TRY203
             # TODO UPGRADE: better error handling: message, retrieve info from
             # ftplib object. Consider collecting from obsolete pycurl
             # implementation.
-            raise e
+            raise e  # noqa: TRY201
         return data
 
     @retry_method_with_reconnect
@@ -138,19 +139,19 @@ class FtpLocation(StorageToBytes):
         try:
             with self.connection.open(file, "wb") as remote_file:
                 remote_file.write(data)
-        except Exception as e:
+        except Exception as e:  # noqa: TRY203
             # TODO UPGRADE: better error handling: message, retrieve info from
             # ftplib object. Consider collecting from obsolete pycurl
             # implementation.
-            raise e
+            raise e  # noqa: TRY201
 
     @retry_method_with_reconnect
     def _remove(self, file: str):
         file = os.path.join(self.path, file)
         try:
             self.connection.remove(file)
-        except Exception as e:
+        except Exception as e:  # noqa: TRY203
             # TODO UPGRADE: better error handling: message, retrieve info from
             # ftplib object. Consider collecting from obsolete pycurl
             # implementation.
-            raise e
+            raise e  # noqa: TRY201

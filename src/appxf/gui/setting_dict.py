@@ -234,7 +234,8 @@ class SettingDictColumnFrame(SettingFrameBase):
             self.place(this_frame, row=0, column=len(self.frame_list))
             self.frame_list.append(this_frame)
             max_row_weight_over_columns = max(
-                max_row_weight_over_columns, this_frame.get_total_row_weight()
+                max_row_weight_over_columns,
+                this_frame.get_total_row_weight(),
             )
         # column weights are configured above in the for loop. The weight of
         # the one row containing all columns equals the maximum row weight of

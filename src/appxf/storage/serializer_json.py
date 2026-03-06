@@ -123,7 +123,7 @@ class JsonSerializer(Serializer):
             if key == "__dict__":
                 # this was a dict with non trivial key types that come as list
                 # of two-element lists:
-                decode_dict = OrderedDict(
+                return OrderedDict(
                     (
                         cls.decode_transform(dict_element[0], [*log_tree, key]),
                         cls.decode_transform(
@@ -133,7 +133,6 @@ class JsonSerializer(Serializer):
                     )
                     for dict_element in value
                 )
-                return decode_dict
 
         if isinstance(obj, dict):
             for key, value in obj.items():

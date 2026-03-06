@@ -40,7 +40,8 @@ def sandbox_path(request):
 def get_data_storage_factory(root_path, sec: Security):
     data_path = os.path.join(root_path, "data")
     return SecurePrivateStorage.get_factory(
-        base_storage_factory=LocalStorage.get_factory(path=data_path), security=sec
+        base_storage_factory=LocalStorage.get_factory(path=data_path),
+        security=sec,
     )
 
 
@@ -147,7 +148,8 @@ def test_security_hybrid_encrypt_decrypt(sandbox_path):
 
     data = b"To be encrypted"
     data_encrpted, key_blob_map = sec.hybrid_encrypt(
-        data, {1: sec.get_encryption_public_key()}
+        data,
+        {1: sec.get_encryption_public_key()},
     )
 
     data_decrypted = sec.hybrid_decrypt(data_encrpted, key_blob_map, blob_identifier=1)
@@ -162,11 +164,13 @@ def test_security_hybrid_signed_encrypt_decrypt(sandbox_path):
 
     data = b"To be encrypted"
     data_encrypted_bytes = sec.hybrid_signed_encrypt(
-        data, {1: sec.get_encryption_public_key()}
+        data,
+        {1: sec.get_encryption_public_key()},
     )
 
     data_decrypted, author_key = sec.hybrid_signed_decrypt(
-        data_encrypted_bytes, blob_identifier=1
+        data_encrypted_bytes,
+        blob_identifier=1,
     )
 
     assert data != data_encrypted_bytes

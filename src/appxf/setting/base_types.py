@@ -84,9 +84,10 @@ class SettingEmail(SettingString):
         # use email-validator package
         try:
             validate_email(value, check_deliverability=False)
-            return True, value
         except EmailNotValidError:
             return False, self.get_default()
+        else:
+            return True, value
 
 
 class SettingPassword(SettingString):

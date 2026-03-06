@@ -16,7 +16,9 @@ def test_init_default():
 
 def test_init_with_items():
     setting = SettingSelect(
-        Setting.new(str), value="A", select_map={"A": "One", "C": "Three", "B": "Two"}
+        Setting.new(str),
+        value="A",
+        select_map={"A": "One", "C": "Three", "B": "Two"},
     )
     # obtions are always sorted alphabetically:
     assert setting.get_select_keys() == ["A", "B", "C"]
@@ -25,7 +27,9 @@ def test_init_with_items():
 
 def test_add_delete_cycle():
     setting = SettingSelect(
-        Setting.new(str), value="B", select_map={"A": "One", "B": "Two", "D": "Four"}
+        Setting.new(str),
+        value="B",
+        select_map={"A": "One", "B": "Two", "D": "Four"},
     )
     assert setting.get_select_keys() == ["A", "B", "D"]
     assert setting.value == "Two"
@@ -87,7 +91,9 @@ def test_allowed_values_custom_value():
 
 def test_get_set_cycle():
     setting = SettingSelect(
-        Setting.new(str), name="select", select_map={"A": "One", "B": "Two"}
+        Setting.new(str),
+        name="select",
+        select_map={"A": "One", "B": "Two"},
     )
     setting.value = "A"
     data = setting.get_state(value_options=True)

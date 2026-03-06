@@ -86,7 +86,8 @@ class AppHarness:
         )
         # add credential options for shared storage (no values!)
         self.config.add_section(
-            "SHARED_STORAGE", settings=CredentialLocationMock.config_properties
+            "SHARED_STORAGE",
+            settings=CredentialLocationMock.config_properties,
         )
         # add some configuration that will be shared upon sync
         self.config.add_section("SHARED", settings={"test": (str,)})
@@ -102,7 +103,7 @@ class AppHarness:
             # REGISTRY: remote storage (security applied within Regisrty)
             self.path_remote_registry = os.path.join(self.root_path, "remote/registry")
             self.storagef_remote_registry = LocalStorage.get_factory(
-                path=self.path_remote_registry
+                path=self.path_remote_registry,
             )
             # REGISTRY
             self.registry = Registry(
@@ -126,7 +127,7 @@ class AppHarness:
             self.path_remote_config = os.path.join(self.root_path, "remote/config")
             self.storagef_remote_config = SecureSharedStorage.get_factory(
                 base_storage_factory=LocalStorage.get_factory(
-                    path=self.path_remote_config
+                    path=self.path_remote_config,
                 ),
                 security=self.security,
                 registry=self.registry,
@@ -134,7 +135,7 @@ class AppHarness:
             self.path_remote_data = os.path.join(self.root_path, "remote/data")
             self.storagef_remote_data = SecureSharedStorage.get_factory(
                 base_storage_factory=LocalStorage.get_factory(
-                    path=self.path_remote_data
+                    path=self.path_remote_data,
                 ),
                 security=self.security,
                 registry=self.registry,
@@ -299,6 +300,6 @@ class AppHarness:
 
         request_bytes = self.perform_registration_get_request()
         response_bytes = app_admin.perform_registration_from_request(
-            request_bytes=request_bytes
+            request_bytes=request_bytes,
         )
         self.perform_registration_set_response(response_bytes=response_bytes)

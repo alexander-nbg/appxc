@@ -10,7 +10,8 @@ security = Security(salt="APPXF Template", file="./security")
 
 # Configuration setup using secured storage
 config_storage_factory = SecurePrivateStorage.get_factory(
-    base_storage_factory=LocalStorage.get_factory(path="./config"), security=security
+    base_storage_factory=LocalStorage.get_factory(path="./config"),
+    security=security,
 )
 config = Config(default_storage_factory=config_storage_factory)
 config.add_section(

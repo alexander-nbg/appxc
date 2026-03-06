@@ -245,7 +245,7 @@ class RegistrationAdmin:
 
                 self.log.info("Response written to: %s", file_path)
             except (ValueError, KeyError, OSError) as e:
-                self.log.error("Failed to write response: %s", e)
+                self.log.exception("Failed to write response.")
                 messagebox.showerror(
                     "Error",
                     f"Failed to write response: {e}",
@@ -305,7 +305,7 @@ class RegistrationAdmin:
             with open(file_path, "wb") as fh:
                 fh.write(key_bytes)
         except OSError as e:
-            self.log.error("Failed to write admin keys to %s: %s", file_path, e)
+            self.log.exception("Failed to write admin keys to %s", file_path)
             messagebox.showerror(
                 "Error",
                 f"Failed to write file: {e}",
@@ -333,7 +333,7 @@ class RegistrationAdmin:
             self._load_request_ui(request_bytes)
             self.log.info("Request loaded from %s", file_path)
         except OSError as e:
-            self.log.error("Failed to read request file: %s", e)
+            self.log.exception("Failed to read request file.")
             messagebox.showerror(
                 "Error",
                 f"Failed to read file: {e}",
@@ -350,7 +350,7 @@ class RegistrationAdmin:
         try:
             request = self._registry.get_request_data(request_bytes)
         except (ValueError, KeyError) as e:
-            self.log.error("Failed to parse registration request: %s", e)
+            self.log.exception("Failed to parse registration request.")
             messagebox.showerror(
                 "Error",
                 f"Invalid request format: {e}",
@@ -373,8 +373,8 @@ class RegistrationAdmin:
                             key,
                             request.user_data[key],
                         )
-                    except (ValueError, KeyError) as e:
-                        self.log.error("Failed to set %s: %s", key, e)
+                    except (ValueError, KeyError):
+                        self.log.exception("Failed to set %s.", key)
 
             # Update individual frames to reflect changed values
             for setting_frame in self._user_data_frame.frame_list:

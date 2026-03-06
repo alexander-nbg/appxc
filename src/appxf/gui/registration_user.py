@@ -229,11 +229,7 @@ class RegistrationUser:
             with open(file_path, "wb") as fh:
                 fh.write(request_bytes)
         except OSError as e:
-            self.log.error(
-                "Failed to write registration request to %s: %s",
-                file_path,
-                e,
-            )
+            self.log.exception("Failed to write registration request to %s", file_path)
             messagebox.showerror(
                 "Error",
                 _("error", "Failed to write file: {}").format(e),
@@ -269,14 +265,14 @@ class RegistrationUser:
             self._check_init_status()
 
         except OSError as e:
-            self.log.error("Failed to read response file: %s", e)
+            self.log.exception("Failed to read response file.")
             messagebox.showerror(
                 "Error",
                 _("error", "Failed to read file: {}").format(e),
                 parent=self._gui_root,
             )
         except (ValueError, KeyError) as e:
-            self.log.error("Failed to apply response: %s", e)
+            self.log.exception("Failed to apply response.")
             messagebox.showerror(
                 "Error",
                 _("error", "Failed to apply response: {}").format(e),
@@ -306,7 +302,7 @@ class RegistrationUser:
             self._update_admin_status()
             self._check_init_status()
         except Exception as e:
-            self.log.exception("Failed to load admin keys: %s", e)
+            self.log.exception("Failed to load admin keys.")
             with contextlib.suppress(Exception):
                 messagebox.showerror(
                     "Error",

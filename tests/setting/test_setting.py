@@ -108,7 +108,9 @@ def test_configparser_validation_newlines():
     # Configparser had problems with newlines and strings are cought
     # explicitly.
     validity, value = base_types_module.validated_conversion_configparser(
-        string="\n", res_type=str, default="default"
+        string="\n",
+        res_type=str,
+        default="default",
     )
     assert not validity
     assert value == "default"
@@ -118,7 +120,9 @@ def test_configparser_validation_wrong_type():
     # Acutally, this case should not even be reachable by the implementation
     # since wrong types are cought already before.
     validity, value = base_types_module.validated_conversion_configparser(
-        string="", res_type=Setting, default="default"
+        string="",
+        res_type=Setting,
+        default="default",
     )
     assert not validity
     assert value == "default"

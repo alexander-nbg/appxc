@@ -26,7 +26,7 @@ try:
     print(
         f"Configuration from pyproject.toml:\n"
         f"Testing sandbox root: {test_sandbox_root}\n"
-        f"Project version: {project_version}"
+        f"Project version: {project_version}",
     )
 except FileNotFoundError:
     print("Warning: no pyproject.toml was found.")
@@ -35,7 +35,8 @@ except FileNotFoundError:
 
 
 def init_test_sandbox_from_fixture(
-    request: pytest.FixtureRequest, cleanup: bool = True
+    request: pytest.FixtureRequest,
+    cleanup: bool = True,
 ) -> str:
     """Create a sandbox from a pytest fixture (request) returning the
     path as string
@@ -68,7 +69,11 @@ def init_test_sandbox_from_fixture(
         class_name = test_cls.__name__
 
     return _init_test_sandbox(
-        module_name, module_directory, test_name, class_name, cleanup
+        module_name,
+        module_directory,
+        test_name,
+        class_name,
+        cleanup,
     )
 
 
@@ -118,7 +123,7 @@ def _init_test_sandbox(
         f"Sandboxing for module [{module_name}] in [{module_directory}] "
         f"the test [{test_name}] "
         f"{f'(class: {class_name})' if class_name else '(no class)'}"
-        f"{' with cleanup.' if cleanup else '.'}"
+        f"{' with cleanup.' if cleanup else '.'}",
     )
     sandbox_root_parent = Path(test_sandbox_root).resolve().parent
     module_path = Path(module_directory).resolve()

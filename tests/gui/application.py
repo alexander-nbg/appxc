@@ -20,7 +20,10 @@ class DummyFrame(tkinter.Frame):
         next_frame = kwargs.get("next_frame", "start")
         kwargs.pop("next_frame")
         super().__init__(
-            *args, **kwargs, highlightbackground="red", highlightthickness=2
+            *args,
+            **kwargs,
+            highlightbackground="red",
+            highlightthickness=2,
         )
 
         button = tkinter.Button(

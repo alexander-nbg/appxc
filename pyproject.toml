@@ -45,44 +45,44 @@ test-sandbox-root = "./.testing"
 select = ["ALL"]
 ignore = [
   # TODO: The following rules are currently reviewed for planning or adequate
-  # argumentation. They correspond to 834 issues.
+  # argumentation. They correspond to 440 issues.
   "ARG001", "ARG002",
-  "COM812",
+  "DTZ",
   "EM101", "EM102",
   "EXE001", "EXE003", "EXE005",
   "FBT001", "FBT002", "FBT003",
-  "FURB110", "FURB171",
+  "ICN001",
   "INP001",
   "PGH003",
   "PGH004",
   "PIE790",
-  "PLC0415",
-  "PLR",
   "PLW",
   "PTH",
-  "RET",
   "RSE102",
   "SLF001",
-  "T201",
-  "TC001", "TC003",
-  "TRY",
-  # TODO: The following rules still need to be resolved to conclude #12
-  "DTZ", "ICN001",
-
   # EXCLUDED RULES
   # --------------
-  "FIX002", # Even in an APPXF v1.0.0, TODO remarks remain being allowed if a
-            # corresponding ticket was created, is linked and still actove (TODO #42).
-            # Despite TODO, no other tag should be used and other FIX rules remain in
-            # place.
-  "TD",     # TODO rules in APPXF do not follow this pattern
-  "C901",   # Complexity shall be rated by reviewers
+  # Feel free to add any rule which is conflicting with the ruff formater. Those rules
+  # were typically NOT added by default since style consistency was valued higher than
+  # the irritation of adding them here, later. Exception was COM812 with the very
+  # irritating warning message upon [ruff format]. See also:
+  # https://docs.astral.sh/ruff/formatter/#conflicting-lint-rules.
+  "COM812",  # Conflicts with formater AND causes warning message on [ruff format]
+  "FIX002",  # Even in an APPXF v1.0.0, TODO remarks remain being allowed if a
+             # corresponding ticket was created, is linked and still actove (TODO #42).
+             # Despite TODO, no other tag should be used and other FIX rules remain in
+             # place.
+  "TC001", "TC003", # import readability over minor performance improvement
+  "TD",      # TODO rules in APPXF do not follow this pattern
+  "C901",    # Complexity shall be rated by reviewers
+  "PLR0911", "PLR0912", "PLR0913", "PLR0915", # "too many" to be rated by reviewers
+  "RET504",  # naming the return value does not do any harm
 
   # PENDING RULES: The activation/fixing of the following rules is delayed and a
   # strategy to decrease numbers over time will be in place.
   #
   # TODO: the decrease over time strategy.
-  "ANN", "BLE001", "D", "ERA001", "PT", "PTH", "RUF100"
+  "ANN", "BLE001", "D", "ERA001", "PLR2004", "PT", "PTH", "RUF100", "T201", "TRY003"
 ]
 
 [tool.ruff.format]
@@ -105,22 +105,26 @@ suppress-none-returning = true
 
 # Rules are relaxed for test case implementation
 "tests*/**/*.py" = [
-  "ANN",    # relaxing on type annotations
-  "ARG",    # relaxing on unused arguments and alike
-  "ERA001", # commented out code is acceptable
-  "T201",   # print statements in tests are OK
-  "S"       # No security checks for test code
+  "ANN",     # relaxing on type annotations
+  "ARG",     # relaxing on unused arguments and alike
+  "ERA001",  # commented out code is acceptable
+  "FURB171", # "something in [1] is quite OK in test code
+  "PLR",     # refactoring suggestions OK to ignore
+  "T201",    # print statements in tests are OK
+  "TRY",     # allow quick-to-implement error handling in tests
+  "S"        # No security checks for test code
   ]
 
 # TODO: matema is generally in draft status and not usable. Disabling security schecks.
 "src/appxf_matema/**/*.py" = [
-  "ARG", "S603", "S607"
+  "ARG", "S603", "S607", "T201"
 ]
 
 # TODO: development scripts are not part of the shipped library and are only running
 # locally and within CI (not in user applications)
 "src/appxf_dev/**/*.py" = [
-  "S607"
+  "S607",
+  "T201"  # print statements OK in dev scripts
 ]
 
 [tool.tox]

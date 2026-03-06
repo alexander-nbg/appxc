@@ -56,7 +56,10 @@ def test_predefined_derived():
     assert state["state_new_int"] == 0
     # new object with other content
     obj = PredefinedAttributesDerived(
-        state_int=42, state_str="new", state_list=["new"], state_new_int=15
+        state_int=42,
+        state_str="new",
+        state_list=["new"],
+        state_new_int=15,
     )
     # restore content
     obj.set_state(state)
@@ -73,7 +76,9 @@ def test_predefined_derived():
 # manual override of attribute and attribute_mask
 def test_manual_get_state():
     obj = PredefinedAttributes(
-        state_int=42, state_str="predefined", state_list=["predefined"]
+        state_int=42,
+        state_str="predefined",
+        state_list=["predefined"],
     )
     state = obj.get_state(
         attributes=["state_int", "state_str", "state_list"],
@@ -119,7 +124,7 @@ def test_state_wrong_key_value():
         obj.set_state(state)
     assert "uses a dict[str, StateType]" in str(exc.value)
     assert "you provided a value for key=state_int of type PredefinedAttributes" in str(
-        exc.value
+        exc.value,
     )
 
 

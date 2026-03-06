@@ -132,6 +132,7 @@ def sync(
             f"(B) is not supported. Both must be either a Storage or a "
             f"storage factory",
         )
+    return None
 
 
 def _sync_storage(storage_a: Storage, storage_b: Storage, only_a_to_b: bool):
@@ -211,7 +212,9 @@ def _sync_storage(storage_a: Storage, storage_b: Storage, only_a_to_b: bool):
         # logging in _execute_sync
     else:
         log.debug(
-            "Storages did not change.\nA: %s\nB: %s", storage_a.id(), storage_b.id()
+            "Storages did not change.\nA: %s\nB: %s",
+            storage_a.id(),
+            storage_b.id(),
         )
 
 

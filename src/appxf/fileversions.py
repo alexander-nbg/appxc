@@ -94,8 +94,7 @@ def get_filename(
         name_format,
         date,
     )
-    filename = _fill_version_pattern(filename, directory, existing)
-    return filename
+    return _fill_version_pattern(filename, directory, existing)
 
 
 def _fill_date_pattern(name_format: str, date: datetime.date):

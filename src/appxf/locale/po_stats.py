@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 """Statistics and analysis tools for gettext PO/POT files."""
 
+import argparse
 import sys
 
 
@@ -100,10 +101,9 @@ def get_incomplete_contexts(po_file):
 
     """
     stats = analyze_po_file(po_file)
-    incomplete = {
+    return {
         ctx: data for ctx, data in stats.items() if data["translated"] < data["total"]
     }
-    return incomplete
 
 
 def print_contexts(pot_file):
@@ -125,8 +125,6 @@ def print_incomplete(po_file):
 
 def main():
     """Main entry point for command-line usage."""
-    import argparse
-
     parser = argparse.ArgumentParser(
         description="Statistics and analysis tools for gettext PO/POT files.",
     )

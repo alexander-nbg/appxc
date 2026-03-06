@@ -30,15 +30,15 @@ def env(request):
     env["security"] = appxf_objects.get_security_unlocked(path=env["dir"])
     env["config"] = Config(
         default_storage_factory=LocalStorage.get_factory(
-            path=os.path.join(env["dir"], "config")
-        )
+            path=os.path.join(env["dir"], "config"),
+        ),
     )
     registry = Registry(
         local_storage_factory=LocalStorage.get_factory(
-            path=os.path.join(env["dir"], "local_registry")
+            path=os.path.join(env["dir"], "local_registry"),
         ),
         remote_storage_factory=LocalStorage.get_factory(
-            path=os.path.join(env["dir"], "remote_registry")
+            path=os.path.join(env["dir"], "remote_registry"),
         ),
         security=env["security"],
         config=env["config"],
@@ -74,7 +74,7 @@ def set_storage_method_default(env, locations):
     # define and assign the storage method constructor:
     for loc in locations:
         env["storage_factory"][loc] = LocalStorage.get_factory(
-            path=os.path.join(env["dir"], loc)
+            path=os.path.join(env["dir"], loc),
         )
 
 
@@ -83,7 +83,7 @@ def set_storage_method_local(env, locations):
     print(f"Location {locations} is using LocalStorage")
     for loc in locations:
         env["storage_factory"][loc] = LocalStorage.get_factory(
-            path=os.path.join(env["dir"], loc)
+            path=os.path.join(env["dir"], loc),
         )
 
 
@@ -101,7 +101,7 @@ def set_storage_method_secure_private(env, locations):
         env["storage_factory"][loc] = SecurePrivateStorage.get_factory(
             security=env["security"],
             base_storage_factory=LocalStorage.get_factory(
-                path=os.path.join(env["dir"], loc)
+                path=os.path.join(env["dir"], loc),
             ),
         )
     # TODO: the keywords for get_factory (and others?) definitely needs to be
@@ -127,7 +127,7 @@ def define_storage_method_secure_shared(env, locations):
         # factory for base_storage.
         env["storage_factory"][loc] = SecureSharedStorage.get_factory(
             base_storage_factory=LocalStorage.get_factory(
-                path=os.path.join(env["dir"], loc)
+                path=os.path.join(env["dir"], loc),
             ),
             security=env["security"],
             registry=env["registry"],

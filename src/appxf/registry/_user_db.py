@@ -58,12 +58,11 @@ class UserDatabase(Storable):
 
     def init_user_db(self, validation_key: bytes, encryption_key: bytes) -> int:
         # forward to reuse function with add_new()
-        user_id = self.add_new(
+        return self.add_new(
             validation_key=validation_key,
             encryption_key=encryption_key,
             roles=["user", "admin"],
         )
-        return user_id
 
     def get_users(self, role: str = "") -> set[int]:
         """Get users IDs as set
@@ -182,7 +181,7 @@ class UserDatabase(Storable):
         for role in self._role_map:
             if user_id in self._role_map[role]:
                 self._role_map[role].remove(user_id)
-            if not self._role_map[role] and role != "user" and role != "admin":
+            if not self._role_map[role] and role not in {"user", "admin"}:
                 del self._role_map[role]
 
     # TODO: When USER DB starts maintaining user information (USER CONFIG),

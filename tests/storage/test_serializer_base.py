@@ -254,7 +254,7 @@ def test_stateful_interface_contract():
             return
 
         raise AssertionError(
-            f"Failing: {this_type} as origin {type_origin} with arguments {type_args}"
+            f"Failing: {this_type} as origin {type_origin} with arguments {type_args}",
         )
 
     # we cycle through the DefaultState type:

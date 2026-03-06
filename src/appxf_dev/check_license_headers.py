@@ -123,7 +123,7 @@ def verify_file_header(file: Path) -> bool:
                     has_copyright = True
                 if line.startswith(LICENSES[file.suffix]):
                     has_license = True
-    elif file.suffix in [".md"]:
+    elif file.suffix == ".md":
         with file.open(encoding="utf-8") as fh:
             while True:
                 line = fh.readline().rstrip("\n").strip()
@@ -135,7 +135,7 @@ def verify_file_header(file: Path) -> bool:
                     has_copyright = True
                 if line.startswith(LICENSES[file.suffix]):
                     has_license = True
-    elif file.suffix in [".puml"]:
+    elif file.suffix == ".puml":
         with file.open(encoding="utf-8") as fh:
             while True:
                 line = fh.readline().rstrip("\n").strip()

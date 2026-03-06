@@ -64,8 +64,8 @@ def map_config_section_name(config_section: str) -> str:
 
 @given(
     parsers.parse(
-        "{role} is storing {config_data} in the {config_section} configuration"
-    )
+        "{role} is storing {config_data} in the {config_section} configuration",
+    ),
 )
 def store_value_in_configuration(env, role, config_data, config_section):
     """Check value of test configuration
@@ -94,8 +94,8 @@ def store_value_in_configuration(env, role, config_data, config_section):
 
 @then(
     parsers.parse(
-        "{role} has stored {config_data} in the {config_section} configuration"
-    )
+        "{role} has stored {config_data} in the {config_section} configuration",
+    ),
 )
 def verify_stored_in_configuration(env, role, config_data, config_section):
     """Check value of test configuration

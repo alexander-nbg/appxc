@@ -30,7 +30,9 @@ def setup_local(request):
     env["config"] = appxf_objects.get_dummy_config()
     env["security"] = appxf_objects.get_security_unlocked(path=env["dir"])
     env["registry"] = appxf_objects.get_registry_admin_initialized(
-        path=env["dir"], security=env["security"], config=env["config"]
+        path=env["dir"],
+        security=env["security"],
+        config=env["config"],
     )
     request.instance.env = env
 

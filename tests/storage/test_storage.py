@@ -21,10 +21,10 @@ from __future__ import annotations
 
 from collections.abc import Callable
 
+from appxf.storage import Storage
+
 
 def test_storage_simple_abstract_derivative():
-    from appxf.storage import Storage
-
     # Verify properties of Storage before touching anything
     assert Storage.__abstractmethods__
 
@@ -36,8 +36,6 @@ def test_storage_simple_abstract_derivative():
 
 
 def test_storage_simple_derivative():
-    from appxf.storage import Storage
-
     # Derivation One
     class DerivateOne(Storage):
         @classmethod
@@ -74,8 +72,6 @@ def test_storage_simple_derivative():
 
 
 def test_storage_copmlex_derivative():
-    from appxf.storage import Storage
-
     # We test proper collection of keywords through multiple instances AND
     # assigning the correct root storage
     class DerivateOneAbstract(Storage):

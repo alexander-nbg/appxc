@@ -58,8 +58,7 @@ def _get_setting_reference(t):
         if len(t[1]) == 2:
             return Setting.new(t[2], value=t[1][1])
         # tuple based init with type, only
-        else:
-            return Setting.new(t[2])
+        return Setting.new(t[2])
     if isinstance(t[1], type):
         # type based input
         return Setting.new(t[2])
@@ -123,7 +122,9 @@ failure_cases = [
 
 
 @pytest.mark.parametrize(
-    "name, settings, error_parts", failure_cases, ids=[t[0] for t in failure_cases]
+    "name, settings, error_parts",
+    failure_cases,
+    ids=[t[0] for t in failure_cases],
 )
 def test_setting_dict_invalid_init(name, settings, error_parts):
     with pytest.raises(AppxfSettingError) as exc_info:
@@ -137,7 +138,9 @@ def test_setting_dict_invalid_init(name, settings, error_parts):
 
 
 @pytest.mark.parametrize(
-    "name, settings, error_parts", failure_cases, ids=[t[0] for t in failure_cases]
+    "name, settings, error_parts",
+    failure_cases,
+    ids=[t[0] for t in failure_cases],
 )
 def test_setting_dict_invalid_value(name, settings, error_parts):
     setting_dict = SettingDict()
@@ -152,7 +155,9 @@ def test_setting_dict_invalid_value(name, settings, error_parts):
 
 
 @pytest.mark.parametrize(
-    "name, settings, error_parts", failure_cases, ids=[t[0] for t in failure_cases]
+    "name, settings, error_parts",
+    failure_cases,
+    ids=[t[0] for t in failure_cases],
 )
 def test_setting_dict_invalid_setitem(name, settings, error_parts):
     setting_dict = SettingDict()
@@ -271,7 +276,7 @@ def test_setting_dict_delete_non_existing():
 
 def test_setting_dict_nested():
     setting_dict = SettingDict(
-        settings={"int": (int, "42"), "nested": {"int": (int, "13")}}
+        settings={"int": (int, "42"), "nested": {"int": (int, "13")}},
     )
     assert setting_dict["int"] == 42
     assert setting_dict["nested"] == {"int": 13}
@@ -294,7 +299,7 @@ def test_setting_dict_invalid_not_applied():
             "A": ("email", "a@something.de"),
             "B": ("email", "b@something.de"),
             "C": ("email", "c@something.de"),
-        }
+        },
     )
     # some checks of the initialization
     assert "a@" in setting_dict["A"]
@@ -639,7 +644,10 @@ def test_setting_dict_get_state_nested_dict():
     data = setting_dict.get_state(type=True)
     _verify_get_state_keys(data, ["test"], ["type", "_settings"])
     _verify_get_state_keys(
-        data["test"]["_settings"], ["int"], ["type", "value"], version_expected=False
+        data["test"]["_settings"],
+        ["int"],
+        ["type", "value"],
+        version_expected=False,
     )
     assert data["test"]["type"] == "dictionary"
     assert data["test"]["_settings"]["int"]["type"] == "integer"
@@ -648,12 +656,15 @@ def test_setting_dict_get_state_nested_dict():
 
 def test_setting_dict_get_state_nested_dict_with_options():
     export_options = SettingDict.ExportOptions(
-        type=True, display_options=True, export_defaults=True
+        type=True,
+        display_options=True,
+        export_defaults=True,
     )
     setting_dict = SettingDict(settings={"test": {"int": (int, "42")}})
     data = setting_dict.get_state(options=export_options)
     _verify_get_state_keys(
-        data, ["_settings", "visible", "display_width", "display_columns"]
+        data,
+        ["_settings", "visible", "display_width", "display_columns"],
     )
     _verify_get_state_keys(data["_settings"], ["test"], version_expected=False)
     _verify_get_state_keys(
@@ -679,7 +690,7 @@ def test_setting_dict_set_state_default():
         settings={
             "testInt": (int, "42"),
             "testEmail": ("email", "someone@something.com"),
-        }
+        },
     )
     data = setting_dict.get_state()
     setting_dict["testInt"] = 13
@@ -809,7 +820,7 @@ def test_setting_dict_set_state_new_key():
 
     assert "but not yet maintained in SettingDict" in str(warn_info[0].message)
     assert 'setting export option "add_missing_keys" to True' in str(
-        warn_info[0].message
+        warn_info[0].message,
     )
     assert '"exception_on_new_key" to False' in str(warn_info[0].message)
     assert "add the missing keys to the input data." in str(warn_info[0].message)
@@ -894,10 +905,10 @@ def test_setting_dict_set_state_type_mismatch():
         print(setting_dict.get_setting("test"))
 
     assert 'Cannot set_state() key "test" in SettingDict(TestDict).' in str(
-        exc_info.value
+        exc_info.value,
     )
     assert "Setting is of type SettingString while provided type is integer." in str(
-        exc_info.value
+        exc_info.value,
     )
 
 
@@ -905,7 +916,7 @@ def test_setting_dict_set_state_type_mismatch():
 # removed from SettingDict. Default is False and already tested above.
 def test_setting_dict_set_state_missing_key_remove():
     setting_dict = SettingDict(
-        settings={"test_int": (int, "42"), "test_str": (str, "test")}
+        settings={"test_int": (int, "42"), "test_str": (str, "test")},
     )
     data = setting_dict.get_state()
 
@@ -930,14 +941,16 @@ def test_setting_dict_set_state_missing_key_remove():
 @pytest.mark.filterwarnings("error")
 def test_setting_dict_set_state_missing_key_remove_no_warning():
     setting_dict = SettingDict(
-        settings={"test_int": (int, "42"), "test_str": (str, "test")}
+        settings={"test_int": (int, "42"), "test_str": (str, "test")},
     )
     data = setting_dict.get_state()
 
     # remove test_str from input data:
     del data["test_str"]
     setting_dict.set_state(
-        data, remove_missing_keys=True, exception_on_missing_key=False
+        data,
+        remove_missing_keys=True,
+        exception_on_missing_key=False,
     )
     assert "test_str" not in setting_dict
     assert setting_dict["test_int"] == 42
@@ -945,7 +958,7 @@ def test_setting_dict_set_state_missing_key_remove_no_warning():
 
 def test_setting_dict_storage_init():
     setting_dict = SettingDict(
-        {"entry": ("email", "some@any.de"), "input_check": (int, "42")}
+        {"entry": ("email", "some@any.de"), "input_check": (int, "42")},
     )
     # storage is just dummy:
     assert isinstance(setting_dict._storage, RamStorage)

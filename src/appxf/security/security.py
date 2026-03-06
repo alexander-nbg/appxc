@@ -359,9 +359,10 @@ class Security:
                 ),
                 hashes.SHA256(),
             )
-            return True
         except InvalidSignature:
             return False
+        else:
+            return True
 
     @classmethod
     def _encrypt_with_public_key_to_bytes(cls, data: bytes, key_bytes: bytes):

@@ -31,12 +31,12 @@ def get_security(path: str | bytes | None = None) -> Security:
         storage = RamStorage(ram_area=str(path))
     else:
         storage = path
-    sec = Security(salt="test", storage=storage)
-    return sec
+    return Security(salt="test", storage=storage)
 
 
 def get_security_initialized(
-    path: str | None = None, password: str = "password"
+    path: str | None = None,
+    password: str = "password",
 ) -> Security:
     sec = get_security(path)
     if not sec.is_user_initialized():
@@ -48,7 +48,8 @@ def get_security_initialized(
 
 
 def get_security_unlocked(
-    path: str | None = None, password: str = "password"
+    path: str | None = None,
+    password: str = "password",
 ) -> Security:
     sec = get_security_initialized(path, password)
     sec.unlock_user(password)
@@ -67,18 +68,17 @@ def get_fresh_registry(
         remote_storage_factory = RamStorage.get_factory(ram_area=remote_name)
     else:
         local_storage_factory = LocalStorage.get_factory(
-            path=os.path.join(path, local_name)
+            path=os.path.join(path, local_name),
         )
         remote_storage_factory = LocalStorage.get_factory(
-            path=os.path.join(path, remote_name)
+            path=os.path.join(path, remote_name),
         )
-    reg = Registry(
+    return Registry(
         local_storage_factory=local_storage_factory,
         remote_storage_factory=remote_storage_factory,
         security=security,
         config=config,
     )
-    return reg
 
 
 def get_registry_admin_initialized(
@@ -121,7 +121,7 @@ def perform_registration(
     new_user_id = admin_registry.add_user_from_request(request=request, roles=roles)
     print(
         f"{admin_storage_scope} (user ID {admin_registry.user_id}) registered "
-        f"{storage_scope} with USER ID {new_user_id} and roles {roles}"
+        f"{storage_scope} with USER ID {new_user_id} and roles {roles}",
     )
     response_bytes = admin_registry.get_response_bytes(new_user_id)
     # Apply response to fresh registry

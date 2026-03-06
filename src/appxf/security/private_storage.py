@@ -70,8 +70,7 @@ class SecurePrivateStorage(StorageToBytes):
         byte_data: bytes = self._base_storage.load_raw()
         if byte_data == b"":
             return b""
-        byte_data = self._security.decrypt_from_bytes(byte_data)
-        return byte_data
+        return self._security.decrypt_from_bytes(byte_data)
         # Storage implementation of load() uses deserialization
 
     def store_raw(self, data: bytes):

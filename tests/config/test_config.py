@@ -23,7 +23,8 @@ def test_config_fill_section():
     # just a view variant of setting init. Full testing in scope of
     # SettingDict.
     config.add_section(
-        "TEST", settings={"email": ("email",), "string": (str, "hello"), "integer": 42}
+        "TEST",
+        settings={"email": ("email",), "string": (str, "hello"), "integer": 42},
     )
     # Check sections and values
     assert config.sections == ["TEST"]

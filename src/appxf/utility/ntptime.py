@@ -15,6 +15,10 @@ from appxf import logging
 # has other value or it is needed again for file synchronization.
 
 
+class AppxfNtpTimeError(Exception):
+    """Error during NTP time synchronization."""
+
+
 class NtpTime:  # pragma: no cover
     """Provide offset between system time and NTP time servers.
 
@@ -87,14 +91,13 @@ class NtpTime:  # pragma: no cover
                 return True
         message = f"None of the server requests succeeded: {servers}"
         cls.log.error(message)
-        raise Exception(message)
+        raise AppxfNtpTimeError(message)
 
     @classmethod
     async def _request_server(cls, server):
         try:
             client = ntplib.NTPClient()
-            response = client.request(server)
-            return response
+            return client.request(server)
         except ntplib.NTPException as e:
             cls.log.warning(
                 "Error in retrieving NTP time from [%s]. "

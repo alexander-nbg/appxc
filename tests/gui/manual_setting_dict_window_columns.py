@@ -28,7 +28,7 @@ prop_dict = SettingDict(
             "Nine",
             "Ten",
         ]
-    }
+    },
 )
 gui_property = {
     "columns": 4,
@@ -44,7 +44,10 @@ gui_property = {
 #    print(f'{key}: {prop_dict[key]}')
 
 ManualCaseRunner().run(
-    setting_dict.SettingDictWindow, "Edit Window Title", prop_dict, gui_property
+    setting_dict.SettingDictWindow,
+    "Edit Window Title",
+    prop_dict,
+    gui_property,
 )
 
 for key in prop_dict:

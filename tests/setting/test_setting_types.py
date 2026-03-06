@@ -66,15 +66,13 @@ class SettingCase:
     def value(self):
         if isinstance(self._value, Callable):
             return self._value(self)
-        else:
-            return self._value
+        return self._value
 
     @property
     def string(self):
         if isinstance(self._string, Callable):
             return self._string(self)
-        else:
-            return self._string
+        return self._string
 
 
 # required class that cannot convert to str and would be invalid input for
@@ -115,7 +113,7 @@ class BaseSettingTest:
     def test_meta_type_lookup(self):
         for setting_type in self.setting_types:
             setting_class, _ = setting_module._SettingMeta.get_setting_type(
-                setting_type
+                setting_type,
             )
             assert setting_class == self.setting_class
 
@@ -146,13 +144,13 @@ class BaseSettingTest:
         # Utilizing AppxfSetting.new() still uses the corresponding __init__
         for value in self.invalid_init:
             with pytest.raises(
-                (AppxfSettingConversionError, AppxfSettingError)
+                (AppxfSettingConversionError, AppxfSettingError),
             ) as exc_info:
                 self.setting_class(value)
                 pytest.fail(
                     f"{self.setting_class} should raise "
                     f"AppxfSettingConversionError on init "
-                    f"for value: {value}"
+                    f"for value: {value}",
                 )
             # General formulation
             assert "Cannot set" in str(exc_info.value)
@@ -205,13 +203,13 @@ class BaseSettingTest:
         # (test_validate_invalid), it can still be set.
         for value in self.invalid_init:
             with pytest.raises(
-                (AppxfSettingConversionError, AppxfSettingError)
+                (AppxfSettingConversionError, AppxfSettingError),
             ) as exc_info:
                 setting.value = value
                 pytest.fail(
                     f"{self.setting_class} should raise "
                     f"AppxfSettingConversionError on setting value "
-                    f'for: "{value}"'
+                    f'for: "{value}"',
                 )
                 # General formulation
             assert "Cannot set" in str(exc_info.value)
@@ -239,7 +237,9 @@ class BaseSettingTest:
         for case in self.valid_input:
             setting = self.setting_class(value=case.input)
             self.verify_valid(
-                "Verifying valid value init before set_state", setting, case
+                "Verifying valid value init before set_state",
+                setting,
+                case,
             )
             state = setting.get_state(type=True)
 
@@ -249,7 +249,10 @@ class BaseSettingTest:
             setting = self.setting_class()
             if issubclass(self.setting_class, SettingDict):
                 setting.set_state(
-                    state, type=True, add_new_keys=True, exception_on_new_key=False
+                    state,
+                    type=True,
+                    add_new_keys=True,
+                    exception_on_new_key=False,
                 )
             else:
                 setting.set_state(state)
@@ -266,7 +269,7 @@ class BaseSettingTest:
             setting.value = self.simple_input.input
         if issubclass(self.setting_class, SettingDict):
             assert "SettingDict() mutable option is False" in str(exc_info.value) + str(
-                exc_info.value.__cause__
+                exc_info.value.__cause__,
             )
         else:
             assert "is set to be not mutable" in str(exc_info.value)
@@ -411,7 +414,9 @@ class TestSettingDict(BaseSettingTest):
     valid_input = (
         SettingCase(input={"int": 42}, value={"int": 42}, input_check={"int": 42}),
         SettingCase(
-            input={"int": (int, "0042")}, value={"int": 42}, input_check={"int": "0042"}
+            input={"int": (int, "0042")},
+            value={"int": 42},
+            input_check={"int": "0042"},
         ),
         SettingCase(input={}, value={}, string=""),
     )

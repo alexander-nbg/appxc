@@ -89,7 +89,8 @@ def admin_user_initialized_registry_pair(request):
     print(f"Size of user request: {len(request_bytes)}")
     request = admin_registry.get_request_data(request_bytes)
     user_id = admin_registry.add_user_from_request(
-        request=request, roles=["user", "new"]
+        request=request,
+        roles=["user", "new"],
     )
     response = admin_registry.get_response_bytes(user_id)
     print(f"Size of response: {len(response)}")
@@ -188,7 +189,7 @@ def test_set_admin_keys(fresh_registry):
             1,
             registry._security.get_signing_public_key(),
             registry._security.get_encryption_public_key(),
-        )
+        ),
     ]
     data_bytes = CompactSerializer.serialize(data)
 
@@ -245,12 +246,16 @@ def test_verify_signature_membership_and_roles(admin_user_initialized_registry_p
     # admin signs data, registry should validate for admin user
     _, sig_admin = admin_registry.sign(data)
     assert admin_registry.verify_signature(
-        data=data, signing_user=admin_registry.user_id, signature=sig_admin
+        data=data,
+        signing_user=admin_registry.user_id,
+        signature=sig_admin,
     )
 
     # unknown signing user should be rejected
     assert not admin_registry.verify_signature(
-        data=data, signing_user=99999, signature=sig_admin
+        data=data,
+        signing_user=99999,
+        signature=sig_admin,
     )
 
     # user signs data but does not have admin role -> role check should fail
@@ -302,7 +307,8 @@ def test_manual_config_update(admin_user_initialized_registry_pair, request):
 
     # Handling an empty update
     update_bytes = admin_registry.get_manual_config_update_bytes(
-        sections=[], include_user_db=False
+        sections=[],
+        include_user_db=False,
     )
     user_registry.set_manual_config_update_bytes(update_bytes)
     assert admin_registry.get_users() == {1, 2, 3}
@@ -348,7 +354,8 @@ def test_manual_update_get_errors(admin_user_initialized_registry_pair):
 
 
 def test_manual_update_set_error_unknown_user(
-    admin_user_initialized_registry_pair, request
+    admin_user_initialized_registry_pair,
+    request,
 ):
     admin_registry: Registry = admin_user_initialized_registry_pair[0]
     user_registry: Registry = admin_user_initialized_registry_pair[1]
@@ -371,7 +378,8 @@ def test_manual_update_set_error_unknown_user(
     )
 
     update_bytes = new_user_registry.get_manual_config_update_bytes(
-        sections=[], include_user_db=False
+        sections=[],
+        include_user_db=False,
     )
 
     # user does not know about new_user at all:

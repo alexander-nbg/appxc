@@ -230,7 +230,9 @@ class GridFrame(tkinter.LabelFrame):
         else:
             default_setting = self.item_centered_setting
         self.log.debug(
-            "Placing frame %s with setting: %s", type(widget), default_setting
+            "Placing frame %s with setting: %s",
+            type(widget),
+            default_setting,
         )
         # TODO: this handling (overwriting) just to get the type warnings that
         # would pop up below right is not sppropriate.
