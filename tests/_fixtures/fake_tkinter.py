@@ -16,7 +16,7 @@ import my_module_with_tkinter
 ```
 """
 
-import tkinter
+import tkinter as tk
 
 
 def dummy_function(*args, **kwargs):
@@ -55,6 +55,6 @@ class FakeMenu:
 
 
 def activate():
-    tkinter.__dict__["Tk"] = FakeTk
-    tkinter.__dict__["Frame"] = FakeFrame
-    tkinter.__dict__["Menu"] = FakeMenu
+    tk.__dict__["Tk"] = FakeTk
+    tk.__dict__["Frame"] = FakeFrame
+    tk.__dict__["Menu"] = FakeMenu

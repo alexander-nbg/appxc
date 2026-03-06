@@ -83,7 +83,7 @@ class DummyClassErrorOnStrCreation:
 
 
 class BaseSettingTest:
-    setting_class: type[Setting] = None  # type: ignore
+    setting_class: type[Setting] | None = None
     setting_types = ()
     simple_input: SettingCase = SettingCase(input="")
 

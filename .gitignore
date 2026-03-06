@@ -11,6 +11,7 @@ __pycache__
 .tox
 *.drawio.bkp
 *.bkp-*
+*.mo
 doc/_build
 cov_*
 plantuml.jar

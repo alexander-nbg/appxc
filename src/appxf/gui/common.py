@@ -10,7 +10,7 @@ MainWindow: TopLevel window with configurable buttons on
 from __future__ import annotations
 
 import functools
-import tkinter
+import tkinter as tk
 from collections.abc import Callable, Iterable
 from tkinter import ttk
 from typing import ClassVar, NamedTuple
@@ -36,7 +36,7 @@ class GridSetting(NamedTuple):
         return value
 
 
-class GridFrame(tkinter.LabelFrame):
+class GridFrame(tk.LabelFrame):
     """Class to support general APPXF frames
 
     Widgets/Frames are distinguished into the following categories for default
@@ -90,7 +90,7 @@ class GridFrame(tkinter.LabelFrame):
             GridFrame._registry[t] = cls
 
     @classmethod
-    def get_frame(cls, parent: tkinter.BaseWidget, appxf_object, **kwargs):
+    def get_frame(cls, parent: tk.BaseWidget, appxf_object, **kwargs):
         """Get frame matching the type of an object.
 
         Frame selection is based on class registration. Valid frame classes
@@ -120,7 +120,7 @@ class GridFrame(tkinter.LabelFrame):
     )
 
     classes_horizontal_stretch_setting = (
-        tkinter.Entry,
+        tk.Entry,
         ttk.Entry,
         ttk.Combobox,
     )
@@ -133,7 +133,7 @@ class GridFrame(tkinter.LabelFrame):
     )
 
     classes_full_stretch_setting = (
-        tkinter.Text,
+        tk.Text,
         ttk.Entry,
     )
     item_full_stretch_setting = GridSetting(
@@ -144,7 +144,7 @@ class GridFrame(tkinter.LabelFrame):
         column_weight=1,
     )
 
-    classes_right_aligned_setting = (tkinter.Label,)
+    classes_right_aligned_setting = (tk.Label,)
     item_right_aligned_setting = GridSetting(
         sticky="E",
         padx=5,
@@ -164,7 +164,7 @@ class GridFrame(tkinter.LabelFrame):
 
     def __init__(
         self,
-        parent: tkinter.BaseWidget | tkinter.Tk,
+        parent: tk.BaseWidget | tk.Tk,
         row_spread: bool = False,
         column_spread: bool = False,
         **kwargs,
@@ -200,7 +200,7 @@ class GridFrame(tkinter.LabelFrame):
     # GridFrame needs to provide the method for widget placement.
     def place(
         self,
-        widget: tkinter.Widget | GridFrame,
+        widget: tk.Widget | GridFrame,
         row: int,
         column: int,
         setting: GridSetting | None = None,
@@ -214,7 +214,7 @@ class GridFrame(tkinter.LabelFrame):
         if setting is None:
             setting = GridSetting()
 
-        if isinstance(widget, (tkinter.Frame, tkinter.LabelFrame)):
+        if isinstance(widget, (tk.Frame, tk.LabelFrame)):
             default_setting = self.frame_setting
             if isinstance(widget, GridFrame):
                 default_setting = default_setting._replace(
@@ -324,7 +324,7 @@ class ButtonFrame(GridFrame):
 
     def __init__(
         self,
-        parent: tkinter.BaseWidget | tkinter.Tk,
+        parent: tk.BaseWidget | tk.Tk,
         buttons: Iterable[str],
         spread: bool = False,
         **kwargs,
@@ -352,11 +352,11 @@ class ButtonFrame(GridFrame):
         self.last_event = None
 
         # add buttons:
-        self._button_widgets: dict[str, tkinter.Widget] = {}
+        self._button_widgets: dict[str, tk.Widget] = {}
 
         for button_number, button in enumerate(buttons):
             if button:
-                this_widget = tkinter.Button(
+                this_widget = tk.Button(
                     self,
                     text=button,
                     command=functools.partial(self.handle_button_press, button),
@@ -388,7 +388,7 @@ class ButtonFrame(GridFrame):
         state = "normal" if active else "disabled"
         try:
             widget.config(state=state)
-        except tkinter.TclError:
+        except tk.TclError:
             # If a widget type doesn't support state, ignore it silently
             self.log.debug("Could not set state for widget %s", widget)
 
@@ -406,7 +406,7 @@ class _CommonWindow:
     # hints during implementation and safer implementation was
     # prioritized over a clean interface for this purely
     # internal helper mixin:
-    window: tkinter.Tk | tkinter.Toplevel
+    window: tk.Tk | tk.Toplevel
     frame: None | GridFrame
     button_frame: ButtonFrame
 
@@ -495,7 +495,7 @@ class _CommonWindow:
     def bind(
         self,
         sequence: str | None = None,
-        func: Callable[[tkinter.Event], object] | None = None,
+        func: Callable[[tk.Event], object] | None = None,
         add: bool | None = None,
     ):
         return self.button_frame.bind(sequence=sequence, func=func, add=add)
@@ -504,12 +504,12 @@ class _CommonWindow:
         return self.button_frame.set_button_active(button, active)
 
 
-class GridToplevel(tkinter.Toplevel, _CommonWindow):
+class GridToplevel(tk.Toplevel, _CommonWindow):
     """Toplevel holding one GridFrame and configurable buttons."""
 
     def __init__(
         self,
-        parent: tkinter.BaseWidget,
+        parent: tk.BaseWidget,
         title: str,
         buttons: Iterable[str] = ("Cancel", "OK"),
         closing: str | list[str] = "Cancel",
@@ -528,7 +528,7 @@ class GridToplevel(tkinter.Toplevel, _CommonWindow):
         )
 
 
-class GridTk(tkinter.Tk, _CommonWindow):
+class GridTk(tk.Tk, _CommonWindow):
     """Root window variant of Toplevel to be used when no parent is given."""
 
     def __init__(

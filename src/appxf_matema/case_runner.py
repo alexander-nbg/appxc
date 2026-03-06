@@ -5,7 +5,7 @@ import argparse
 import json
 import subprocess
 import sys
-import tkinter
+import tkinter as tk
 from functools import cached_property
 
 from appxf import logging
@@ -32,7 +32,7 @@ class ManualCaseRunner:
         self,
         logging_context: str = "",
         disable_parsing: bool = False,
-        parent: tkinter.Tk | None = None,
+        parent: tk.Tk | None = None,
     ):
         self._parent = parent
         self._disable_parsing = disable_parsing
@@ -166,7 +166,7 @@ class ManualCaseRunner:
                     indent=2,
                 )
 
-    def run(self, item: type[tkinter.BaseWidget] | None = None, *args, **kwargs):
+    def run(self, item: type[tk.BaseWidget] | None = None, *args, **kwargs):
         # ensure parsing is initialized, stack indexing from here is:
         #  0) this run()
         #  1) the calling module
@@ -181,10 +181,10 @@ class ManualCaseRunner:
             # test case is running by provided functions process_*() or test()
             # or even by instances created directly within the module.
             pass
-        elif issubclass(item, tkinter.Toplevel):
+        elif issubclass(item, tk.Toplevel):
             self.ensure_logging()
             self._run_toplevel(item, *args, **kwargs)
-        elif issubclass(item, tkinter.Frame) or issubclass(item, tkinter.LabelFrame):
+        elif issubclass(item, tk.Frame) or issubclass(item, tk.LabelFrame):
             self.ensure_logging()
             self._run_frame(item, *args, **kwargs)
         else:
@@ -253,11 +253,11 @@ class ManualCaseRunner:
 
     def _run_frame(
         self,
-        frame_type: type[tkinter.Frame],
+        frame_type: type[tk.Frame],
         *args,
         **kwargs,
     ):
-        test_window = tkinter.Toplevel(self.gui.tk)
+        test_window = tk.Toplevel(self.gui.tk)
 
         test_window.rowconfigure(0, weight=1)
         test_window.columnconfigure(0, weight=1)
@@ -271,7 +271,7 @@ class ManualCaseRunner:
 
     def _run_toplevel(
         self,
-        toplevel_type: type[tkinter.Toplevel],
+        toplevel_type: type[tk.Toplevel],
         *args,
         **kwargs,
     ):

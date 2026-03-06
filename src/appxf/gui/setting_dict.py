@@ -7,7 +7,7 @@ modules.
 """
 
 import math
-import tkinter
+import tkinter as tk
 from collections.abc import Iterable, Mapping
 from typing import Any, TypeAlias
 
@@ -28,14 +28,14 @@ def input_type_to_setting_dict(setting: SettingInput) -> SettingDict:
     """Convert allowed compound setting inputs to a SettingDict"""
     if isinstance(setting, SettingDict):
         return setting
-    # The following two should also not already be a setging dict (which is
+    # The following two should also not already be a setting dict (which is
     # Iterable and Mapping). Dictionaries of settings are cast into a
     # SettingDict object:
     if isinstance(setting, Mapping):
         # Typing is ignored below since an Iterable[AppxfSetting] could
         # theoretically be a Mapping[AppxfSetting, Unknown] which would also
-        # end up here. This is invalid input and not cought here.
-        return SettingDict(settings=setting)  # type: ignore
+        # end up here. This is invalid input and not caught here.
+        return SettingDict(settings=setting)  # type: ignore[assignment]
     # iterables of settings are also handled like SettingDict
     if isinstance(setting, Iterable) and not isinstance(setting, Mapping):
         return SettingDict(
@@ -63,7 +63,7 @@ class SettingDictSingleFrame(SettingFrameBase):
 
     def __init__(
         self,
-        parent: tkinter.BaseWidget,
+        parent: tk.BaseWidget,
         setting: SettingInput,
         frame_label: bool = True,
         **kwargs,
@@ -186,7 +186,7 @@ class SettingDictSingleFrame(SettingFrameBase):
 class SettingDictColumnFrame(SettingFrameBase):
     def __init__(
         self,
-        parent: tkinter.BaseWidget,
+        parent: tk.BaseWidget,
         setting: SettingInput,
         columns: int,
         appxf_options: dict | None = None,

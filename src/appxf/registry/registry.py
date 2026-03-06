@@ -388,7 +388,7 @@ class Registry(RegistryBase):
 
         # get original data that was a list of tuples (user_id, encryption_key,
         # signing_key)
-        key_list: list[tuple] = CompactSerializer.deserialize(data)  # type: ignore
+        key_list: list[tuple] = CompactSerializer.deserialize(data)  # type: ignore[assignment]
 
         # purge existing USER DB
         for user_id in self._user_db.get_users():

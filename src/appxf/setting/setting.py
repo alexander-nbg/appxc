@@ -42,7 +42,7 @@ class AppxfSettingConversionError(Exception):
         try:
             value_str = str(value)
         # pylint: disable=bare-except
-        except:  # noqa E722
+        except:  # noqa: E722
             value_str = "<conversion by str() failed>"
         value_type = type(value)
         base_type = type(setting_class.get_default())
@@ -105,7 +105,7 @@ class _SettingMeta(type):
         # Setting since the classes are not yet known. We rely on the attribute
         # to be existent or not.
         if getattr(cls_register, "setting_extension", False):
-            mcs._add_extension(cls_register=cls_register)  # type: ignore
+            mcs._add_extension(cls_register=cls_register)
         else:
             mcs._add_setting(cls_register=cls_register)
 
@@ -149,7 +149,7 @@ class _SettingMeta(type):
     @classmethod
     def _add_extension(
         mcs,
-        cls_register: type["SettingExtension[Any, Any]"],  # noqa F821
+        cls_register: type[SettingExtension[Any, Any]],  # noqa: F821
     ):
         """Adding an extending Setting
 
@@ -531,7 +531,13 @@ class Setting(Stateful, Generic[_BaseTypeT], metaclass=_SettingMetaMerged):
         # SettingSelect to return the right setting type (like setting:string).
         # Note the Meta class implementation (class registration) is checking
         # for the first entry being a string.
-        return self.get_supported_types()[0]  # type: ignore
+        supported_type = self.get_supported_types()[0]
+        if not isinstance(supported_type, str):
+            raise TypeError(
+                f"Setting {self.__class__.__name__} does not return a string as the "
+                f"first supported type. It returns {supported_type}"
+            )
+        return supported_type
 
     @property
     def input(self) -> _BaseTypeT | str:

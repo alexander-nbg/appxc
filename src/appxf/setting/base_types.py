@@ -12,7 +12,7 @@ from typing import Any
 
 from email_validator import EmailNotValidError, validate_email
 
-from .setting import Setting, _BaseTypeT
+from .setting import Setting
 
 
 class SettingString(Setting[str]):
@@ -132,9 +132,9 @@ class SettingPassword(SettingString):
 
 def validated_conversion_configparser(
     string: str,
-    res_type: type[_BaseTypeT],
-    default: _BaseTypeT,
-) -> tuple[bool, _BaseTypeT]:
+    res_type: bool | float,
+    default: bool | float,
+) -> tuple[bool, bool | int | float]:
     """Helper for common conversion by configparser
 
     It takes a string (no type checks included) and uses the configparser
@@ -168,7 +168,7 @@ def validated_conversion_configparser(
             return False, default
     except ValueError:
         return False, default
-    return True, value  # type: ignore
+    return True, value
 
 
 class SettingBool(Setting[bool]):

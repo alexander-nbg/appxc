@@ -21,10 +21,10 @@ echo -e "\nUpdating PO files from POT..."
 for po_file in src/appxf/locale/*/LC_MESSAGES/appxf-gui.po; do
     if [ -f "$po_file" ]; then
         echo "Updating $po_file"
-        msgmerge --update --backup=none "$po_file" locale/appxf-gui.pot
+        msgmerge --update --backup=none "$po_file" src/appxf/locale/appxf-gui.pot
     fi
 done
 
 # Compile PO files and run statistics:
 echo -e ""
-./locale_update.sh
+./scripts/locale_update.sh

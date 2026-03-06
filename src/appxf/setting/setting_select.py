@@ -143,7 +143,7 @@ class SettingSelect(SettingExtension[_BaseSettingT, _BaseTypeT]):
     @value.setter
     def value(self, value: Any):
         # first step is like in setting implementation
-        Setting.value.fset(self, value)  # type: ignore
+        Setting.value.fset(self, value)
         # but the resulting value from the select_map is also applied to the
         # base_setting
         self.base_setting.value = self._value

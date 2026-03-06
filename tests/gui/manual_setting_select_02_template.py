@@ -20,7 +20,7 @@ save button on top, not a delete button.
 # 4) full edit
 # however, some may be included in other frame examples
 
-import tkinter
+import tkinter as tk
 
 from appxf.gui import GridToplevel, SettingSelectDetailFrame
 from appxf.setting import Setting
@@ -42,7 +42,7 @@ setting = Setting.new(
 
 
 class WindowForTesting(GridToplevel):
-    def __init__(self, parent: tkinter.BaseWidget):
+    def __init__(self, parent: tk.BaseWidget):
         super().__init__(
             parent=parent,
             title="Testing Templated Text via SettingSelect",

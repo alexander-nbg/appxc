@@ -4,7 +4,7 @@
 Test case is less about ... TBD
 """
 
-import tkinter
+import tkinter as tk
 
 from appxf import logging
 from appxf.gui import GridToplevel, SettingDictColumnFrame
@@ -29,7 +29,7 @@ setting_dict = {
 # This test case put's everything into it's own frame. The tester will need to
 # monitor console output upon hitting "OK" button.
 class FrameForTesting(GridToplevel):
-    def __init__(self, parent: tkinter.BaseWidget, setting):
+    def __init__(self, parent: tk.BaseWidget, setting):
         super().__init__(parent=parent, title="Testing Setting Lists")
         self.bind("<<OK>>", lambda _event: self._handle_ok())
 

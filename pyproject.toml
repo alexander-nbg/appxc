@@ -45,21 +45,13 @@ test-sandbox-root = "./.testing"
 select = ["ALL"]
 ignore = [
   # TODO: The following rules are currently reviewed for planning or adequate
-  # argumentation. They correspond to 440 issues.
+  # argumentation. They correspond to 167 issues.
   "ARG001", "ARG002",
   "DTZ",
-  "EM101", "EM102",
   "EXE001", "EXE003", "EXE005",
   "FBT001", "FBT002", "FBT003",
-  "ICN001",
-  "INP001",
-  "PGH003",
-  "PGH004",
-  "PIE790",
   "PLW",
   "PTH",
-  "RSE102",
-  "SLF001",
   # EXCLUDED RULES
   # --------------
   # Feel free to add any rule which is conflicting with the ruff formater. Those rules
@@ -68,6 +60,7 @@ ignore = [
   # irritating warning message upon [ruff format]. See also:
   # https://docs.astral.sh/ruff/formatter/#conflicting-lint-rules.
   "COM812",  # Conflicts with formater AND causes warning message on [ruff format]
+  "EM",      # avoid extra code and accept duplication in error messages
   "FIX002",  # Even in an APPXF v1.0.0, TODO remarks remain being allowed if a
              # corresponding ticket was created, is linked and still actove (TODO #42).
              # Despite TODO, no other tag should be used and other FIX rules remain in
@@ -82,7 +75,8 @@ ignore = [
   # strategy to decrease numbers over time will be in place.
   #
   # TODO: the decrease over time strategy.
-  "ANN", "BLE001", "D", "ERA001", "PLR2004", "PT", "PTH", "RUF100", "T201", "TRY003"
+  "ANN", "BLE001", "D", "ERA001", "PLR2004", "PT", "PTH",
+  "RUF100", "SLF001", "T201", "TRY003"
 ]
 
 [tool.ruff.format]
@@ -109,11 +103,19 @@ suppress-none-returning = true
   "ARG",     # relaxing on unused arguments and alike
   "ERA001",  # commented out code is acceptable
   "FURB171", # "something in [1] is quite OK in test code
+  "INP001",  # no __init__.py package init for test code
   "PLR",     # refactoring suggestions OK to ignore
   "T201",    # print statements in tests are OK
   "TRY",     # allow quick-to-implement error handling in tests
-  "S"        # No security checks for test code
+  "S",       # No security checks for test code
   ]
+"tests/**/*.py" = [
+  "SLF001"   # accessing private members in UT's is OK (but not in feature tests)
+]
+
+"doc/**/*.py" = [
+  "INP001" # no __init.py__ for doc configuration
+]
 
 # TODO: matema is generally in draft status and not usable. Disabling security schecks.
 "src/appxf_matema/**/*.py" = [

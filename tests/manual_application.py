@@ -1,6 +1,6 @@
 # Copyright 2023-2026 the contributors of APPXF (github.com/alexander-nbg/appxf)
 # SPDX-License-Identifier: Apache-2.0
-import tkinter
+import tkinter as tk
 
 import pytest
 
@@ -8,13 +8,13 @@ from tests._fixtures import fake_tkinter
 
 fake_tkinter.activate()
 
-from appxf.gui.application import AppxfApplication  # noqa E402
+from appxf.gui.application import AppxfApplication  # noqa: E402
 
 # TODO: This test case was rendered "manual" but the cases look like automated
 # ones. Cannot reconsider right now since it needs more effort.
 
 
-class DummyFrame(tkinter.Frame):
+class DummyFrame(tk.Frame):
     def __init__(self, parent, arg_a, arg_b, *args, **kwargs):
         super().__init__(parent)
         self.arg_a = arg_a

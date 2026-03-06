@@ -63,9 +63,13 @@ class SettingExtension(Setting[_BaseTypeT], Generic[_BaseSettingT, _BaseTypeT]):
     # To still provide an implementaiton of the classmethod, we provide a dummy
     # implementation (which violates the assumed types)
 
-    @classmethod
-    def get_default(cls) -> _BaseTypeT:  # noqa F811
-        return None  # type: ignore
+    #    @classmethod
+    #    def get_default(cls) -> _BaseTypeT:  # noqa: F811
+    #        return None
+
+    # TODO: the above code was commented out due to ruff checks (None type return) and
+    # automatic unit testing did not show issues. Code was retained because of the TODO
+    # remark below.
 
     # TODO: the above double definition of get_default() is not correct and one
     # of the main reasons why the SettingExtension concept must be reworked.
@@ -85,6 +89,6 @@ class SettingExtension(Setting[_BaseTypeT], Generic[_BaseSettingT, _BaseTypeT]):
     def value(self, value: Any):
         # first step is like in base implementation - whatever the extension
         # does
-        Setting.value.fset(self, value)  # type: ignore
+        Setting.value.fset(self, value)
         # but the result is also applied to the base_setting
         self.base_setting.value = self._value

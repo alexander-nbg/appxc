@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 """Provide GUI classes for yagni_cft Config objects."""
 
-import tkinter
+import tkinter as tk
 
 from appxf.config import Config
 from appxf.gui import manual_config_update
@@ -16,14 +16,14 @@ from appxf.registry import Registry
 # https://www.plus2net.com/python/tkinter-validation.php
 
 
-class ConfigMenu(tkinter.Menu):
+class ConfigMenu(tk.Menu):
     """Menu for Configuration Options and User Database"""
 
     log = logging.getLogger(__name__ + ".ConfigMenu")
 
     def __init__(
         self,
-        parent: tkinter.Tk,
+        parent: tk.Tk,
         config: Config,
         registry: Registry | None = None,
         root_path: str = ".",

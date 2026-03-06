@@ -9,7 +9,7 @@
 """
 
 import contextlib
-import tkinter
+import tkinter as tk
 from tkinter import filedialog, messagebox
 
 from appxf import logging
@@ -38,7 +38,7 @@ class RegistrationUser:
         self,
         registry: Registry,
         root_dir: str = "./",
-        parent: tkinter.BaseWidget | None = None,
+        parent: tk.BaseWidget | None = None,
         hide_admin_keys: bool = False,
         **kwargs,
     ):
@@ -125,8 +125,8 @@ class RegistrationUser:
             admin_frame.place(widget=admin_buttons, row=0, column=0)
 
             # Status text (unlabeled) to display admin status
-            self._admin_status_var = tkinter.StringVar(value="")
-            admin_status_label = tkinter.Label(
+            self._admin_status_var = tk.StringVar(value="")
+            admin_status_label = tk.Label(
                 admin_frame,
                 textvariable=self._admin_status_var,
                 anchor="w",

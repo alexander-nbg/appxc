@@ -30,19 +30,19 @@
 # compatible to the compromise. This will imply that AppxfApplication does not
 # take a contructed Frame, only the required class.
 
-import tkinter
+import tkinter as tk
 
 from recordclass import RecordClass
 
 
 class FrameInfo(RecordClass):
-    cls: type[tkinter.Frame]
+    cls: type[tk.Frame]
     args: tuple
     kwargs: dict
-    frame: None | tkinter.Frame
+    frame: None | tk.Frame
 
 
-class AppxfApplication(tkinter.Tk):
+class AppxfApplication(tk.Tk):
     """Main Application Window
 
     This Application Window includes:
@@ -75,7 +75,7 @@ class AppxfApplication(tkinter.Tk):
         """
         super().__init__(*args, **kwargs)
         self._frames: dict[str, FrameInfo] = {}
-        self._dummy_frame = FrameInfo(tkinter.Frame, (), {}, None)
+        self._dummy_frame = FrameInfo(tk.Frame, (), {}, None)
 
         self.rowconfigure(0, weight=1)
         self.columnconfigure(0, weight=1)
@@ -84,8 +84,8 @@ class AppxfApplication(tkinter.Tk):
         self.show_frame("")
 
         # bring menu to life:
-        self.menu = tkinter.Menu(self)
-        self.frame_menu = tkinter.Menu(self.menu, tearoff=0)
+        self.menu = tk.Menu(self)
+        self.frame_menu = tk.Menu(self.menu, tearoff=0)
         self.menu.add_cascade(label="View", menu=self.frame_menu)
         # TODO: We can have (1) no menu at all, (2) a cascaded menu which needs
         # a name for the cascade or (3) the frame names directly within the top
@@ -110,7 +110,7 @@ class AppxfApplication(tkinter.Tk):
             cls -- Frame class to be displayed
 
         """
-        if not issubclass(cls, (tkinter.Frame, tkinter.LabelFrame)):
+        if not issubclass(cls, (tk.Frame, tk.LabelFrame)):
             raise TypeError(
                 f"Provided class [cls] must be a subclass of "
                 f"tkinter's Frame but is: {cls}",

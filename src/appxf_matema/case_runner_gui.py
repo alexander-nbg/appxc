@@ -8,7 +8,7 @@
 # TODO: find a way to start/stop the testing window together with a debug
 # window to show states.
 import re
-import tkinter
+import tkinter as tk
 from collections.abc import Callable
 from dataclasses import dataclass
 from functools import cached_property
@@ -30,7 +30,7 @@ class CaseRunnerGui:
         self,
         case_info: CaseInfo,
         git_info: GitInfo,
-        parent: tkinter.Tk | None = None,
+        parent: tk.Tk | None = None,
     ):
         self._case_info = case_info
         self._git_info = git_info
@@ -39,9 +39,9 @@ class CaseRunnerGui:
 
     @dataclass(eq=False, order=False, frozen=True)
     class GuiStructure:
-        wm: tkinter.Wm
-        process_button_frame: tkinter.Frame
-        observations_text: tkinter.Text
+        wm: tk.Wm
+        process_button_frame: tk.Frame
+        observations_text: tk.Text
 
     # #################
     # Property Access
@@ -54,14 +54,14 @@ class CaseRunnerGui:
 
     # ## GUI related properties
     @cached_property
-    def tk(self) -> tkinter.Tk:
+    def tk(self) -> tk.Tk:
         """Obtain the main Tk instance
 
         In case CaseRunner was called with a parent, this may differ.
         """
-        if isinstance(self.wm, tkinter.Tk):
+        if isinstance(self.wm, tk.Tk):
             return self.wm
-        if not isinstance(self._parent, tkinter.Tk):
+        if not isinstance(self._parent, tk.Tk):
             raise TypeError(
                 f"CaseRunner and CaseRunnerGui "
                 f"must be called with tkinter.Tk as parent but parent "
@@ -85,24 +85,24 @@ class CaseRunnerGui:
 
     def get_observations_text(self) -> str:
         """Get observations from manual test execution as string"""
-        return self.gui_structure.observations_text.get("1.0", tkinter.END)
+        return self.gui_structure.observations_text.get("1.0", tk.END)
 
     def _get_main_window(self) -> GuiStructure:
         """Build and return the main control window GUI
         without calling mainloop.
         """
-        root = tkinter.Tk()
+        root = tk.Tk()
         root.title("APPXF Manual Test Case Runner")
 
         # Test case explanations:
-        instruction_label = tkinter.Label(
+        instruction_label = tk.Label(
             root,
             text="Test Instructions:",
             padx=0,
             pady=0,
         )
         instruction_label.pack(anchor="w", padx=5, pady=0)
-        instruction_frame = tkinter.Frame(root, bd=1, relief="sunken")
+        instruction_frame = tk.Frame(root, bd=1, relief="sunken")
         instruction_frame.pack(fill="x", padx=5, pady=0)
         instruction_widget = self._get_markdown_label(
             parent=instruction_frame,
@@ -112,39 +112,39 @@ class CaseRunnerGui:
         instruction_widget.pack(fill="x")
 
         # Identification label:
-        observations_label = tkinter.Label(root, text="Obervations:", padx=0, pady=0)
+        observations_label = tk.Label(root, text="Obervations:", padx=0, pady=0)
         observations_label.pack(anchor="w", padx=5, pady=0)
 
-        observations_info_frame = tkinter.Frame(root, bd=1, relief="sunken")
+        observations_info_frame = tk.Frame(root, bd=1, relief="sunken")
         observations_info_frame.pack(fill="x", padx=5, pady=0)
-        observations_info_timestamp_label = tkinter.Label(
+        observations_info_timestamp_label = tk.Label(
             observations_info_frame,
             text=(f"UTC Timestamp: {self._case_info.timestamp}",),
-            justify=tkinter.LEFT,
+            justify=tk.LEFT,
         )
         observations_info_timestamp_label.pack(anchor="w", padx=0, pady=0)
-        observations_info_author_label = tkinter.Label(
+        observations_info_author_label = tk.Label(
             observations_info_frame,
             text=(
                 "Author (GIT name <email>): "
                 f"{self._git_info.user_name} "
                 f"<{self._git_info.user_email}>"
             ),
-            justify=tkinter.LEFT,
+            justify=tk.LEFT,
         )
         observations_info_author_label.pack(anchor="w", padx=0, pady=0)
 
         # Test results:
-        observations_text = tkinter.Text(root, width=80, height=15)
+        observations_text = tk.Text(root, width=80, height=15)
         observations_text.insert("1.0", "Enter observations...")
         observations_text.pack(anchor="w", fill="x", padx=5, pady=0)
 
         # an empty button frame between observations nad fail/OK buttons.
-        extra_button_frame = tkinter.Frame(root)
+        extra_button_frame = tk.Frame(root)
         extra_button_frame.pack()
 
         # Button Frame
-        button_frame = tkinter.Frame(root)
+        button_frame = tk.Frame(root)
         button_frame.pack()
 
         # Create the CaseRunnerGui object that will be passed to
@@ -156,19 +156,19 @@ class CaseRunnerGui:
         )
 
         # OK Button:
-        button_ok = tkinter.Button(
+        button_ok = tk.Button(
             button_frame,
             text="OK",
             command=lambda: self.button_ok(),
         )
-        button_ok.pack(side=tkinter.LEFT)
+        button_ok.pack(side=tk.LEFT)
         # Failed Button:
-        button_failed = tkinter.Button(
+        button_failed = tk.Button(
             button_frame,
             text="Fail",
             command=lambda: self.button_failed(),
         )
-        button_failed.pack(side=tkinter.LEFT)
+        button_failed.pack(side=tk.LEFT)
 
         # TODO: for toplevel, we might want to reopen it.
 
@@ -184,7 +184,7 @@ class CaseRunnerGui:
         parent,
         markdown_text: str,
         width: int = 400,
-    ) -> tkinter.Widget:
+    ) -> tk.Widget:
         """Get label displaying markdown formatted text"""
         # Convert markdown to HTML
         html = markdown.markdown(markdown_text)
@@ -216,14 +216,14 @@ class CaseRunnerGui:
         """Add a button that spawns a subprocess to execute a
         process function.
         """
-        button = tkinter.Button(
+        button = tk.Button(
             self.gui_structure.process_button_frame,
             text=label,
             command=command,
         )
-        button.pack(side=tkinter.LEFT)
+        button.pack(side=tk.LEFT)
 
-    def place_toplevel(self, top_level: tkinter.Toplevel):
+    def place_toplevel(self, top_level: tk.Toplevel):
         """Place a toplevel to the right of CaseRunnerGui control window"""
         self.tk.update()
         top_level.update()

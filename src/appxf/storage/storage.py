@@ -563,7 +563,7 @@ class Storage(ABC):
         self._register_storage(name, location, self)
         # register in base storage, if applicable:
         if base_storage is not None:
-            base_storage._register_storage(name, location, self)
+            base_storage._register_storage(name, location, self)  # noqa: SLF001
 
     @property
     def name(self):

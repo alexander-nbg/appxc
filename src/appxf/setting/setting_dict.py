@@ -388,7 +388,7 @@ class SettingDict(Setting[dict], Storable, MutableMapping[str, Setting]):
             self.options.update_from_kwarg(data)
         else:
             settings = data
-            setting_keys = [key for key in data if key == "_version"]
+            setting_keys = [key for key in data if key != "_version"]
 
         # check mismatch of keys:
         current_keys = set(self._value.keys())

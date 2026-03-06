@@ -6,7 +6,7 @@ Switch Button: It toggle buttons to switch to start/second.
 Switching must NOT resize the window.
 """
 
-import tkinter
+import tkinter as tk
 
 from appxf.gui.application import AppxfApplication
 from appxf_matema.case_runner import ManualCaseRunner
@@ -15,7 +15,7 @@ app = AppxfApplication()
 app.title("AppxfApplication Dummy")
 
 
-class DummyFrame(tkinter.Frame):
+class DummyFrame(tk.Frame):
     def __init__(self, *args, **kwargs):
         next_frame = kwargs.get("next_frame", "start")
         kwargs.pop("next_frame")
@@ -26,7 +26,7 @@ class DummyFrame(tkinter.Frame):
             highlightthickness=2,
         )
 
-        button = tkinter.Button(
+        button = tk.Button(
             self,
             text=f"Switch to [{next_frame}]",
             command=lambda: app.show_frame(next_frame),

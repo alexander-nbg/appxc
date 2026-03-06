@@ -54,7 +54,7 @@ class Storable(Stateful):
         if not self._storage.exists():
             # Protect deriving classes treating empty data like b''.
             raise AppxfStorableError("Storage does not exist.")
-        self.set_state(self._storage.load(), **self.set_state_kwargs)  # type: ignore  # see store()
+        self.set_state(self._storage.load(), **self.set_state_kwargs)
 
     def store(self):
         """Store to provided Storage"""

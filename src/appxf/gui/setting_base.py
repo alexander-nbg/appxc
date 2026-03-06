@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 """Provide GUI classes for APPXF Setting objects."""
 
-import tkinter
+import tkinter as tk
 from abc import ABC, abstractmethod
 
 from appxf import logging
@@ -17,7 +17,7 @@ from .common import GridFrame, GridSetting
 class SettingFrameBase(GridFrame, ABC):
     """defining required interfaces for setting based frames"""
 
-    def __init__(self, parent: tkinter.BaseWidget, read_only: bool = False, **kwargs):
+    def __init__(self, parent: tk.BaseWidget, read_only: bool = False, **kwargs):
         super().__init__(parent=parent, **kwargs)
         self.read_only = read_only
 
@@ -41,7 +41,7 @@ class SettingFrameDefault(SettingFrameBase):
 
         # Place label - still place something empty if label is '' to satisfy
         # implementations expecting something (like alignment of columns)
-        self.label = tkinter.Label(self, justify="right")
+        self.label = tk.Label(self, justify="right")
         if setting.options.name:
             self.label.config(text=setting.options.name + ":")
         else:
@@ -52,20 +52,20 @@ class SettingFrameDefault(SettingFrameBase):
         # conversion must be handled by the setting class for stranger examples
         # like SettingBase64
         value = self.setting.to_string()
-        self.sv = tkinter.StringVar(self, value)
+        self.sv = tk.StringVar(self, value)
         self.sv.trace_add("write", lambda _var, _index, _mode: self.value_update())
 
         entry_width = getattr(setting.options, "display_width", 15)
         entry_height = getattr(setting.options, "display_height", 1)
         if entry_height > 1:
-            self.entry = tkinter.Text(self, width=entry_width, height=entry_height)
+            self.entry = tk.Text(self, width=entry_width, height=entry_height)
             self.entry.insert("1.0", self.setting.value)
             self.entry.bind("<KeyRelease>", lambda _event: self._text_field_changed())
             entry_sticky = "NSEW"
             x_padding = (5, 0)
             self.rowconfigure(0, weight=1)
         else:
-            self.entry = tkinter.Entry(self, textvariable=self.sv, width=entry_width)
+            self.entry = tk.Entry(self, textvariable=self.sv, width=entry_width)
             entry_sticky = "NEW"
             x_padding = 5
             self.rowconfigure(0, weight=0)
@@ -84,10 +84,10 @@ class SettingFrameDefault(SettingFrameBase):
 
         # add scrollbar for long texts
         scrollbar = getattr(setting.options, "scrollbar", bool(entry_height >= 3))
-        if scrollbar and isinstance(self.entry, tkinter.Text):
-            self.scrollbar = tkinter.Scrollbar(
+        if scrollbar and isinstance(self.entry, tk.Text):
+            self.scrollbar = tk.Scrollbar(
                 self,
-                orient=tkinter.VERTICAL,
+                orient=tk.VERTICAL,
                 command=self.entry.yview,
             )  # type: ignore (entry is Text)
             self.place(
@@ -102,15 +102,15 @@ class SettingFrameDefault(SettingFrameBase):
         if self.read_only:
             if deactivate:
                 self.entry.config(state="normal")
-            elif isinstance(self.entry, tkinter.Text):
+            elif isinstance(self.entry, tk.Text):
                 self.entry.config(state="disabled")
             else:
                 self.entry.config(state="readonly")
 
     def update(self):
         self._handle_read_only(deactivate=True)
-        if isinstance(self.entry, tkinter.Text):
-            self.entry.delete("1.0", tkinter.END)
+        if isinstance(self.entry, tk.Text):
+            self.entry.delete("1.0", tk.END)
             self.entry.insert("1.0", self.setting.value)
         else:
             self.sv.set(self.setting.value)
@@ -118,7 +118,7 @@ class SettingFrameDefault(SettingFrameBase):
         super().update()
 
     def _text_field_changed(self):
-        value = self.entry.get("1.0", tkinter.END)
+        value = self.entry.get("1.0", tk.END)
         if value.endswith("\n"):
             value = value[0:-1]
         self.sv.set(value)
@@ -153,13 +153,13 @@ class SettingFrameBool(SettingFrameBase):
 
         self.setting = setting
 
-        self.label = tkinter.Label(self, justify="right")
+        self.label = tk.Label(self, justify="right")
         self.label.config(text=setting.options.name + ":")
         self.place(self.label, row=0, column=0)
 
-        self.iv = tkinter.IntVar(self, value=self.setting.value)
+        self.iv = tk.IntVar(self, value=self.setting.value)
 
-        self.checkbox = tkinter.Checkbutton(self, text="", variable=self.iv)
+        self.checkbox = tk.Checkbutton(self, text="", variable=self.iv)
         self.place(self.checkbox, row=0, column=1)
 
         self.iv.trace_add("write", lambda _var, _index, _mode: self.value_update())

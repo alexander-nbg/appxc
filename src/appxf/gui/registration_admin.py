@@ -8,7 +8,7 @@
   roles, and generating responses.
 """
 
-import tkinter
+import tkinter as tk
 from tkinter import filedialog, messagebox
 
 from appxf import logging
@@ -38,7 +38,7 @@ class RegistrationAdmin:
         registry: Registry,
         user_config: SettingDict,
         root_dir: str = "./",
-        parent: tkinter.BaseWidget | None = None,
+        parent: tk.BaseWidget | None = None,
         **kwargs,
     ):
         """Initialize RegistrationAdmin and build GUI.
@@ -56,12 +56,12 @@ class RegistrationAdmin:
         self._parent = parent
 
         # GUI elements stored for access by action handlers
-        self._admin_window: tkinter.Tk | tkinter.Toplevel | None = None
+        self._admin_window: tk.Tk | tk.Toplevel | None = None
         # If provided, `user_config` is the SettingDict for user data
         self._user_config: SettingDict = user_config
         self._user_data_dict: SettingDict | None = None
         self._user_data_frame: SettingDictSingleFrame | None = None
-        self._role_vars: dict[str, tkinter.BooleanVar] = {}
+        self._role_vars: dict[str, tk.BooleanVar] = {}
         self._current_request = None
         self._current_user_id: int | None = None
 
@@ -82,14 +82,14 @@ class RegistrationAdmin:
 
         # Create root window (Tk) or toplevel depending on parent
         if self._parent is None:
-            self._admin_window = tkinter.Tk()
+            self._admin_window = tk.Tk()
             self._admin_window.title("User Registration - Admin Panel")
         else:
-            self._admin_window = tkinter.Toplevel(self._parent)
+            self._admin_window = tk.Toplevel(self._parent)
             self._admin_window.title("Admin - Registration")
 
         # ==== SECTION 1: Action Buttons ====
-        section1_frame = tkinter.LabelFrame(
+        section1_frame = tk.LabelFrame(
             self._admin_window,
             text="Actions",
             padx=10,
@@ -97,22 +97,22 @@ class RegistrationAdmin:
         )
         section1_frame.pack(fill="x", padx=10, pady=10)
 
-        gen_keys_btn = tkinter.Button(
+        gen_keys_btn = tk.Button(
             section1_frame,
             text="Generate Admin Keys",
             command=lambda: self._on_export_admin_keys(),
         )
-        gen_keys_btn.pack(side=tkinter.LEFT, padx=5)
+        gen_keys_btn.pack(side=tk.LEFT, padx=5)
 
-        load_req_btn = tkinter.Button(
+        load_req_btn = tk.Button(
             section1_frame,
             text="Load Registration Request",
             command=lambda: self._on_load_registration_request(),
         )
-        load_req_btn.pack(side=tkinter.LEFT, padx=5)
+        load_req_btn.pack(side=tk.LEFT, padx=5)
 
         # ==== SECTION 2: User Data Display ====
-        section2_frame = tkinter.LabelFrame(
+        section2_frame = tk.LabelFrame(
             self._admin_window,
             text="User Data (from Request)",
             padx=10,
@@ -151,7 +151,7 @@ class RegistrationAdmin:
         section3_frame.pack(fill="x", padx=10, pady=5)
 
         # ==== SECTION 4: Admin Action Buttons ====
-        section4_frame = tkinter.Frame(self._admin_window)
+        section4_frame = tk.Frame(self._admin_window)
         section4_frame.pack(fill="x", padx=10, pady=10)
 
         def on_close():
@@ -252,29 +252,29 @@ class RegistrationAdmin:
                     parent=self._admin_window,
                 )
 
-        close_btn = tkinter.Button(
+        close_btn = tk.Button(
             section4_frame,
             text="Close",
             command=on_close,
             width=15,
         )
-        close_btn.pack(side=tkinter.LEFT, padx=5)
+        close_btn.pack(side=tk.LEFT, padx=5)
 
-        add_user_btn = tkinter.Button(
+        add_user_btn = tk.Button(
             section4_frame,
             text="Add User",
             command=on_add_user,
             width=15,
         )
-        add_user_btn.pack(side=tkinter.LEFT, padx=5)
+        add_user_btn.pack(side=tk.LEFT, padx=5)
 
-        write_resp_btn = tkinter.Button(
+        write_resp_btn = tk.Button(
             section4_frame,
             text="Write Response",
             command=on_write_response,
             width=15,
         )
-        write_resp_btn.pack(side=tkinter.LEFT, padx=5)
+        write_resp_btn.pack(side=tk.LEFT, padx=5)
 
         if self._parent is None:
             self._admin_window.mainloop()

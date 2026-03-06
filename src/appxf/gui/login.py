@@ -6,8 +6,7 @@ Exception UserAbortError is defined to terminate the application on
 Login.check().
 """
 
-import tkinter
-import tkinter.ttk
+import tkinter as tk
 
 from appxf import logging
 from appxf.gui.locale import _
@@ -79,7 +78,7 @@ class Login:
         derived from it. Only this derived key is returned. The password itself
         is not stored.
         """
-        gui_root = tkinter.Tk()
+        gui_root = tk.Tk()
         gui_root.title(_("window", "Login - Initialize"))
         gui_root.rowconfigure(0, weight=1)
         gui_root.columnconfigure(1, weight=1)
@@ -92,21 +91,21 @@ class Login:
         user_config.grid(row=0, column=0, sticky="NSWE", columnspan=2)
         left_min_size_config = user_config.get_left_col_min_width()
 
-        sep = tkinter.ttk.Separator(gui_root, orient="horizontal")
+        sep = tk.ttk.Separator(gui_root, orient="horizontal")
         sep.grid(row=1, column=0, columnspan=2, sticky="WE")
 
-        pwd_label = tkinter.Label(gui_root, justify="right")
+        pwd_label = tk.Label(gui_root, justify="right")
         pwd_label.config(text=_("label", "Password:"))
         pwd_label.grid(row=2, column=0, padx=5, pady=5, sticky="E")
 
-        pwd_rep_label = tkinter.Label(gui_root, justify="right")
+        pwd_rep_label = tk.Label(gui_root, justify="right")
         pwd_rep_label.config(text=_("label", "Repeat Password:"))
         pwd_rep_label.grid(row=3, column=0, padx=5, pady=5, sticky="E")
 
-        pwd_entry = tkinter.Entry(gui_root, show="*", width=20)
+        pwd_entry = tk.Entry(gui_root, show="*", width=20)
         pwd_entry.grid(row=2, column=1, padx=5, pady=5, sticky="W")
 
-        pwd_rep_entry = tkinter.Entry(gui_root, show="*", width=20)
+        pwd_rep_entry = tk.Entry(gui_root, show="*", width=20)
         pwd_rep_entry.grid(row=3, column=1, padx=5, pady=5, sticky="W")
 
         # get password left column min width
@@ -149,7 +148,7 @@ class Login:
                 self.log.debug("OK, quit")
                 gui_root.destroy()
 
-        ok_button = tkinter.Button(
+        ok_button = tk.Button(
             gui_root,
             text=_("button", "OK"),
             command=ok_button_function,
@@ -165,17 +164,17 @@ class Login:
             raise UserAbortError
 
     def __run_login_gui(self):
-        gui_root = tkinter.Tk()
+        gui_root = tk.Tk()
         gui_root.title(_("window", "Login"))
         gui_root.rowconfigure(1, weight=1)
         gui_root.columnconfigure(1, weight=1)
         gui_root.columnconfigure(2, weight=1)
 
-        pwd_label = tkinter.Label(gui_root, justify="right")
+        pwd_label = tk.Label(gui_root, justify="right")
         pwd_label.config(text=_("label", "Password:"))
         pwd_label.grid(row=2, column=1, padx=5, pady=5, sticky="E")
 
-        pwd_entry = tkinter.Entry(gui_root, show="*", width=20)
+        pwd_entry = tk.Entry(gui_root, show="*", width=20)
         pwd_entry.grid(row=2, column=2, padx=5, pady=5, sticky="W")
 
         def ok_button_function(_event=None):
@@ -189,7 +188,7 @@ class Login:
                 )
                 self.log.warning("Password wrong, but we continue.")
 
-        ok_button = tkinter.Button(
+        ok_button = tk.Button(
             gui_root,
             text=_("button", "OK"),
             command=ok_button_function,

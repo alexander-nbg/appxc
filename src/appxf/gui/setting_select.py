@@ -1,6 +1,6 @@
 # Copyright 2024-2026 the contributors of APPXF (github.com/alexander-nbg/appxf)
 # SPDX-License-Identifier: Apache-2.0
-import tkinter
+import tkinter as tk
 from copy import deepcopy
 from tkinter import ttk
 
@@ -29,12 +29,12 @@ class _DropdownOnly(SettingFrameBase):
 
         self.columnconfigure(1, weight=1)
 
-        self.label = tkinter.Label(self, justify="right")
+        self.label = tk.Label(self, justify="right")
         self.label.config(text=setting.options.name + ":")
         self.label.grid(row=0, column=0, padx=5, pady=5, sticky="NE")
 
         value = str(self.setting.input)
-        self.sv = tkinter.StringVar(self, value)
+        self.sv = tk.StringVar(self, value)
         self.sv.trace_add("write", lambda _var, _index, _mode: self.value_update())
 
         self.entry_width = getattr(setting.options, "display_width", 15)
@@ -77,12 +77,12 @@ class _DropdownOnly(SettingFrameBase):
 
         x = self.entry.winfo_rootx()
         y = self.entry.winfo_rooty() + self.entry.winfo_height()
-        self.tipwindow = tkinter.Toplevel(self.entry)
+        self.tipwindow = tk.Toplevel(self.entry)
         self.tipwindow.wm_overrideredirect(True)
         self.tipwindow.wm_geometry(f"+{x}+{y}")
         # self.tipwindow.maxsize(int(1/3*self.winfo_screenwidth()),
         #                        int(1/2*self.winfo_screenheight()))
-        label = tkinter.Label(
+        label = tk.Label(
             self.tipwindow,
             text=text,
             justify="left",
@@ -338,7 +338,7 @@ class SettingSelectFrame(_DropdownOnly):
 
         # add edit button if options are mutable
         if getattr(setting.options, "mutable_list", False):
-            self.edit_button = tkinter.Button(
+            self.edit_button = tk.Button(
                 self,
                 text="Edit",
                 padx=0,
