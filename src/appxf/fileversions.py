@@ -85,7 +85,7 @@ def get_filename(
     """
     # Input handling
     if date is None:
-        date = datetime.date.today()
+        date = datetime.datetime.now(tz=datetime.timezone.utc).date()
 
     filename = _fill_date_pattern(name_format, date)
     log.debug(

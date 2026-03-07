@@ -1,7 +1,7 @@
 # Copyright 2023-2026 the contributors of APPXF (github.com/alexander-nbg/appxf)
 # SPDX-License-Identifier: Apache-2.0
 import asyncio
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 import ntplib
 
@@ -48,7 +48,7 @@ class NtpTime:  # pragma: no cover
     @classmethod
     def get_offset_from_utc_now(cls):
         if not cls.last_sync_as_datetime or cls.last_sync_as_datetime < (
-            datetime.utcnow() - timedelta(cls.resync_minutes)
+            datetime.now(tz=timezone.utc) - timedelta(cls.resync_minutes)
         ):
             cls._update_time_sync()
         return cls.offset
@@ -60,13 +60,13 @@ class NtpTime:  # pragma: no cover
 
     @classmethod
     async def _request_servers_and_update(cls):
-        timestamp_one = datetime.utcnow()
+        timestamp_one = datetime.now(tz=timezone.utc)
         servers = [
             str(prefix) + "." + cls.base_server for prefix in cls.server_prefix_list
         ]
         tasks = [asyncio.Task(cls._request_server(server)) for server in servers]
         done, _ = await asyncio.wait(tasks, return_when=asyncio.FIRST_COMPLETED)
-        timestamp_two = datetime.utcnow()
+        timestamp_two = datetime.now(tz=timezone.utc)
 
         elapsed_time = timestamp_two - timestamp_one
         if elapsed_time > timedelta(seconds=1):
@@ -79,7 +79,10 @@ class NtpTime:  # pragma: no cover
             result = task.result()
             if result:
                 cls.last_sync_as_datetime = timestamp_one + 0.5 * elapsed_time
-                cls.last_sync_as_ntp_recv = datetime.utcfromtimestamp(result.recv_time)
+                cls.last_sync_as_ntp_recv = datetime.fromtimestamp(
+                    result.recv_time,
+                    tz=timezone.utc,
+                )
                 cls.offset = result.offset
                 cls.log.info(
                     "Sync system time [%s], NTP time [%s] "

@@ -100,14 +100,14 @@ class RegistrationAdmin:
         gen_keys_btn = tk.Button(
             section1_frame,
             text="Generate Admin Keys",
-            command=lambda: self._on_export_admin_keys(),
+            command=self._on_export_admin_keys,
         )
         gen_keys_btn.pack(side=tk.LEFT, padx=5)
 
         load_req_btn = tk.Button(
             section1_frame,
             text="Load Registration Request",
-            command=lambda: self._on_load_registration_request(),
+            command=self._on_load_registration_request,
         )
         load_req_btn.pack(side=tk.LEFT, padx=5)
 

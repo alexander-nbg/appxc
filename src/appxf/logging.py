@@ -118,7 +118,7 @@ def cleanup(directory: str, n_files: int = 5):
 
     files = filter(is_relevant, os.listdir(directory))
     files = [os.path.join(directory, f) for f in files]
-    files.sort(key=lambda x: os.path.getmtime(x))
+    files.sort(key=os.path.getmtime)
     for file in files[:-n_files]:
         os.remove(file)
 

@@ -3,7 +3,7 @@
 """signature behavior for authenticity"""
 
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 
 
 class MetaData:
@@ -21,7 +21,7 @@ class MetaData:
             self.hash: bytes = b""
             self.timestamp: str | None = None
             if valid:
-                self.timestamp = datetime.now().isoformat()
+                self.timestamp = datetime.now(tz=timezone.utc).isoformat()
 
     def get_state(self) -> dict:
         return self.__dict__

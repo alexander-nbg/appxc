@@ -159,14 +159,14 @@ class CaseRunnerGui:
         button_ok = tk.Button(
             button_frame,
             text="OK",
-            command=lambda: self.button_ok(),
+            command=self.button_ok,
         )
         button_ok.pack(side=tk.LEFT)
         # Failed Button:
         button_failed = tk.Button(
             button_frame,
             text="Fail",
-            command=lambda: self.button_failed(),
+            command=self.button_failed,
         )
         button_failed.pack(side=tk.LEFT)
 
@@ -196,7 +196,7 @@ class CaseRunnerGui:
 
         # Ensure text wraps within width
         # widget.fit_height()  # Adjust height to content
-        widget.after(100, lambda: widget.fit_height())
+        widget.after(100, widget.fit_height)
 
         return widget
 

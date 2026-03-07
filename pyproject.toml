@@ -44,14 +44,6 @@ test-sandbox-root = "./.testing"
 # good reasons to change.
 select = ["ALL"]
 ignore = [
-  # TODO: The following rules are currently reviewed for planning or adequate
-  # argumentation. They correspond to 167 issues.
-  "ARG001", "ARG002",
-  "DTZ",
-  "EXE001", "EXE003", "EXE005",
-  "FBT001", "FBT002", "FBT003",
-  "PLW",
-  "PTH",
   # EXCLUDED RULES
   # --------------
   # Feel free to add any rule which is conflicting with the ruff formater. Those rules
@@ -68,14 +60,18 @@ ignore = [
   "TC001", "TC003", # import readability over minor performance improvement
   "TD",      # TODO rules in APPXF do not follow this pattern
   "C901",    # Complexity shall be rated by reviewers
+  "FBT",     # boolean positional arguments are common for set(key, value) patterns and
+  # requiring an extra * to enforce named keyword arguments messes up the function
+  # definition. Issues can be identified in review.
   "PLR0911", "PLR0912", "PLR0913", "PLR0915", # "too many" to be rated by reviewers
+  "PLW2901", # changing loop variable is considered OK
   "RET504",  # naming the return value does not do any harm
 
   # PENDING RULES: The activation/fixing of the following rules is delayed and a
   # strategy to decrease numbers over time will be in place.
   #
   # TODO: the decrease over time strategy.
-  "ANN", "BLE001", "D", "ERA001", "PLR2004", "PT", "PTH",
+  "ANN", "ARG001", "ARG002", "BLE001", "D", "ERA001", "PLR2004", "PT", "PTH",
   "RUF100", "SLF001", "T201", "TRY003"
 ]
 
@@ -102,6 +98,7 @@ suppress-none-returning = true
   "ANN",     # relaxing on type annotations
   "ARG",     # relaxing on unused arguments and alike
   "ERA001",  # commented out code is acceptable
+  "FBT002",  # allow boolean positional arguments (not enforcing as keyword-argument)
   "FURB171", # "something in [1] is quite OK in test code
   "INP001",  # no __init__.py package init for test code
   "PLR",     # refactoring suggestions OK to ignore

@@ -373,7 +373,7 @@ def evaluate_not_mutable_error(err: Exception, case: str):
         assert "key test" in err_string
     elif case == "add item":
         assert "New keys cannot be added" in err_string
-        assert "You provided key test_new as new key"
+        assert "You provided key test_new as new key" in err_string
     elif case == "overwrite item":
         assert "settings cannot be replaced" in err_string
         assert "You provided value" in err_string

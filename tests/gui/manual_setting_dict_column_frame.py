@@ -8,7 +8,7 @@ Columns: Placing options on top of this widget will test alignement of entry
 fields. Here, all properties are independent and entry fields start directly
 after the label.
 """
-#! TODO: update testing text
+# TODO: update testing text
 
 from appxf.gui import setting_dict
 from appxf.setting import SettingBool, SettingEmail, SettingString

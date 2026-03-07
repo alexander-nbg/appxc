@@ -7,7 +7,7 @@ specific tests. Like in storage module: RamStorage or LocalStorage.
 """
 
 from abc import ABC, abstractmethod
-from datetime import datetime
+from datetime import datetime, timezone
 
 from appxf.storage import MetaData, Storage
 
@@ -72,7 +72,7 @@ class BaseStorageTest(ABC):
         assert isinstance(meta, MetaData)
         timestamp = meta.timestamp
         uuid_one = meta.uuid
-        time_diff = datetime.now() - datetime.fromisoformat(timestamp)
+        time_diff = datetime.now(tz=timezone.utc) - datetime.fromisoformat(timestamp)
         assert time_diff.total_seconds() < 1
 
         # second store must have differt uuid

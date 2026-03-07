@@ -14,7 +14,7 @@ from appxf.registry import (
 from appxf.storage import CompactSerializer, Storage
 from tests._fixtures import appxf_objects
 
-#! TODO: those getters should be moved into appxf_objects as functions and not
+# TODO: those getters should be moved into appxf_objects as functions and not
 #  as fixtures
 
 # TODO: test cases on size of registry with multiple users and roles (may be

@@ -461,21 +461,22 @@ def test_setting_completeness():
             and issubclass(obj, BaseSettingTest)
             and obj is not BaseSettingTest
         ):
-            obj: BaseSettingTest = obj
+            setting_test: BaseSettingTest = obj
 
-            assert obj.invalid_init, (
-                f"Test class {obj.__name__} must define "
+            assert setting_test.invalid_init, (
+                f"Test class {setting_test.__name__} must define "
                 f"invalid input values (invalid_input)."
             )
-            assert obj.valid_input, (
-                f"Test class {obj.__name__} must define valid test cases SettingCase."
+            assert setting_test.valid_input, (
+                f"Test class {setting_test.__name__} must define "
+                f"valid test cases SettingCase."
             )
 
-            assert obj.setting_class is not None
-            tested_classes.add(obj.setting_class)
+            assert setting_test.setting_class is not None
+            tested_classes.add(setting_test.setting_class)
 
-            assert obj.setting_types
-            for this_type in obj.setting_types:
+            assert setting_test.setting_types
+            for this_type in setting_test.setting_types:
                 tested_types.add(this_type)
 
     # Check for missing coverage

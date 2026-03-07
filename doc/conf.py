@@ -6,8 +6,9 @@ from pathlib import Path
 project = "APPXF"
 html_title = "APPXF"
 author = "the contributors of APPXF (github.com/alexander-nbg/appxf)"
+copyright_year = date.today().year  # noqa: DTZ011 no timezone for correct year
 copyright = (  # noqa: A001
-    f"{date.today().year} the contributors of APPXF (github.com/alexander-nbg/appxf)"
+    f"{copyright_year} the contributors of APPXF (github.com/alexander-nbg/appxf)"
 )
 
 extensions = [

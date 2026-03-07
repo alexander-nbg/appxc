@@ -1,6 +1,6 @@
 # Copyright 2023-2026 the contributors of APPXF (github.com/alexander-nbg/appxf)
 # SPDX-License-Identifier: Apache-2.0
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 import ntplib
 import pytest
@@ -54,11 +54,12 @@ def test_server_all_fail(mocker, fresh_ntp_time):
 def test_no_second_call(mocker, fresh_ntp_time):
     m = mocker.patch("ntplib.NTPClient.request", side_effect=ntplib_request_ok)
     NtpStatStub.offset = 0
-    NtpStatStub.recv_time = datetime.utcnow().timestamp()
+    NtpStatStub.recv_time = datetime.now(tz=timezone.utc).timestamp()
     offset = NtpTime.get_offset_from_utc_now()
     assert offset == 0
-    assert NtpTime.last_sync_as_ntp_recv == datetime.utcfromtimestamp(
+    assert NtpTime.last_sync_as_ntp_recv == datetime.fromtimestamp(
         NtpStatStub.recv_time,
+        tz=timezone.utc,
     )
     assert m.call_count == 3
     # will not be called again:
