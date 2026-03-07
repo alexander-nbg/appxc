@@ -22,9 +22,12 @@ jobs:
 
       - name: Set up Python
         uses: actions/setup-python@v6
+        with:
+          cache: "pip"
+          cache-dependency-path: dev/requirements.txt
 
       - name: Install ruff
-        run: pip install ruff
+        run: pip install -r dev/requirements.txt
 
       - name: ruff check
         run: ruff check
