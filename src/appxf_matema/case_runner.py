@@ -211,7 +211,7 @@ class ManualCaseRunner:
             setup_func()
         try:
             # Execute the main case runner function
-            self.gui.tk.mainloop()
+            self.gui.tk_root.mainloop()
         finally:
             # Call teardown() if it exists in the tested module
             if hasattr(self.case_parser.module, "teardown"):
@@ -257,7 +257,7 @@ class ManualCaseRunner:
         *args,
         **kwargs,
     ):
-        test_window = tk.Toplevel(self.gui.tk)
+        test_window = tk.Toplevel(self.gui.tk_root)
 
         test_window.rowconfigure(0, weight=1)
         test_window.columnconfigure(0, weight=1)
@@ -275,5 +275,5 @@ class ManualCaseRunner:
         *args,
         **kwargs,
     ):
-        test_window = toplevel_type(self.gui.tk, *args, **kwargs)
+        test_window = toplevel_type(self.gui.tk_root, *args, **kwargs)
         self.gui.place_toplevel(test_window)

@@ -58,7 +58,7 @@ ignore = [
              # Despite TODO, no other tag should be used and other FIX rules remain in
              # place.
   "TC001", "TC003", # import readability over minor performance improvement
-  "TD",      # TODO rules in APPXF do not follow this pattern
+  "TD",      # rules for TODO in APPXF do not follow this pattern
   "C901",    # Complexity shall be rated by reviewers
   "FBT",     # boolean positional arguments are common for set(key, value) patterns and
   # requiring an extra * to enforce named keyword arguments messes up the function
@@ -86,12 +86,12 @@ suppress-none-returning = true
 [tool.ruff.lint.per-file-ignores]
 # Unused imports in __init__.py are intentional re-exports.
 "__init__.py" = ["F401"]
-# TODO: This is a slight issue since in some occasions, it causes unwanted dependencies.
+# TODO: This may be an issue since in some occasions, it causes unwanted dependencies.
 # Example: when storage activated FTP again, any usage of storage would also import the
 # dependency to FTP. This is acceptable for now, but not on the long run. Despite the
 # other solutions (adding to __all__ and maxing the re-imports explicit with [import XY
 # as XY]), merging classes into appropriate longer module files would enable dropping
-# the module facade in __init__.py
+# the module facade in __init__.py.
 
 # Rules are relaxed for test case implementation
 "tests*/**/*.py" = [
@@ -114,7 +114,7 @@ suppress-none-returning = true
   "INP001" # no __init.py__ for doc configuration
 ]
 
-# TODO: matema is generally in draft status and not usable. Disabling security schecks.
+# TODO: matema is generally in draft status and not usable. Disabling security checks.
 "src/appxf_matema/**/*.py" = [
   "ARG", "S603", "S607", "T201"
 ]

@@ -54,7 +54,7 @@ class CaseRunnerGui:
 
     # ## GUI related properties
     @cached_property
-    def tk(self) -> tk.Tk:
+    def tk_root(self) -> tk.Tk:
         """Obtain the main Tk instance
 
         In case CaseRunner was called with a parent, this may differ.
@@ -225,11 +225,11 @@ class CaseRunnerGui:
 
     def place_toplevel(self, top_level: tk.Toplevel):
         """Place a toplevel to the right of CaseRunnerGui control window"""
-        self.tk.update()
+        self.tk_root.update()
         top_level.update()
         width = top_level.winfo_width()
         height = top_level.winfo_height()
-        x = self.tk.winfo_x() + self.tk.winfo_width() + 10
-        y = self.tk.winfo_y()
+        x = self.tk_root.winfo_x() + self.tk_root.winfo_width() + 10
+        y = self.tk_root.winfo_y()
         geom = f"{width}x{height}+{x}+{y}"
         top_level.geometry(geom)
