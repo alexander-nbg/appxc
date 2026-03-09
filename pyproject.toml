@@ -70,7 +70,7 @@ ignore = [
   # PENDING RULES: The activation/fixing of the following rules is delayed and a
   # strategy to decrease numbers over time will be in place.
   #
-  # TODO: the decrease over time strategy.
+  # TODO #55: the decrease over time strategy.
   "ANN", "ARG001", "ARG002", "BLE001", "D", "ERA001", "PLR2004", "PT", "PTH",
   "RUF100", "SLF001", "T201", "TRY003"
 ]
@@ -119,12 +119,16 @@ suppress-none-returning = true
   "ARG", "S603", "S607", "T201"
 ]
 
-# TODO: development scripts are not part of the shipped library and are only running
-# locally and within CI (not in user applications)
+# development scripts are not part of the shipped library and are only running locally
+# and within CI (not in user applications)
 "src/appxf_dev/**/*.py" = [
-  "S607",
+  "S607", # partial executable paths are acceptable in dev-script context
   "T201"  # print statements OK in dev scripts
 ]
+
+[tool.basedpyright]
+include = ["src"]
+# This is a very initial setup of basedpyright which is intended to evolve over time.
 
 [tool.tox]
 legacy_tox_ini = """
