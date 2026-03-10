@@ -1,12 +1,12 @@
 # Copyright 2024-2026 the contributors of APPXF (github.com/alexander-nbg/appxf)
 # SPDX-License-Identifier: Apache-2.0
-'''Helping with file versioning.
+"""Helping with file versioning.
 
 Versioning is typically done by some date format and adding some index. This
 module provides get_filename() to construct corresponging filenames, like:
 20230401_v00_file.txt or 2023_CW04.txt (without version index) or file_007.txt
 (without date information).
-'''
+"""
 
 import datetime
 import logging
@@ -44,21 +44,21 @@ log = logging.getLogger(__name__)
 #
 # Is there a babel "set locale" default??
 def set_locale(locale: str):
-    log.info('Set locale to {locale}')
+    log.info("Set locale to {locale}")
     set_locale.locale = locale
 
 
 # Module variable
-set_locale.locale = 'EN'
+set_locale.locale = "EN"
 
 
 def get_filename(
-    format: str,
+    name_format: str,
     date: datetime.date | None = None,
-    directory: str = './',
+    directory: str = "./",
     existing: bool = False,
 ):
-    '''Get file name from format and date
+    """Get file name from format and date
 
     babel.date.format_date() is used to get the date related parts of the
     filename. All date formatting from babel can be used. appxf identifies
@@ -81,110 +81,108 @@ def get_filename(
 
     Returns:
         File name with date and version.
-    '''
+
+    """
     # Input handling
     if date is None:
-        date = datetime.date.today()
+        date = datetime.datetime.now(tz=datetime.timezone.utc).date()
 
-    filename = _fill_date_pattern(format, date)
+    filename = _fill_date_pattern(name_format, date)
     log.debug(
-        f'Filename is "{filename}" after applying date pattern to '
-        f'"{format}" with date={date}'
+        'Filename is "%s" after applying date pattern to "%s" with date=%s',
+        filename,
+        name_format,
+        date,
     )
-    filename = _fill_version_pattern(filename, directory, existing)
-    return filename
+    return _fill_version_pattern(filename, directory, existing)
 
 
-def _fill_date_pattern(format: str, date: datetime.date):
-    outstr = format
+def _fill_date_pattern(name_format: str, date: datetime.date):
+    outstr = name_format
     # find first opening and closing brackets
     opening_index = -1
     closing_index = -1
     cycle_count = 100
     while True:
-        opening = outstr.find('(')
-        closing = outstr.find(')')
+        opening = outstr.find("(")
+        closing = outstr.find(")")
         # break loop if no brackets are found anymore:
         if opening < 0 and closing < 0:
             break
         # error if opening braket count does not match closing braket count:
         if (opening < 0 and closing >= 0) or (opening >= 0 and closing < 0):
             raise ValueError(
-                f'Format string {format} does not have matching braket for '
-                f'{"opening" if opening > 0 else "closing"} braket at '
-                f'position {opening if opening > 0 else closing}.'
+                f"Format string {name_format} does not have matching braket for "
+                f"{'opening' if opening > 0 else 'closing'} braket at "
+                f"position {opening if opening > 0 else closing}.",
             )
         if opening > closing:
-            raise ValueError(f'Format string {format} close braket before opening.')
+            raise ValueError(
+                f"Format string {name_format} close braket before opening.",
+            )
+        # opening >= 0, opening > closing and opening != closing implies
+        # closing > 0
+        datestr = outstr[(opening + 1) : (closing)]
+        # skip zeros (index part)
+        if datestr.find("0") >= 0:
+            # Error if we find this twice:
+            if opening_index >= 0 or closing_index >= 0:
+                raise ValueError(
+                    f"Format string {name_format} contains two indications "
+                    'for indexing file versions like "(00)". '
+                    "Only one is expected.",
+                )
+            opening_index = opening
+            closing_index = closing
+            # Overwrite with non-braket to find next format string in
+            # next loop
+            outstr = outstr[:opening] + "." + datestr + "." + outstr[closing + 1 :]
         else:
-            # opening >= 0, opening > closing and opening != closing implies
-            # closing > 0
-            datestr = outstr[(opening + 1) : (closing)]
-            # skip zeros (index part)
-            if datestr.find('0') >= 0:
-                # Error if we find this twice:
-                if opening_index >= 0 or closing_index >= 0:
-                    raise ValueError(
-                        f'Format string {format} contains two indications '
-                        'for indexing file versions like "(00)". '
-                        'Only one is expected.'
-                    )
-                else:
-                    opening_index = opening
-                    closing_index = closing
-                    # Overwrite with non-braket to find next format string in
-                    # next loop
-                    outstr = (
-                        outstr[:opening] + '.' + datestr + '.' + outstr[closing + 1 :]
-                    )
-            else:
-                datestr = format_date(date, datestr, locale=set_locale.locale)
-                outstr = outstr[:opening] + datestr + outstr[closing + 1 :]
+            datestr = format_date(date, datestr, locale=set_locale.locale)
+            outstr = outstr[:opening] + datestr + outstr[closing + 1 :]
         # avoid freezing programs due to programming errors
         cycle_count -= 1
         if cycle_count <= 0:
-            assert cycle_count > 0, (
-                f'Implementation error: format string "{format}" lead to infinite loop.'
+            raise RuntimeError(
+                "Implementation error: format string "
+                f'"{name_format}" led to an infinite loop.',
             )
     # revert indexing brakets
     if opening_index >= 0:
         outstr = (
             outstr[:opening_index]
-            + '('
+            + "("
             + outstr[opening_index + 1 : closing_index]
-            + ')'
+            + ")"
             + outstr[closing_index + 1 :]
         )
     return outstr
 
 
-def _fill_version_pattern(filename: str, dir: str, existing: bool):
+def _fill_version_pattern(filename: str, path: str, existing: bool):
     # Note that _fill_date_pattern must always be called before. It contains
     # the error handling for brakets. After that execution, only one braked
     # pair is remaining for versioning (or none).
-    opening = filename.find('(')
-    closing = filename.find(')')
+    opening = filename.find("(")
+    closing = filename.find(")")
     # If there is no versioning pattern, we can return:
     if opening < 0 or closing < 0:
-        if existing and (not os.path.exists(os.path.join(dir, filename))):
+        if existing and (not os.path.exists(os.path.join(path, filename))):
             return None
-        else:
-            return filename
+        return filename
     # If there is one, this is the regexp to match files and see the
-    regex = re.compile(filename[:opening] + r'(\d+)' + filename[closing + 1 :])
+    regex = re.compile(filename[:opening] + r"(\d+)" + filename[closing + 1 :])
     version = -1
     # cycle filenames in directory:
-    if os.path.exists(dir):
-        for file in os.listdir(dir):
+    if os.path.exists(path):
+        for file in os.listdir(path):
             match = re.fullmatch(regex, file)
             if match is None:
                 continue
-            else:
-                # No error handling, int() should convert always since group is
-                # \d+
-                this_version = int(match.group(1))
-                if this_version > version:
-                    version = this_version
+            # No error handling, int() should convert always since group is
+            # \d+
+            this_version = int(match.group(1))
+            version = max(version, this_version)
     else:
         # Nothing to do, file does not exist if directory does not exist
         pass
@@ -192,8 +190,8 @@ def _fill_version_pattern(filename: str, dir: str, existing: bool):
     if existing and version < 0:
         # We cannot return a file name if an existing file is expected
         return None
-    elif not existing:
+    if not existing:
         # We need to use the next version:
         version += 1
-    versionstr = ('{:0' + str(closing - opening - 1) + '}').format(version)
+    versionstr = ("{:0" + str(closing - opening - 1) + "}").format(version)
     return filename[:opening] + versionstr + filename[(closing + 1) :]

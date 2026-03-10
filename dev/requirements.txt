@@ -1,0 +1,14 @@
+# Fixed basedpyright avoiding new rules breaking the CI.
+basedpyright==1.38.2
+# Fixed ruff version avoiding new rules breaking the CI.
+ruff==0.15.2
+
+# TODO #55: Bumping the ruff/basedpyright versions will needs additional remarks how to
+# deal with new findings after version bumping. The following is a draft which relies on
+# ideas on a ramp-down strategy for the currently open findings.
+#  * for ruff: findings must be fixed OR the following steps must be applied: (1) add
+#    rules to temporary ignore filter (pyproject.toml), (2) update threshold
+#    ([appxf.dev] in pyproject.toml), (3) communicate new rules and potential impact by
+#    creating ticket(s) or commenting in PR. For mature modules, new issues MUST be
+#    fixed (no choice).
+#  * for basedpyright: findings must be fixed OR the baseline must be updated.

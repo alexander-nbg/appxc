@@ -9,7 +9,7 @@ build:
     python: '3.12'
   jobs:
     pre_build:
-      - bash scripts/_ensure_plantuml_jar.sh
+      - bash dev/_ensure_plantuml_jar.sh
   apt_packages:
     - default-jre-headless
 

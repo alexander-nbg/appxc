@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # Enable to test for key indexable (object[]) behavior:
 import os.path
+from contextlib import suppress
 
 from ftputil import FTPHost
 
@@ -24,22 +25,23 @@ from .storage_to_bytes import StorageToBytes
 
 
 def retry_method_with_reconnect(method):
-    '''Recover errors with a fresh connection.
+    """Recover errors with a fresh connection.
 
     Executes the decorated method to:
         1) execute method an catch errors (logged as warning)
         2) reinitialize the connection (self.connect())
         3) executes the operation a second time
     (2) and (3) are onl if (1) returns errors.
-    '''
+    """
 
     def method_wrapper(self, *args, **kwargs):
         try:
             return method(self, *args, **kwargs)
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001 should not trigger due to exc_info below
             self.log.warning(
-                f'Error on executing {method.__name__}, '
-                f'try reconnect and repeat. Error: {e}',
+                "Error on executing %s, try reconnect and repeat. Error: %s",
+                method.__name__,
+                e,
                 exc_info=True,
             )
         # reconnect and try again. This time failing with original errors.
@@ -53,10 +55,10 @@ class FtpLocation(StorageToBytes):
     # TODO UPGRADE: The verbose logging should be collected and printet to info
     # when errors occur
 
-    log = logging.getLogger(__name__ + '.RemoteConnection')
+    log = logging.get_logger(__name__ + ".RemoteConnection")
 
-    def __init__(self, host: str, user: str, password: str, path: str = '', **kwargs):
-        '''Maintainer for FTP locations
+    def __init__(self, host: str, user: str, password: str, path: str = "", **kwargs):
+        """Maintainer for FTP locations
 
         The handler will handle one path on an FTP host. The host connections
         are shared between the handles
@@ -65,14 +67,15 @@ class FtpLocation(StorageToBytes):
             host -- _description_
             user -- _description_
             password -- _description_
-        '''
+
+        """
         # Simple sanity checks:
         if not host:
-            raise Exception('Provided host is empty.')
+            raise ValueError("Provided host is empty.")
         if not user:
-            raise Exception('Provided user is empty.')
+            raise ValueError("Provided user is empty.")
         if not password:
-            raise Exception('Provided password is empty.')
+            raise ValueError("Provided password is empty.")
         # store away input
         self.host = host
         self.user = user
@@ -87,24 +90,22 @@ class FtpLocation(StorageToBytes):
         # implementation. Attributes must be available.
         super().__init__(**kwargs)
 
-    def id(self, name: str = ''):
-        name = f'::{name}' if name else ''
-        return f'FTP({self.user}@{self.host}://{self.path}){name}'
+    def id(self, name: str = ""):
+        name = f"::{name}" if name else ""
+        return f"FTP({self.user}@{self.host}://{self.path}){name}"
 
     def _connect(self):
         # ensure any old connection is closed
-        try:
+        with suppress(Exception):
             self.connection.close()
-        except Exception:
-            # nothing to do if above fails
-            pass
         # try connecting
         try:
             self.connection = FTPHost(self.host, self.user, self.password)
-        except Exception as e:
-            raise Exception(
-                f'Not able to initialize FTP object for [{self.host}]: {e}.'
-            )
+        except Exception as e:  # noqa: TRY203
+            raise Exception(  # noqa: TRY002
+                f"Not able to initialize FTP object for [{self.host}]: {e}.",
+            ) from e
+            # TODO: improve error handling: will catching the bare Exception help?
 
         # TODO LATER: ensure login to FTP server is possible and things are
         # operational. An initial stat of the location could be of interes.
@@ -113,44 +114,44 @@ class FtpLocation(StorageToBytes):
         file = os.path.join(self.path, file)
         try:
             return self.connection.path.exists(file)
-        except Exception as e:
+        except Exception as e:  # noqa: TRY203
             # TODO UPGRADE: better error handling: message, retrieve info from
             # ftplib object. Consider collecting from obsolete pycurl
             # implementation.
-            raise e
+            raise e  # noqa: TRY201
 
     @retry_method_with_reconnect
     def load_raw(self, file: str) -> bytes:
         file = os.path.join(self.path, file)
         try:
-            with self.connection.open(file, 'rb') as remote_file:
+            with self.connection.open(file, "rb") as remote_file:
                 data = remote_file.read()
-        except Exception as e:
+        except Exception as e:  # noqa: TRY203
             # TODO UPGRADE: better error handling: message, retrieve info from
             # ftplib object. Consider collecting from obsolete pycurl
             # implementation.
-            raise e
+            raise e  # noqa: TRY201
         return data
 
     @retry_method_with_reconnect
     def store_raw(self, file: str, data: bytes):
         file = os.path.join(self.path, file)
         try:
-            with self.connection.open(file, 'wb') as remote_file:
+            with self.connection.open(file, "wb") as remote_file:
                 remote_file.write(data)
-        except Exception as e:
+        except Exception as e:  # noqa: TRY203
             # TODO UPGRADE: better error handling: message, retrieve info from
             # ftplib object. Consider collecting from obsolete pycurl
             # implementation.
-            raise e
+            raise e  # noqa: TRY201
 
     @retry_method_with_reconnect
     def _remove(self, file: str):
         file = os.path.join(self.path, file)
         try:
             self.connection.remove(file)
-        except Exception as e:
+        except Exception as e:  # noqa: TRY203
             # TODO UPGRADE: better error handling: message, retrieve info from
             # ftplib object. Consider collecting from obsolete pycurl
             # implementation.
-            raise e
+            raise e  # noqa: TRY201

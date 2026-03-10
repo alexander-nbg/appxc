@@ -1,6 +1,6 @@
 # Copyright 2025-2026 the contributors of APPXF (github.com/alexander-nbg/appxf)
 # SPDX-License-Identifier: Apache-2.0
-'''Covers all setting types
+"""Covers all setting types
 Includes:
  * init, value setting and validity
  * basic option handling
@@ -8,29 +8,36 @@ Includes:
 Note: due to the self-test that ensures all registered settings being covered,
 the type test classes must be added here. No effort spent in searching the
 whole test database for subclasses of BaseSettingTest.
-'''
+"""
 
 import inspect
 import sys
+from collections.abc import Callable, MutableMapping
+from typing import Any
+
 import pytest
 
-from collections.abc import MutableMapping
-from typing import Any, Callable
-
-from appxf.setting import Setting
-from appxf.setting import AppxfSettingError, AppxfSettingConversionError
-from appxf.setting import SettingString, SettingText, SettingEmail, SettingPassword
-from appxf.setting import SettingBool, SettingInt, SettingFloat
-from appxf.setting import SettingBase64
-from appxf.setting import SettingDict
-
+from appxf.setting import (
+    AppxfSettingConversionError,
+    AppxfSettingError,
+    Setting,
+    SettingBase64,
+    SettingBool,
+    SettingDict,
+    SettingEmail,
+    SettingFloat,
+    SettingInt,
+    SettingPassword,
+    SettingString,
+    SettingText,
+)
 from appxf.setting import setting as setting_module
 
 
 class SettingCase:
     def __init__(
         self,
-        input,
+        input,  # noqa: A002 setting internally uses _input, changing here is confusing
         value: Any | None = None,
         string: str | None = None,
         input_check: Any | None = None,
@@ -53,62 +60,60 @@ class SettingCase:
             self.input_check = input_check
 
     def __str__(self):
-        return f'Case(input={self.input}, value={self.value}, string={self.string})'
+        return f"Case(input={self.input}, value={self.value}, string={self.string})"
 
     @property
     def value(self):
         if isinstance(self._value, Callable):
             return self._value(self)
-        else:
-            return self._value
+        return self._value
 
     @property
     def string(self):
         if isinstance(self._string, Callable):
             return self._string(self)
-        else:
-            return self._string
+        return self._string
 
 
 # required class that cannot convert to str and would be invalid input for
 # SettingStr and SettingText:
 class DummyClassErrorOnStrCreation:
     def __str__(self):
-        raise TypeError('some failure')
+        raise TypeError("some failure")
 
 
 class BaseSettingTest:
-    setting_class: type[Setting] = None  # type: ignore
-    setting_types: list[str | type] = []
-    simple_input: SettingCase = SettingCase(input='')
+    setting_class: type[Setting] | None = None
+    setting_types = ()
+    simple_input: SettingCase = SettingCase(input="")
 
-    invalid_init: list = []
+    invalid_init = ()
     default_value_is_valid = False
-    valid_input: list[SettingCase] = []
+    valid_input = ()
 
     def verify_valid(self, pre_comment: str, setting: Setting, case: SettingCase):
         assert setting.input == case.input_check, (
-            f'{pre_comment} for {self.setting_class.__name__} '
-            f'failed for INPUT on case {case}. '
-            f'It returned {setting.input}.'
+            f"{pre_comment} for {self.setting_class.__name__} "
+            f"failed for INPUT on case {case}. "
+            f"It returned {setting.input}."
         )
         assert setting.value == case.value, (
-            f'{pre_comment} for {self.setting_class.__name__} '
-            f'failed for VALUE on case {case}. '
-            f'It returned {setting.value}.'
+            f"{pre_comment} for {self.setting_class.__name__} "
+            f"failed for VALUE on case {case}. "
+            f"It returned {setting.value}."
         )
         assert setting.to_string() == case.string, (
-            f'{pre_comment} for {self.setting_class.__name__} '
-            f'failed for STRING on case {case}. '
-            f'It returned {setting.to_string()}.'
+            f"{pre_comment} for {self.setting_class.__name__} "
+            f"failed for STRING on case {case}. "
+            f"It returned {setting.to_string()}."
         )
 
     ### cases for initialization
 
     def test_meta_type_lookup(self):
         for setting_type in self.setting_types:
-            setting_class, dump = setting_module._SettingMeta.get_setting_type(
-                setting_type
+            setting_class, _ = setting_module._SettingMeta.get_setting_type(
+                setting_type,
             )
             assert setting_class == self.setting_class
 
@@ -125,30 +130,30 @@ class BaseSettingTest:
 
     def test_init_default_options(self):
         for setting_type in self.setting_types:
-            setting = Setting.new(setting_type, name='this name')
+            setting = Setting.new(setting_type, name="this name")
             assert setting.options.mutable
-            assert setting.options.name == 'this name'
+            assert setting.options.name == "this name"
 
     def test_init_valid(self):
         # default value must initialize:
         for case in self.valid_input:
             setting = self.setting_class(case.input)
-            self.verify_valid('Verifying valid init', setting, case)
+            self.verify_valid("Verifying valid init", setting, case)
 
     def test_init_invalid(self):
         # Utilizing AppxfSetting.new() still uses the corresponding __init__
         for value in self.invalid_init:
             with pytest.raises(
-                (AppxfSettingConversionError, AppxfSettingError)
+                (AppxfSettingConversionError, AppxfSettingError),
             ) as exc_info:
                 self.setting_class(value)
                 pytest.fail(
-                    f'{self.setting_class} should raise '
-                    f'AppxfSettingConversionError on init '
-                    f'for value: {value}'
+                    f"{self.setting_class} should raise "
+                    f"AppxfSettingConversionError on init "
+                    f"for value: {value}",
                 )
             # General formulation
-            assert 'Cannot set' in str(exc_info.value)
+            assert "Cannot set" in str(exc_info.value)
             # Actual input:
             try:
                 str(value)
@@ -169,7 +174,7 @@ class BaseSettingTest:
         setting = self.setting_class()
         for case in self.valid_input:
             assert setting.validate(case.input), (
-                f'{self.setting_class} should identify the following '
+                f"{self.setting_class} should identify the following "
                 f'value as valid: "{case.input}"'
             )
 
@@ -178,11 +183,11 @@ class BaseSettingTest:
         value_list = (
             self.invalid_init
             if self.default_value_is_valid
-            else self.invalid_init + [self.setting_class.get_default()]
+            else [*self.invalid_init, self.setting_class.get_default()]
         )
         for value in value_list:
             assert not setting.validate(value), (
-                f'{self.setting_class} should identify the following '
+                f"{self.setting_class} should identify the following "
                 f'value as invalid: "{value}"'
             )
 
@@ -190,7 +195,7 @@ class BaseSettingTest:
         for case in self.valid_input:
             setting = self.setting_class()
             setting.value = case.input
-            self.verify_valid('Verifying valid value setting', setting, case)
+            self.verify_valid("Verifying valid value setting", setting, case)
 
     def test_setting_value_invalid(self):
         setting = self.setting_class()
@@ -198,16 +203,16 @@ class BaseSettingTest:
         # (test_validate_invalid), it can still be set.
         for value in self.invalid_init:
             with pytest.raises(
-                (AppxfSettingConversionError, AppxfSettingError)
+                (AppxfSettingConversionError, AppxfSettingError),
             ) as exc_info:
                 setting.value = value
                 pytest.fail(
-                    f'{self.setting_class} should raise '
-                    f'AppxfSettingConversionError on setting value '
-                    f'for: "{value}"'
+                    f"{self.setting_class} should raise "
+                    f"AppxfSettingConversionError on setting value "
+                    f'for: "{value}"',
                 )
                 # General formulation
-            assert 'Cannot set' in str(exc_info.value)
+            assert "Cannot set" in str(exc_info.value)
             # Actual input:
             try:
                 str(value)
@@ -232,7 +237,9 @@ class BaseSettingTest:
         for case in self.valid_input:
             setting = self.setting_class(value=case.input)
             self.verify_valid(
-                'Verifying valid value init before set_state', setting, case
+                "Verifying valid value init before set_state",
+                setting,
+                case,
             )
             state = setting.get_state(type=True)
 
@@ -242,11 +249,14 @@ class BaseSettingTest:
             setting = self.setting_class()
             if issubclass(self.setting_class, SettingDict):
                 setting.set_state(
-                    state, type=True, add_new_keys=True, exception_on_new_key=False
+                    state,
+                    type=True,
+                    add_new_keys=True,
+                    exception_on_new_key=False,
                 )
             else:
                 setting.set_state(state)
-            self.verify_valid('Verifying valid value after SET_STATE', setting, case)
+            self.verify_valid("Verifying valid value after SET_STATE", setting, case)
 
     ### option handling
 
@@ -258,11 +268,11 @@ class BaseSettingTest:
         with pytest.raises(AppxfSettingError) as exc_info:
             setting.value = self.simple_input.input
         if issubclass(self.setting_class, SettingDict):
-            assert 'SettingDict() mutable option is False' in str(exc_info.value) + str(
-                exc_info.value.__cause__
+            assert "SettingDict() mutable option is False" in str(exc_info.value) + str(
+                exc_info.value.__cause__,
             )
         else:
-            assert 'is set to be not mutable' in str(exc_info.value)
+            assert "is set to be not mutable" in str(exc_info.value)
 
     # REQ: Even if mutable is set to False upon initialization, the initialization
     # must not fail. Note that the setting options are set before the value is
@@ -285,142 +295,155 @@ class BaseSettingTest:
 
 class TestSettingString(BaseSettingTest):
     setting_class = SettingString
-    setting_types = [str, 'str', 'string']
-    invalid_init = [DummyClassErrorOnStrCreation(), '\n', 42]
+    setting_types = (str, "str", "string")
+    invalid_init = (DummyClassErrorOnStrCreation(), "\n", 42)
     default_value_is_valid = True
-    simple_input = SettingCase(input='', value='')
-    valid_input = [
-        SettingCase(input='hello'),
+    simple_input = SettingCase(input="", value="")
+    valid_input = (
+        SettingCase(input="hello"),
         SettingCase(input='!"§$%&/()=?'),
-        SettingCase(input='42'),
-    ]
+        SettingCase(input="42"),
+    )
 
 
 class TestSettingText(BaseSettingTest):
     setting_class = SettingText
-    setting_types = ['text']
-    invalid_init = [DummyClassErrorOnStrCreation(), DummyClassErrorOnStrCreation, 42]
+    setting_types = ("text",)
+    invalid_init = (
+        DummyClassErrorOnStrCreation(),
+        DummyClassErrorOnStrCreation,
+        42,
+    )
     default_value_is_valid = True
-    simple_input = SettingCase(input='', value='')
-    valid_input = [
-        SettingCase(input='!"§$%&/()=?\n'),
-    ]
+    simple_input = SettingCase(input="", value="")
+    valid_input = (SettingCase(input='!"§$%&/()=?\n'),)
 
 
 class TestSettingPassword(BaseSettingTest):
     setting_class = SettingPassword
-    setting_types = ['pass', 'password']
-    invalid_init = ['short', 42]
+    setting_types = ("pass", "password")
+    invalid_init = ("short", 42)
     default_value_is_valid = False
-    simple_input = SettingCase(input='123456', value='123456')
-    valid_input = [
-        SettingCase(input='long_enough'),
-    ]
+    simple_input = SettingCase(input="123456", value="123456")
+    valid_input = (SettingCase(input="long_enough"),)
 
 
 class TestSettingEmail(BaseSettingTest):
     setting_class = SettingEmail
-    setting_types = ['email', 'Email']
-    invalid_init = ['no email', 'no email@some.de', 'some@nope', 'nope.de', 42]
+    setting_types = ("email", "Email")
+    invalid_init = (
+        "no email",
+        "no email@some.de",
+        "some@nope",
+        "nope.de",
+        42,
+    )
     default_value_is_valid = False
-    simple_input = SettingCase(input='some@thing.de', value='some@thing.de')
-    valid_input = [
-        SettingCase(input='some@thing.it'),
-        SettingCase(input='with-minus@domain.net'),
-    ]
+    simple_input = SettingCase(input="some@thing.de", value="some@thing.de")
+    valid_input = (
+        SettingCase(input="some@thing.it"),
+        SettingCase(input="with-minus@domain.net"),
+    )
 
 
 class TestSettingBool(BaseSettingTest):
     setting_class = SettingBool
-    setting_types = [bool, 'bool', 'boolean']
-    invalid_init = ['', b'', 'nope']
+    setting_types = (bool, "bool", "boolean")
+    invalid_init = ("", b"", "nope")
     default_value_is_valid = True
-    simple_input = SettingCase(input='1', value=True)
-    valid_input = [
+    simple_input = SettingCase(input="1", value=True)
+    valid_input = (
         SettingCase(input=True, value=1),
         SettingCase(input=False, value=0),
-        SettingCase(input='yes', value=1),
-        SettingCase(input='no', value=0),
-        SettingCase(input='true', value=1),
-        SettingCase(input='False', value=0),
-        SettingCase(input='1', value=1),
-    ]
+        SettingCase(input="yes", value=1),
+        SettingCase(input="no", value=0),
+        SettingCase(input="true", value=1),
+        SettingCase(input="False", value=0),
+        SettingCase(input="1", value=1),
+    )
 
 
 class TestSettingInt(BaseSettingTest):
     setting_class = SettingInt
-    setting_types = [int, 'int', 'integer']
-    invalid_init = ['', b'', '42.2', 'test']
+    setting_types = (int, "int", "integer")
+    invalid_init = ("", b"", "42.2", "test")
     default_value_is_valid = True
-    simple_input = SettingCase(input='42', value=42)
-    valid_input = [
+    simple_input = SettingCase(input="42", value=42)
+    valid_input = (
         SettingCase(input=0),
         SettingCase(input=42),
-        SettingCase(input='0042', value=42),
+        SettingCase(input="0042", value=42),
         SettingCase(input=-1234567890),
-        SettingCase(input='123', value=123),
-        SettingCase(input='-1234567890', value=-1234567890),
+        SettingCase(input="123", value=123),
+        SettingCase(input="-1234567890", value=-1234567890),
         SettingCase(input=True, value=1),
         SettingCase(input=False, value=0),
-    ]
+    )
 
 
 class TestSettingFloat(BaseSettingTest):
     setting_class = SettingFloat
-    setting_types = [float, 'float']
-    invalid_init = ['', b'', 'test']
+    setting_types = (float, "float")
+    invalid_init = ("", b"", "test")
     default_value_is_valid = True
-    simple_input = SettingCase(input='3.14159', value=3.14159)
-    valid_input = [
-        SettingCase(input=12345, value=12345, string='12345.0'),
-        SettingCase(input=1.1234567890, value=1.1234567890, string='1.123456789'),
-        SettingCase(input=False, value=0, string='0.0'),
-        SettingCase(input=False, value=0, string='0.0'),
-        SettingCase(input=True, value=1, string='1.0'),
-    ]
+    simple_input = SettingCase(input="3.14159", value=3.14159)
+    valid_input = (
+        SettingCase(input=12345, value=12345, string="12345.0"),
+        SettingCase(input=1.1234567890, value=1.1234567890, string="1.123456789"),
+        SettingCase(input=False, value=0, string="0.0"),
+        SettingCase(input=False, value=0, string="0.0"),
+        SettingCase(input=True, value=1, string="1.0"),
+    )
 
 
 class TestSettingDict(BaseSettingTest):
     setting_class = SettingDict
-    setting_types = [dict, MutableMapping, 'dict', 'dictionary']
-    invalid_init = ['', 'test', 42]
+    setting_types = (
+        dict,
+        MutableMapping,
+        "dict",
+        "dictionary",
+    )
+    invalid_init = ("", "test", 42)
     default_value_is_valid = True
     simple_input = SettingCase(
-        input={'key': (str, 'value')},
-        value={'key': 'value'},
-        input_check={'key': 'value'},
+        input={"key": (str, "value")},
+        value={"key": "value"},
+        input_check={"key": "value"},
     )
-    valid_input = [
-        SettingCase(input={'int': 42}, value={'int': 42}, input_check={'int': 42}),
+    valid_input = (
+        SettingCase(input={"int": 42}, value={"int": 42}, input_check={"int": 42}),
         SettingCase(
-            input={'int': (int, '0042')}, value={'int': 42}, input_check={'int': '0042'}
+            input={"int": (int, "0042")},
+            value={"int": 42},
+            input_check={"int": "0042"},
         ),
-        SettingCase(input={}, value={}, string=''),
-    ]
+        SettingCase(input={}, value={}, string=""),
+    )
 
 
 class TestSettingBase64(BaseSettingTest):
     setting_class = SettingBase64
-    setting_types = ['base64', 'Base64']
+    setting_types = ("base64", "Base64")
     default_value_is_valid = True
-    simple_input = SettingCase(input=b'', value=b'', string='')
-    valid_input = [
-        SettingCase(input=b'\x00\x01', value=b'\x00\x01', string='AAE='),
-        SettingCase(input=bytearray(b'\x00\x01'), value=b'\x00\x01', string='AAE='),
-        SettingCase(input='AAE=', value=b'\x00\x01', string='AAE='),
-        SettingCase(input='AAE=\n', value=b'\x00\x01', string='AAE='),
-    ]
-    invalid_init = [42, 'not_base64!!', object()]
+    simple_input = SettingCase(input=b"", value=b"", string="")
+    valid_input = (
+        SettingCase(input=b"\x00\x01", value=b"\x00\x01", string="AAE="),
+        SettingCase(input=bytearray(b"\x00\x01"), value=b"\x00\x01", string="AAE="),
+        SettingCase(input="AAE=", value=b"\x00\x01", string="AAE="),
+        SettingCase(input="AAE=\n", value=b"\x00\x01", string="AAE="),
+    )
+    invalid_init = (42, "not_base64!!", object())
 
 
 def test_base64_wrong_size():
     setting = SettingBase64(size=3)
-    assert not setting.validate(b'')
-    assert not setting.validate(b'\x00\x01')
-    assert not setting.validate(b'\x00\x00\x00\x00')
-    assert setting.validate(b'\x00\x00\x00')
-    assert not setting.validate('AAE=')
-    assert setting.validate('AAEA')
+    assert not setting.validate(b"")
+    assert not setting.validate(b"\x00\x01")
+    assert not setting.validate(b"\x00\x00\x00\x00")
+    assert setting.validate(b"\x00\x00\x00")
+    assert not setting.validate("AAE=")
+    assert setting.validate("AAEA")
 
 
 def test_setting_completeness():
@@ -432,44 +455,45 @@ def test_setting_completeness():
     current_module = sys.modules[__name__]
     tested_classes = set()
     tested_types = set()
-    for name, obj in inspect.getmembers(current_module):
+    for _name, obj in inspect.getmembers(current_module):
         if (
             inspect.isclass(obj)
             and issubclass(obj, BaseSettingTest)
             and obj is not BaseSettingTest
         ):
-            obj: BaseSettingTest = obj
+            setting_test: BaseSettingTest = obj
 
-            assert obj.invalid_init, (
-                f'Test class {obj.__name__} must define '
-                f'invalid input values (invalid_input).'
+            assert setting_test.invalid_init, (
+                f"Test class {setting_test.__name__} must define "
+                f"invalid input values (invalid_input)."
             )
-            assert obj.valid_input, (
-                f'Test class {obj.__name__} must define valid test cases SettingCase.'
+            assert setting_test.valid_input, (
+                f"Test class {setting_test.__name__} must define "
+                f"valid test cases SettingCase."
             )
 
-            assert obj.setting_class is not None
-            tested_classes.add(obj.setting_class)
+            assert setting_test.setting_class is not None
+            tested_classes.add(setting_test.setting_class)
 
-            assert obj.setting_types
-            for this_type in obj.setting_types:
+            assert setting_test.setting_types
+            for this_type in setting_test.setting_types:
                 tested_types.add(this_type)
 
     # Check for missing coverage
     missing_classes = expected_classes - tested_classes
     missing_types = expected_types - tested_types
     assert not missing_classes, (
-        f'The following setting classes are not yet covered: {missing_classes}'
+        f"The following setting classes are not yet covered: {missing_classes}"
     )
     assert not missing_types, (
-        f'The following setting types are not yet covered: {missing_types}'
+        f"The following setting types are not yet covered: {missing_types}"
     )
 
     extra_classes = tested_classes - expected_classes
     extra_types = tested_types - expected_types
     assert not missing_classes, (
-        f'Odd, the following UNKNOWN setting classes are covered: {extra_classes}'
+        f"Odd, the following UNKNOWN setting classes are covered: {extra_classes}"
     )
     assert not missing_types, (
-        f'Odd, the following UNKNOWN setting types are covered: {extra_types}'
+        f"Odd, the following UNKNOWN setting types are covered: {extra_types}"
     )

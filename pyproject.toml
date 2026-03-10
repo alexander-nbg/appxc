@@ -40,33 +40,95 @@ test-sandbox-root = "./.testing"
 # configuration.
 
 [tool.ruff.lint]
-# Remarks:
-#  * E (pycodestyle errors; PEP8)
-#  * F (pyflakes; flake8 defaults)
-select = ["E", "F"]
-# TODO: Review and consider the following further checks:
-# "W"  - pycodestyle warnings (whitespace, blank lines)
-# "I"  - isort import ordering (ensures consistent import order)
-# "N"  - pep8 naming conventions (variable, function, class names)
-# "UP" - pyupgrade: enforce modern Python syntax (e.g. f-strings, type hints)
-# "B"  - flake8-bugbear: opinionated checks that catch common bugs
-# "C4" - flake8-comprehensions: unnecessary list/dict/set comprehensions
-# "SIM"- flake8-simplify: suggest simpler code constructs
-# "ANN"- flake8-annotations: enforce type annotations
-# "RUF"- ruff-specific rules (misc. best-practice checks)
+# Remark: The selected rules are not ciceled in stone. Start discussing, if there are
+# good reasons to change.
+select = ["ALL"]
+ignore = [
+  # EXCLUDED RULES
+  # --------------
+  # Feel free to add any rule which is conflicting with the ruff formater. Those rules
+  # were typically NOT added by default since style consistency was valued higher than
+  # the irritation of adding them here, later. Exception was COM812 with the very
+  # irritating warning message upon [ruff format]. See also:
+  # https://docs.astral.sh/ruff/formatter/#conflicting-lint-rules.
+  "COM812",  # Conflicts with formater AND causes warning message on [ruff format]
+  "EM",      # avoid extra code and accept duplication in error messages
+  "FIX002",  # Even in an APPXF v1.0.0, TODO remarks remain being allowed if a
+             # corresponding ticket was created, is linked and still actove (TODO #42).
+             # Despite TODO, no other tag should be used and other FIX rules remain in
+             # place.
+  "TC001", "TC003", # import readability over minor performance improvement
+  "TD",      # rules for TODO in APPXF do not follow this pattern
+  "C901",    # Complexity shall be rated by reviewers
+  "FBT",     # boolean positional arguments are common for set(key, value) patterns and
+  # requiring an extra * to enforce named keyword arguments messes up the function
+  # definition. Issues can be identified in review.
+  "PLR0911", "PLR0912", "PLR0913", "PLR0915", # "too many" to be rated by reviewers
+  "PLW2901", # changing loop variable is considered OK
+  "RET504",  # naming the return value does not do any harm
+
+  # PENDING RULES: The activation/fixing of the following rules is delayed and a
+  # strategy to decrease numbers over time will be in place.
+  #
+  # TODO #55: the decrease over time strategy.
+  "ANN", "ARG001", "ARG002", "BLE001", "D", "ERA001", "PLR2004", "PT", "PTH",
+  "RUF100", "SLF001", "T201", "TRY003"
+]
 
 [tool.ruff.format]
-quote-style = "preserve"
+# no specific settings here, yet
+
+[tool.ruff.lint.flake8-annotations]
+allow-star-arg-any = true
+mypy-init-return = true
+suppress-none-returning = true
 
 [tool.ruff.lint.per-file-ignores]
 # Unused imports in __init__.py are intentional re-exports.
 "__init__.py" = ["F401"]
-# TODO: This is a slight issue since in some occasions, it causes unwanted dependencies.
+# TODO: This may be an issue since in some occasions, it causes unwanted dependencies.
 # Example: when storage activated FTP again, any usage of storage would also import the
 # dependency to FTP. This is acceptable for now, but not on the long run. Despite the
 # other solutions (adding to __all__ and maxing the re-imports explicit with [import XY
 # as XY]), merging classes into appropriate longer module files would enable dropping
-# the module facade in __init__.py
+# the module facade in __init__.py.
+
+# Rules are relaxed for test case implementation
+"tests*/**/*.py" = [
+  "ANN",     # relaxing on type annotations
+  "ARG",     # relaxing on unused arguments and alike
+  "ERA001",  # commented out code is acceptable
+  "FBT002",  # allow boolean positional arguments (not enforcing as keyword-argument)
+  "FURB171", # "something in [1] is quite OK in test code
+  "INP001",  # no __init__.py package init for test code
+  "PLR",     # refactoring suggestions OK to ignore
+  "T201",    # print statements in tests are OK
+  "TRY",     # allow quick-to-implement error handling in tests
+  "S",       # No security checks for test code
+  ]
+"tests/**/*.py" = [
+  "SLF001"   # accessing private members in UT's is OK (but not in feature tests)
+]
+
+"doc/**/*.py" = [
+  "INP001" # no __init.py__ for doc configuration
+]
+
+# TODO: matema is generally in draft status and not usable. Disabling security checks.
+"src/appxf_matema/**/*.py" = [
+  "ARG", "S603", "S607", "T201"
+]
+
+# development scripts are not part of the shipped library and are only running locally
+# and within CI (not in user applications)
+"src/appxf_dev/**/*.py" = [
+  "S607", # partial executable paths are acceptable in dev-script context
+  "T201"  # print statements OK in dev scripts
+]
+
+[tool.basedpyright]
+include = ["src"]
+# This is a very initial setup of basedpyright which is intended to evolve over time.
 
 [tool.tox]
 legacy_tox_ini = """

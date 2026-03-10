@@ -1,10 +1,8 @@
 # Copyright 2024-2026 the contributors of APPXF (github.com/alexander-nbg/appxf)
 # SPDX-License-Identifier: Apache-2.0
-'''
-Provide GUI classes for yagni_cft Config objects.
-'''
+"""Provide GUI classes for yagni_cft Config objects."""
 
-import tkinter
+import tkinter as tk
 
 from appxf.config import Config
 from appxf.gui import manual_config_update
@@ -18,17 +16,17 @@ from appxf.registry import Registry
 # https://www.plus2net.com/python/tkinter-validation.php
 
 
-class ConfigMenu(tkinter.Menu):
-    '''Menu for Configuration Options and User Database'''
+class ConfigMenu(tk.Menu):
+    """Menu for Configuration Options and User Database"""
 
-    log = logging.getLogger(__name__ + '.ConfigMenu')
+    log = logging.getLogger(__name__ + ".ConfigMenu")
 
     def __init__(
         self,
-        parent: tkinter.Tk,
+        parent: tk.Tk,
         config: Config,
         registry: Registry | None = None,
-        root_path: str = '.',
+        root_path: str = ".",
         **kwargs,
     ):
         super().__init__(parent, tearoff=0, **kwargs)
@@ -48,7 +46,7 @@ class ConfigMenu(tkinter.Menu):
             def command(section=section):
                 window = SettingDictWindow(
                     self._parent,
-                    title=f'Settings for {section}',
+                    title=f"Settings for {section}",
                     setting=self._config.section(section),
                 )
                 window.grab_set()
@@ -61,10 +59,10 @@ class ConfigMenu(tkinter.Menu):
 
         if not self._registry.try_load():
             self.log.warning(
-                'Registry object provided to ConfigMenu but not initialized.'
-                'Consider using Login, RegistrationUser and RegistrationAdmin '
-                'GUIs to prepare and unlock Security and Registry objects '
-                'before launching the GUI of your application.'
+                "Registry object provided to ConfigMenu but not initialized."
+                "Consider using Login, RegistrationUser and RegistrationAdmin "
+                "GUIs to prepare and unlock Security and Registry objects "
+                "before launching the GUI of your application.",
             )
             return
 
@@ -82,10 +80,11 @@ class ConfigMenu(tkinter.Menu):
             # contain a frame with status, that one could be used for updates.
 
         self.add_command(
-            label=_('menu', 'Load Config Update'), command=load_config_update
+            label=_("menu", "Load Config Update"),
+            command=load_config_update,
         )
 
-        if 'admin' in self._registry.get_roles(user_id=0):
+        if "admin" in self._registry.get_roles(user_id=0):
 
             def write_config_update():
                 manual_config_update.handle_manual_config_update_write(
@@ -121,7 +120,8 @@ class ConfigMenu(tkinter.Menu):
                 # a FileLocation (or a set of FileLocations).
 
             self.add_command(
-                label=_('menu', 'Write Config Update'), command=write_config_update
+                label=_("menu", "Write Config Update"),
+                command=write_config_update,
             )
 
             # Add user registration menu
@@ -129,10 +129,11 @@ class ConfigMenu(tkinter.Menu):
                 registration = RegistrationAdmin(
                     registry=self._registry,
                     root_dir=self._root_path,
-                    user_config=self._config.section('USER'),
+                    user_config=self._config.section("USER"),
                 )
                 registration.show()
 
             self.add_command(
-                label=_('menu', 'User Registration'), command=open_user_registration
+                label=_("menu", "User Registration"),
+                command=open_user_registration,
             )
