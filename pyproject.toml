@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: 0BSD
 [project]
 name = "appxc"
-version = "0.0.3a0"
+dynamic = ["version"]
 authors = [
   { name = "alexander-nbg", email="mail@alexander-nbg.de" }
 ]
@@ -16,13 +16,29 @@ classifiers = [
 ]
 
 [build-system]
-requires = ["hatchling"]
+requires = ["hatchling", "hatch-vcs"]
 build-backend = "hatchling.build"
 
+[tool.hatch.version]
+source = "vcs"
+
+[tool.hatch.version.raw-options]
+version_scheme = "guess-next-dev"
+
+[tool.hatch.build.hooks.vcs]
+# Write resolved version into the source tree so it is importable at runtime
+# (e.g. after a pip install -e . or inside a frozen application).
+version-file = "src/appxc/_version.py"
+
 [tool.hatch.build]
-exclude = [
-  "/.*",
-  "tests",
+include = [
+  # Library package only; appxc_dev and appxc_matema are not shipped to PyPI.
+  "src/appxc/",
+  # Additional information:
+  "/LICENSE",
+  "/LICENSES/",
+  "/README.md",
+  "/CONTRIBUTORS",
 ]
 
 [project.entry-points.pyinstaller40]

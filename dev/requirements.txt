@@ -2,6 +2,8 @@
 basedpyright==1.38.2
 # Fixed ruff version avoiding new rules breaking the CI.
 ruff==0.15.2
+# Build backend plugin for VCS-based version tagging (used by pyproject.toml build-system)
+hatch-vcs
 
 # TODO #55: Bumping the ruff/basedpyright versions will needs additional remarks how to
 # deal with new findings after version bumping. The following is a draft which relies on
