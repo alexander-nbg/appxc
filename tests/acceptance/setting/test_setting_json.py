@@ -1,4 +1,4 @@
-# Copyright 2025-2026 the contributors of APPXF (github.com/alexander-nbg/appxf)
+# Copyright 2025-2026 the contributors of APPXC (github.com/alexander-nbg/appxc)
 # SPDX-License-Identifier: Apache-2.0
 """Serialization of SettingDict into JSON
 
@@ -17,8 +17,8 @@ from collections import OrderedDict
 
 import pytest
 
-from appxf.setting import Setting, SettingDict, SettingEmail, SettingSelect
-from appxf.storage import JsonSerializer, RamStorage, Storage
+from appxc.setting import Setting, SettingDict, SettingEmail, SettingSelect
+from appxc.storage import JsonSerializer, RamStorage, Storage
 
 
 # Feature testing must apply context to storage:

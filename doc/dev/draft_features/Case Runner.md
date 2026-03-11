@@ -1,4 +1,4 @@
-<!--Copyright 2026 the contributors of APPXF (github.com/alexander-nbg/appxf)-->
+<!--Copyright 2026 the contributors of APPXC (github.com/alexander-nbg/appxc)-->
 <!--SPDX-License-Identifier: 0BSD-->
 # MaTeMa Case Runner
 
@@ -17,7 +17,7 @@ The CaseRunner is used within your manual test case to operate with the MaTeMa. 
 # Use Case: no change to existing test cases
 While not being recommended, you can instrument existing test cases for MaTeMa by just adding an initialization of the CaseRunner to enable the usage with the MaTeMa and minimal support.
 ```python
-from appxf_metama import CaseRunner
+from appxc_metama import CaseRunner
 
 # preparation steps for your test case
 
@@ -39,7 +39,7 @@ Split `startup()` and `teardown()` code. This has two effects:
 '''
 Test case __description__ that can apply mardown.
 '''
-from appxf_metama import CaseRunner
+from appxc_metama import CaseRunner
 
 # construct any objects you need
 

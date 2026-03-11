@@ -1,4 +1,4 @@
-# Copyright 2023-2026 the contributors of APPXF (github.com/alexander-nbg/appxf)
+# Copyright 2023-2026 the contributors of APPXC (github.com/alexander-nbg/appxc)
 # SPDX-License-Identifier: Apache-2.0
 import tkinter as tk
 
@@ -8,7 +8,7 @@ from tests.fixtures import fake_tkinter
 
 fake_tkinter.activate()
 
-from appxf.gui.application import AppxfApplication  # noqa: E402
+from appxc.gui.application import AppxcApplication  # noqa: E402
 
 # TODO: This test case was rendered "manual" but the cases look like automated
 # ones. Cannot reconsider right now since it needs more effort.
@@ -28,7 +28,7 @@ class DummyFrame(tk.Frame):
 
 
 def test_register_frame_wrong_type():
-    af = AppxfApplication()
+    af = AppxcApplication()
 
     with pytest.raises(TypeError) as e_info:
         af.register_frame("name", str)
@@ -36,14 +36,14 @@ def test_register_frame_wrong_type():
 
 
 def test_show_frame_not_existing():
-    af = AppxfApplication()
+    af = AppxcApplication()
     with pytest.raises(KeyError) as e_info:
         af.show_frame("dummy")
     print(e_info)
 
 
 def test_register_frame():
-    af = AppxfApplication()
+    af = AppxcApplication()
 
     af.register_frame(
         "dummy",

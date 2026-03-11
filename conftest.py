@@ -1,11 +1,11 @@
-# Copyright 2023-2026 the contributors of APPXF (github.com/alexander-nbg/appxf)
+# Copyright 2023-2026 the contributors of APPXC (github.com/alexander-nbg/appxc)
 # SPDX-License-Identifier: Apache-2.0
-from appxf import logging
-from appxf.storage import Storage
+from appxc import logging
+from appxc.storage import Storage
 
 
 def pytest_configure(config):
-    logging.activate_logging("appxf", directory="./.testing")
+    logging.activate_logging("appxc", directory="./.testing")
 
 
 def pytest_runtest_teardown(item, nextitem):

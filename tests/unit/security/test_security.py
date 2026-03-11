@@ -1,8 +1,8 @@
-# Copyright 2025-2026 the contributors of APPXF (github.com/alexander-nbg/appxf)
+# Copyright 2025-2026 the contributors of APPXC (github.com/alexander-nbg/appxc)
 # SPDX-License-Identifier: Apache-2.0
 """Tests for class Security in security module
 
-Rely on Security helpers from tests.fixtures.appxf_objects to avoid spinning
+Rely on Security helpers from tests.fixtures.appxc_objects to avoid spinning
 up the full application harness. Paths are isolated per test via the sandbox
 fixture.
 """
@@ -11,15 +11,15 @@ import os
 
 import pytest
 
-from appxf.security import SecurePrivateStorage, Security
-from appxf.storage import LocalStorage, Storage
-from tests.fixtures import appxf_objects, test_sandbox
+from appxc.security import SecurePrivateStorage, Security
+from appxc.storage import LocalStorage, Storage
+from tests.fixtures import appxc_objects, test_sandbox
 
 TEST_PASSWORD = "test-registry-password"
 
 # TODO UPGRADE: store bytecode for version 1 files and add test cases that
 # those files can still be loaded. Well, consider not adding garbage into
-# current files - a file verisoning is only then required if APPXF needs to
+# current files - a file verisoning is only then required if APPXC needs to
 # start distinguishing versions. Also, then, compatibilty tests are missing.
 
 # TODO LATER: test case for failing loading (use a file encrypted from a different
@@ -47,7 +47,7 @@ def get_data_storage_factory(root_path, sec: Security):
 
 # Uninitialized test location should indicate as not user initialized.
 def test_security_uninitialized(sandbox_path):
-    sec = appxf_objects.get_security(sandbox_path)
+    sec = appxc_objects.get_security(sandbox_path)
     assert not sec.is_user_initialized()
     # also not unlocked
     assert not sec.is_user_unlocked()
@@ -55,7 +55,7 @@ def test_security_uninitialized(sandbox_path):
 
 # Initialize a user (write file and authenticate)
 def test_security_init(sandbox_path):
-    sec = appxf_objects.get_security(sandbox_path)
+    sec = appxc_objects.get_security(sandbox_path)
     sec.init_user(TEST_PASSWORD)
     # file should now be present:
     assert os.path.exists(os.path.join(sandbox_path, "keys"))
@@ -71,7 +71,7 @@ def test_security_init(sandbox_path):
 # Unlock a user
 def test_security_unlock(sandbox_path):
     # prepare initialized user on disk
-    sec = appxf_objects.get_security_initialized(sandbox_path, TEST_PASSWORD)
+    sec = appxc_objects.get_security_initialized(sandbox_path, TEST_PASSWORD)
     assert sec.is_user_initialized()
     assert not sec.is_user_unlocked()
     # unlock:
@@ -81,7 +81,7 @@ def test_security_unlock(sandbox_path):
 
 # Store and load
 def test_security_store_load(sandbox_path):
-    sec = appxf_objects.get_security_unlocked(sandbox_path, TEST_PASSWORD)
+    sec = appxc_objects.get_security_unlocked(sandbox_path, TEST_PASSWORD)
     data = b"123456ABC!"
     storage = get_data_storage_factory(sandbox_path, sec)("some_file")
     # store
@@ -90,7 +90,7 @@ def test_security_store_load(sandbox_path):
     data_loaded = storage.load()
     assert data == data_loaded
     # try to read from new security object
-    sec = appxf_objects.get_security(sandbox_path)
+    sec = appxc_objects.get_security(sandbox_path)
     assert not sec.is_user_unlocked()
     sec.unlock_user(TEST_PASSWORD)
     # Note: need to delete prior storage object. Storage locations do not allow
@@ -110,7 +110,7 @@ def test_security_store_load(sandbox_path):
 
 
 def test_security_store_assymetric_keys(sandbox_path):
-    sec = appxf_objects.get_security_unlocked(sandbox_path, TEST_PASSWORD)
+    sec = appxc_objects.get_security_unlocked(sandbox_path, TEST_PASSWORD)
 
     # get public keys. Note that they might be generated on first time
     # accessing them.
@@ -121,7 +121,7 @@ def test_security_store_assymetric_keys(sandbox_path):
     # data already needs to be stored before tear down of the security above.
     # The use case is quite unusual and not supported: having two Security
     # objects accessing the same data.
-    security = appxf_objects.get_security(sandbox_path)
+    security = appxc_objects.get_security(sandbox_path)
     security.unlock_user(TEST_PASSWORD)
     assert signing_public_key == security.get_signing_public_key()
     assert encryp_public_key == security.get_encryption_public_key()
@@ -129,7 +129,7 @@ def test_security_store_assymetric_keys(sandbox_path):
 
 # Verify cycle
 def test_security_sign_verify(sandbox_path):
-    sec = appxf_objects.get_security_unlocked(sandbox_path, TEST_PASSWORD)
+    sec = appxc_objects.get_security_unlocked(sandbox_path, TEST_PASSWORD)
 
     data = b"To Be Signed"
     signature = sec.sign(data)
@@ -144,7 +144,7 @@ def test_security_sign_verify(sandbox_path):
 
 # Hybrid encrypt/decrypt cycle:
 def test_security_hybrid_encrypt_decrypt(sandbox_path):
-    sec = appxf_objects.get_security_unlocked(sandbox_path, TEST_PASSWORD)
+    sec = appxc_objects.get_security_unlocked(sandbox_path, TEST_PASSWORD)
 
     data = b"To be encrypted"
     data_encrpted, key_blob_map = sec.hybrid_encrypt(
@@ -160,7 +160,7 @@ def test_security_hybrid_encrypt_decrypt(sandbox_path):
 
 # Hybrid SIGNED encrypt/decrypt cycle:
 def test_security_hybrid_signed_encrypt_decrypt(sandbox_path):
-    sec = appxf_objects.get_security_unlocked(sandbox_path, TEST_PASSWORD)
+    sec = appxc_objects.get_security_unlocked(sandbox_path, TEST_PASSWORD)
 
     data = b"To be encrypted"
     data_encrypted_bytes = sec.hybrid_signed_encrypt(

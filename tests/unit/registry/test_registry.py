@@ -1,20 +1,20 @@
-# Copyright 2024-2026 the contributors of APPXF (github.com/alexander-nbg/appxf)
+# Copyright 2024-2026 the contributors of APPXC (github.com/alexander-nbg/appxc)
 # SPDX-License-Identifier: Apache-2.0
 import os
 
 import pytest
 
 import tests.fixtures.test_sandbox
-from appxf.registry import (
-    AppxfRegistryError,
-    AppxfRegistryRoleError,
-    AppxfRegistryUnknownUserError,
+from appxc.registry import (
+    AppxcRegistryError,
+    AppxcRegistryRoleError,
+    AppxcRegistryUnknownUserError,
     Registry,
 )
-from appxf.storage import CompactSerializer, Storage
-from tests.fixtures import appxf_objects
+from appxc.storage import CompactSerializer, Storage
+from tests.fixtures import appxc_objects
 
-# TODO: those getters should be moved into appxf_objects as functions and not
+# TODO: those getters should be moved into appxc_objects as functions and not
 #  as fixtures
 
 # TODO: test cases on size of registry with multiple users and roles (may be
@@ -30,10 +30,10 @@ def fresh_registry(request):
     # For debugging, you may want to use real files:
     path = tests.fixtures.test_sandbox.init_test_sandbox_from_fixture(request)
     path = os.path.join(path, "default")
-    return appxf_objects.get_fresh_registry(
+    return appxc_objects.get_fresh_registry(
         path=path,
-        security=appxf_objects.get_security_unlocked(path),
-        config=appxf_objects.get_dummy_config(),
+        security=appxc_objects.get_security_unlocked(path),
+        config=appxc_objects.get_dummy_config(),
     )
 
 
@@ -55,10 +55,10 @@ def admin_user_initialized_registry_pair(request):
 
     Storage.switch_context("admin")
     admin_path = os.path.join(path, "admin")
-    admin_config = appxf_objects.get_dummy_user_config()
-    admin_registry = appxf_objects.get_fresh_registry(
+    admin_config = appxc_objects.get_dummy_user_config()
+    admin_registry = appxc_objects.get_fresh_registry(
         path=admin_path,
-        security=appxf_objects.get_security_unlocked(admin_path),
+        security=appxc_objects.get_security_unlocked(admin_path),
         config=admin_config,
         local_name="local_registry_admin",
         remote_name="remote_registry",
@@ -67,10 +67,10 @@ def admin_user_initialized_registry_pair(request):
     # both are not file based.
     Storage.switch_context("user")
     user_path = os.path.join(path, "user")
-    user_config = appxf_objects.get_dummy_user_config()
-    user_registry = appxf_objects.get_fresh_registry(
+    user_config = appxc_objects.get_dummy_user_config()
+    user_registry = appxc_objects.get_fresh_registry(
         path=user_path,
-        security=appxf_objects.get_security_unlocked(user_path),
+        security=appxc_objects.get_security_unlocked(user_path),
         config=user_config,
         local_name="local_registry_user",
         remote_name="remote_registry",
@@ -174,7 +174,7 @@ def test_get_admin_keys(admin_initialized_registry):
 
     # also include the error message when using the set_admin_key_bytes
     # on the admin instance.
-    with pytest.raises(AppxfRegistryError) as exc_info:
+    with pytest.raises(AppxcRegistryError) as exc_info:
         registry.set_admin_key_bytes(key_data_bytes)
     assert "Cannot set admin keys" in str(exc_info.value)
     assert "initialized registry" in str(exc_info.value)
@@ -283,12 +283,12 @@ def test_manual_config_update(admin_user_initialized_registry_pair, request):
     sandbox_path = tests.fixtures.test_sandbox.init_test_sandbox_from_fixture(request)
     Storage.switch_context("new_user")
     new_user_path = os.path.join(sandbox_path, "new_user")
-    new_user_registry = appxf_objects.get_fresh_registry(
+    new_user_registry = appxc_objects.get_fresh_registry(
         path=new_user_path,
-        security=appxf_objects.get_security_unlocked(new_user_path),
-        config=appxf_objects.get_dummy_user_config(),
+        security=appxc_objects.get_security_unlocked(new_user_path),
+        config=appxc_objects.get_dummy_user_config(),
     )
-    appxf_objects.perform_registration(
+    appxc_objects.perform_registration(
         registry=new_user_registry,
         admin_registry=admin_registry,
         storage_scope="new_user",
@@ -348,7 +348,7 @@ def test_manual_update_get_errors(admin_user_initialized_registry_pair):
     user_registry: Registry = admin_user_initialized_registry_pair[1]
 
     # non-admin user should not be allowed to generate updates
-    with pytest.raises(AppxfRegistryRoleError) as exc_info:
+    with pytest.raises(AppxcRegistryRoleError) as exc_info:
         user_registry.get_manual_config_update_bytes()
     assert "Only admin users" in str(exc_info.value)
 
@@ -364,12 +364,12 @@ def test_manual_update_set_error_unknown_user(
     sandbox_path = tests.fixtures.test_sandbox.init_test_sandbox_from_fixture(request)
     Storage.switch_context("new_user")
     new_user_path = os.path.join(sandbox_path, "new_user")
-    new_user_registry = appxf_objects.get_fresh_registry(
+    new_user_registry = appxc_objects.get_fresh_registry(
         path=new_user_path,
-        security=appxf_objects.get_security_unlocked(new_user_path),
-        config=appxf_objects.get_dummy_user_config(),
+        security=appxc_objects.get_security_unlocked(new_user_path),
+        config=appxc_objects.get_dummy_user_config(),
     )
-    appxf_objects.perform_registration(
+    appxc_objects.perform_registration(
         registry=new_user_registry,
         admin_registry=admin_registry,
         storage_scope="new_user",
@@ -383,7 +383,7 @@ def test_manual_update_set_error_unknown_user(
     )
 
     # user does not know about new_user at all:
-    with pytest.raises(AppxfRegistryUnknownUserError) as exc_info:
+    with pytest.raises(AppxcRegistryUnknownUserError) as exc_info:
         user_registry.set_manual_config_update_bytes(update_bytes)
     assert "is unknown" in str(exc_info.value)
 
@@ -393,6 +393,6 @@ def test_manual_update_set_error_unknown_user(
     admin_registry.set_roles(3, ["user"])
     assert admin_registry.get_roles(3) == ["user"]
     update_bytes = new_user_registry.get_manual_config_update_bytes()
-    with pytest.raises(AppxfRegistryRoleError) as exc_info:
+    with pytest.raises(AppxcRegistryRoleError) as exc_info:
         admin_registry.set_manual_config_update_bytes(update_bytes)
     assert "is not an admin" in str(exc_info.value)

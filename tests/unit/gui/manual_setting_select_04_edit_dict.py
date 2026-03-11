@@ -1,4 +1,4 @@
-# Copyright 2025-2026 the contributors of APPXF (github.com/alexander-nbg/appxf)
+# Copyright 2025-2026 the contributors of APPXC (github.com/alexander-nbg/appxc)
 # SPDX-License-Identifier: Apache-2.0
 """
 __Scope__: Proper interoperabiltity of SettingSelect with SettingDict.
@@ -21,9 +21,9 @@ __Invalid__: Try to set an invalid value (letters for int) and use OK as well
 as Cancel.
 """
 
-from appxf.gui.setting_select import SettingSelectFrame
-from appxf.setting import Setting, SettingSelect
-from appxf_matema.case_runner import ManualCaseRunner
+from appxc.gui.setting_select import SettingSelectFrame
+from appxc.setting import Setting, SettingSelect
+from appxc_matema.case_runner import ManualCaseRunner
 
 # Scope: SettingSelect edit options functionality
 base_setting = Setting.new("dict", {"string": (str, "base setting"), "int": (int, 42)})

@@ -1,4 +1,4 @@
-# Copyright 2025-2026 the contributors of APPXF (github.com/alexander-nbg/appxf)
+# Copyright 2025-2026 the contributors of APPXC (github.com/alexander-nbg/appxc)
 # SPDX-License-Identifier: Apache-2.0
 """User Initialization without Registration
 
@@ -12,7 +12,7 @@ testing. Use the reset button to manualle reset the sandbox. **Do not reset
 while the application is launched!**
 """
 
-from appxf_matema.case_runner import ManualCaseRunner
+from appxc_matema.case_runner import ManualCaseRunner
 from tests.fixtures import test_sandbox
 from tests.fixtures.app_harness import AppHarness
 from tests.fixtures.app_harness_gui import AppHarnessGui

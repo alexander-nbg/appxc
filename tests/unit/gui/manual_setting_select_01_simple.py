@@ -1,4 +1,4 @@
-# Copyright 2024-2026 the contributors of APPXF (github.com/alexander-nbg/appxf)
+# Copyright 2024-2026 the contributors of APPXC (github.com/alexander-nbg/appxc)
 # SPDX-License-Identifier: Apache-2.0
 """
 Frame shall only show the label and the dropdown. The edit button must not be
@@ -10,9 +10,9 @@ based on the "Long Single Line", the tooltip width shall be the width of the
 frame up to a certain maximum.
 """
 
-from appxf.gui import SettingSelectFrame
-from appxf.setting import Setting
-from appxf_matema.case_runner import ManualCaseRunner
+from appxc.gui import SettingSelectFrame
+from appxc.setting import Setting
+from appxc_matema.case_runner import ManualCaseRunner
 
 # Scope: SettingSelect functionality by single SettingFrame
 

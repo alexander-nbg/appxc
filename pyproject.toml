@@ -1,12 +1,12 @@
-# Copyright 2026 the contributors of APPXF (github.com/alexander-nbg/appxf)
+# Copyright 2026 the contributors of APPXC (github.com/alexander-nbg/appxc)
 # SPDX-License-Identifier: 0BSD
 [project]
-name = "appxf"
+name = "appxc"
 version = "0.0.3a0"
 authors = [
   { name = "alexander-nbg", email="mail@alexander-nbg.de" }
 ]
-description = "APPXF application (APP) cross functional concerns (XF)"
+description = "APPXC application (APP) cross functional concerns (XC)"
 readme = "README.md"
 requires-python = ">=3.10"
 license="Apache-2.0"
@@ -26,9 +26,9 @@ exclude = [
 ]
 
 [project.entry-points.pyinstaller40]
-hook-dirs = "appxf.pyinstaller:get_hook_dirs"
+hook-dirs = "appxc.pyinstaller:get_hook_dirs"
 
-[tool.appxf]
+[tool.appxc]
 # The testing sandbox is the root directory where files are placed that are
 # needed or generated during test case. Each test case should use individual
 # subfolders.
@@ -52,12 +52,12 @@ ignore = [
   # https://docs.astral.sh/ruff/formatter/#conflicting-lint-rules.
   "COM812",  # Conflicts with formater AND causes warning message on [ruff format]
   "EM",      # avoid extra code and accept duplication in error messages
-  "FIX002",  # Even in an APPXF v1.0.0, TODO remarks remain being allowed if a
+  "FIX002",  # Even in an APPXC v1.0.0, TODO remarks remain being allowed if a
              # corresponding ticket was created, is linked and still actove (TODO #42).
              # Despite TODO, no other tag should be used and other FIX rules remain in
              # place.
   "TC001", "TC003", # import readability over minor performance improvement
-  "TD",      # rules for TODO in APPXF do not follow this pattern
+  "TD",      # rules for TODO in APPXC do not follow this pattern
   "C901",    # Complexity shall be rated by reviewers
   "FBT",     # boolean positional arguments are common for set(key, value) patterns and
   # requiring an extra * to enforce named keyword arguments messes up the function
@@ -114,13 +114,13 @@ suppress-none-returning = true
 ]
 
 # TODO: matema is generally in draft status and not usable. Disabling security checks.
-"src/appxf_matema/**/*.py" = [
+"src/appxc_matema/**/*.py" = [
   "ARG", "S603", "S607", "T201"
 ]
 
 # development scripts are not part of the shipped library and are only running locally
 # and within CI (not in user applications)
-"src/appxf_dev/**/*.py" = [
+"src/appxc_dev/**/*.py" = [
   "S607", # partial executable paths are acceptable in dev-script context
   "T201"  # print statements OK in dev scripts
 ]
@@ -141,7 +141,7 @@ legacy_tox_ini = """
         3.12: py312
 
     [testenv]
-    passenv = APPXF_*
+    passenv = APPXC_*
     setenv = PYTHONPATH = {toxinidir}
              VIRTUALENV_DOWNLOAD=0
     deps =
@@ -150,14 +150,14 @@ legacy_tox_ini = """
 
     commands = pytest -rA tests/fixtures/application.py::test_cleanup
                coverage erase
-               coverage run --source=appxf --context=UNIT --branch -m pytest -rA ./tests/unit
+               coverage run --source=appxc --context=UNIT --branch -m pytest -rA ./tests/unit
                coverage report --contexts=UNIT
                coverage html --contexts=UNIT -d cov_html_UNIT
-               coverage run -a --source=appxf --context=ACCEPTANCE --branch -m pytest -rA ./tests/acceptance
+               coverage run -a --source=appxc --context=ACCEPTANCE --branch -m pytest -rA ./tests/acceptance
                coverage report --contexts=ACCEPTANCE
                coverage html --contexts=ACCEPTANCE -d cov_html_ACCEPTANCE
                coverage report
                coverage html -d cov_html
 """
-# commands = pytest --cov=appxf --cov-report html --cov-report term
+# commands = pytest --cov=appxc --cov-report html --cov-report term
 # commands = coverage run --source src -m pytest

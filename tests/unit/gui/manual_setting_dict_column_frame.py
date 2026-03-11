@@ -1,4 +1,4 @@
-# Copyright 2023-2026 the contributors of APPXF (github.com/alexander-nbg/appxf)
+# Copyright 2023-2026 the contributors of APPXC (github.com/alexander-nbg/appxc)
 # SPDX-License-Identifier: Apache-2.0
 """
 Resizing: should only affect the right entry part.
@@ -10,9 +10,9 @@ after the label.
 """
 # TODO: update testing text
 
-from appxf.gui import setting_dict
-from appxf.setting import SettingBool, SettingEmail, SettingString
-from appxf_matema.case_runner import ManualCaseRunner
+from appxc.gui import setting_dict
+from appxc.setting import SettingBool, SettingEmail, SettingString
+from appxc_matema.case_runner import ManualCaseRunner
 
 #  - Label length: the dict uses very short and very long names on purpose:
 prop_dict = {

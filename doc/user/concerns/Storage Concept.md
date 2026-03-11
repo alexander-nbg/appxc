@@ -1,10 +1,10 @@
-<!--Copyright 2026 the contributors of APPXF (github.com/alexander-nbg/appxf)-->
+<!--Copyright 2026 the contributors of APPXC (github.com/alexander-nbg/appxc)-->
 <!--SPDX-License-Identifier: 0BSD-->
 # Storage Concept
 
 **Situation and Problem.** An application maintains data that shall be persisted during sessions. But there are more details to consider. Shall the data be stored human readable or in binary format? Shall it be encrypted? Shall it be shared with other application instances?
 
-**Feature.** The storage concept is an abstraction allowing you to focus on the function your are implementing and pick the storage behavior from the APPXF library. The behavior is split into **storage locations**:
+**Feature.** The storage concept is an abstraction allowing you to focus on the function your are implementing and pick the storage behavior from the APPXC library. The behavior is split into **storage locations**:
 * on local disk (LocalStorage) or
 * via FTP,
 **storage format** (also called the serialization method):
@@ -19,6 +19,6 @@ and **additional methods**:
 
 ## Guide
 ### Your Functionality
-Recommended is to encapsulate your functions into a class. If you want to use other ways, see the APPXF storage concept details below.
+Recommended is to encapsulate your functions into a class. If you want to use other ways, see the APPXC storage concept details below.
 ### Storage Concept
-Ideally, your function is enclosed in a class that derives from APPXF Storable and forwards necessary initialization information and satisfies the interfaces. Then, when instantiating your class, you define the actual Storage behavior.
+Ideally, your function is enclosed in a class that derives from APPXC Storable and forwards necessary initialization information and satisfies the interfaces. Then, when instantiating your class, you define the actual Storage behavior.

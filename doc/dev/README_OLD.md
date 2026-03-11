@@ -1,12 +1,12 @@
-<!--Copyright 2026 the contributors of APPXF (github.com/alexander-nbg/appxf)-->
+<!--Copyright 2026 the contributors of APPXC (github.com/alexander-nbg/appxc)-->
 <!--SPDX-License-Identifier: 0BSD-->
 This is the old README that was present in the original private repository. It needs to be merged into the new README and planned documentation.
-# APPXF
+# APPXC
 
 This toolbox covers cross functional concerns like configuration, persisting
 data, logging or security to limit the effort writing simple applications.
 
-Solutions to cross-functional concerns have strong impact on non-functional
+Solutions to cross-cutting concerns have strong impact on non-functional
 requirements or vice versa. The following list was compiled to allow a quick
 decision on whether this toolbox is for you and to guide it's development.
 Provided numbers only provide a rough idea.
@@ -45,7 +45,7 @@ modules place files:
 Where "./" is the location of the binary.
 
 ## GUI
-The decision to be made: tkinter or QT. Since the APPXF framework does not aim
+The decision to be made: tkinter or QT. Since the APPXC framework does not aim
 for professionals, a quick learning curve is essential such that tkinter was
 chosen as the basis (see also:
 [pythonguis.com](https://www.pythonguis.com/faq/pyqt-vs-tkinter/)). [Tkinter

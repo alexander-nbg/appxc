@@ -1,4 +1,4 @@
-# Copyright 2024-2026 the contributors of APPXF (github.com/alexander-nbg/appxf)
+# Copyright 2024-2026 the contributors of APPXC (github.com/alexander-nbg/appxc)
 # SPDX-License-Identifier: Apache-2.0
 """Testing RamStorage
 
@@ -8,9 +8,9 @@ Utilizing BaseStorageTest for test cases. See test_storage_base.py
 import pytest
 
 import tests.fixtures.test_sandbox
-from appxf.registry import SecureSharedStorage
-from appxf.storage import LocalStorage, Storage
-from tests.fixtures import appxf_objects
+from appxc.registry import SecureSharedStorage
+from appxc.storage import LocalStorage, Storage
+from tests.fixtures import appxc_objects
 from tests.unit.storage.test_storage_base import BaseStorageTest
 
 # TODO: test signature and decryption manually to ensure formats and proper
@@ -27,9 +27,9 @@ from tests.unit.storage.test_storage_base import BaseStorageTest
 def setup_local(request):
     Storage.reset()
     env = {"dir": tests.fixtures.test_sandbox.init_test_sandbox_from_fixture(request)}
-    env["config"] = appxf_objects.get_dummy_config()
-    env["security"] = appxf_objects.get_security_unlocked(path=env["dir"])
-    env["registry"] = appxf_objects.get_registry_admin_initialized(
+    env["config"] = appxc_objects.get_dummy_config()
+    env["security"] = appxc_objects.get_security_unlocked(path=env["dir"])
+    env["registry"] = appxc_objects.get_registry_admin_initialized(
         path=env["dir"],
         security=env["security"],
         config=env["config"],

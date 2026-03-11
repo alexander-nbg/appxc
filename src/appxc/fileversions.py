@@ -1,0 +1,197 @@
+# Copyright 2024-2026 the contributors of APPXC (github.com/alexander-nbg/appxc)
+# SPDX-License-Identifier: Apache-2.0
+"""Helping with file versioning.
+
+Versioning is typically done by some date format and adding some index. This
+module provides get_filename() to construct corresponging filenames, like:
+20230401_v00_file.txt or 2023_CW04.txt (without version index) or file_007.txt
+(without date information).
+"""
+
+import datetime
+import logging
+import os.path
+import re
+
+from babel.dates import format_date
+
+# Setup logging
+log = logging.getLogger(__name__)
+
+
+# TODO: this locale setting below is actually a APPXC language setting. But it
+# is not clear how to model this.
+#
+# 1) Bound to this module. Either as function static as below or as module
+#    variable.
+#    - this would imply that this locale might be required to be set for other
+#      modules as well.
+# 2) Bound to language module.
+#    - this would imply that language module has to be used.
+# 3) APPXC central module. This could also hold other "central" elements like a
+#    APPXC logger such that this one can be configured instead of the root
+#    logger. When importing APPXC, we would gain access to it (and all sub
+#    modules)
+# 4) Isn't this configuration?
+#    - Cannot bind this to usage of config module by default.
+#
+# Conclusions: Cross functionals have interdependencies such that (2) is valid
+# while the dependency could be hidden or the language modules could be split
+# to limit the dependencies. In this context the likely best solution is:
+#  * implementing in appxc.language.babel
+#  * allow access to set it from appxc, language or any other using module
+#    like this one, wrapping appxc.language.babel.set_locale().
+#
+# Is there a babel "set locale" default??
+def set_locale(locale: str):
+    log.info("Set locale to {locale}")
+    set_locale.locale = locale
+
+
+# Module variable
+set_locale.locale = "EN"
+
+
+def get_filename(
+    name_format: str,
+    date: datetime.date | None = None,
+    directory: str = "./",
+    existing: bool = False,
+):
+    """Get file name from format and date
+
+    babel.date.format_date() is used to get the date related parts of the
+    filename. All date formatting from babel can be used. appxc identifies
+    the date and version related portions of the file name by () brakets.
+
+    Examples: get_filename('(yyyyMM)_CW(ww)_(00).txt') results in
+    '20230103_CW01_00.txt'
+
+    Arguments:
+        format -- format string with ()-brakets used to identify date and
+        version (00) portions.
+
+    Keyword Arguments:
+        date -- datetime generated date. {default: datetime.today()}
+        directory -- directory where the file might be present, required
+            for versioning. (default: {'./'})
+        existing -- Wether to expect the file being existing (True) which
+            returns the currently exsiting version or None if not existing or
+            to return the next version (False). (default: {False})
+
+    Returns:
+        File name with date and version.
+
+    """
+    # Input handling
+    if date is None:
+        date = datetime.datetime.now(tz=datetime.timezone.utc).date()
+
+    filename = _fill_date_pattern(name_format, date)
+    log.debug(
+        'Filename is "%s" after applying date pattern to "%s" with date=%s',
+        filename,
+        name_format,
+        date,
+    )
+    return _fill_version_pattern(filename, directory, existing)
+
+
+def _fill_date_pattern(name_format: str, date: datetime.date):
+    outstr = name_format
+    # find first opening and closing brackets
+    opening_index = -1
+    closing_index = -1
+    cycle_count = 100
+    while True:
+        opening = outstr.find("(")
+        closing = outstr.find(")")
+        # break loop if no brackets are found anymore:
+        if opening < 0 and closing < 0:
+            break
+        # error if opening braket count does not match closing braket count:
+        if (opening < 0 and closing >= 0) or (opening >= 0 and closing < 0):
+            raise ValueError(
+                f"Format string {name_format} does not have matching braket for "
+                f"{'opening' if opening > 0 else 'closing'} braket at "
+                f"position {opening if opening > 0 else closing}.",
+            )
+        if opening > closing:
+            raise ValueError(
+                f"Format string {name_format} close braket before opening.",
+            )
+        # opening >= 0, opening > closing and opening != closing implies
+        # closing > 0
+        datestr = outstr[(opening + 1) : (closing)]
+        # skip zeros (index part)
+        if datestr.find("0") >= 0:
+            # Error if we find this twice:
+            if opening_index >= 0 or closing_index >= 0:
+                raise ValueError(
+                    f"Format string {name_format} contains two indications "
+                    'for indexing file versions like "(00)". '
+                    "Only one is expected.",
+                )
+            opening_index = opening
+            closing_index = closing
+            # Overwrite with non-braket to find next format string in
+            # next loop
+            outstr = outstr[:opening] + "." + datestr + "." + outstr[closing + 1 :]
+        else:
+            datestr = format_date(date, datestr, locale=set_locale.locale)
+            outstr = outstr[:opening] + datestr + outstr[closing + 1 :]
+        # avoid freezing programs due to programming errors
+        cycle_count -= 1
+        if cycle_count <= 0:
+            raise RuntimeError(
+                "Implementation error: format string "
+                f'"{name_format}" led to an infinite loop.',
+            )
+    # revert indexing brakets
+    if opening_index >= 0:
+        outstr = (
+            outstr[:opening_index]
+            + "("
+            + outstr[opening_index + 1 : closing_index]
+            + ")"
+            + outstr[closing_index + 1 :]
+        )
+    return outstr
+
+
+def _fill_version_pattern(filename: str, path: str, existing: bool):
+    # Note that _fill_date_pattern must always be called before. It contains
+    # the error handling for brakets. After that execution, only one braked
+    # pair is remaining for versioning (or none).
+    opening = filename.find("(")
+    closing = filename.find(")")
+    # If there is no versioning pattern, we can return:
+    if opening < 0 or closing < 0:
+        if existing and (not os.path.exists(os.path.join(path, filename))):
+            return None
+        return filename
+    # If there is one, this is the regexp to match files and see the
+    regex = re.compile(filename[:opening] + r"(\d+)" + filename[closing + 1 :])
+    version = -1
+    # cycle filenames in directory:
+    if os.path.exists(path):
+        for file in os.listdir(path):
+            match = re.fullmatch(regex, file)
+            if match is None:
+                continue
+            # No error handling, int() should convert always since group is
+            # \d+
+            this_version = int(match.group(1))
+            version = max(version, this_version)
+    else:
+        # Nothing to do, file does not exist if directory does not exist
+        pass
+
+    if existing and version < 0:
+        # We cannot return a file name if an existing file is expected
+        return None
+    if not existing:
+        # We need to use the next version:
+        version += 1
+    versionstr = ("{:0" + str(closing - opening - 1) + "}").format(version)
+    return filename[:opening] + versionstr + filename[(closing + 1) :]

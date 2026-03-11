@@ -91,7 +91,7 @@
         <mxCell id="OMR0yY9i_4W5-iC-2M4N-3" value="APPLICATION_GUI &amp;amp; APPLICATION_CMD" style="swimlane;html=1;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=#e0e0e0;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;swimlaneFillColor=#ffffff;align=center;rounded=1;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;fontFamily=Verdana;fontSize=12" parent="1" vertex="1">
           <mxGeometry x="120" y="600" width="720" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="OMR0yY9i_4W5-iC-2M4N-4" value="GUI&#39;s coverering common use case with APPXF modules.&lt;div&gt;APPLICATION_CMD does not yet exist.&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;spacingLeft=4;spacingRight=4;whiteSpace=wrap;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="OMR0yY9i_4W5-iC-2M4N-3" vertex="1">
+        <mxCell id="OMR0yY9i_4W5-iC-2M4N-4" value="GUI&#39;s coverering common use case with APPXC modules.&lt;div&gt;APPLICATION_CMD does not yet exist.&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;spacingLeft=4;spacingRight=4;whiteSpace=wrap;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="OMR0yY9i_4W5-iC-2M4N-3" vertex="1">
           <mxGeometry y="26" width="720" height="54" as="geometry" />
         </mxCell>
         <mxCell id="OMR0yY9i_4W5-iC-2M4N-6" value="" style="endArrow=classic;html=1;rounded=0;" parent="1" source="OMR0yY9i_4W5-iC-2M4N-1" target="xNg26A6SZNMzz_5sGm6C-3" edge="1">

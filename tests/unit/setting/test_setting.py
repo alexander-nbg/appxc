@@ -1,4 +1,4 @@
-# Copyright 2024-2026 the contributors of APPXF (github.com/alexander-nbg/appxf)
+# Copyright 2024-2026 the contributors of APPXC (github.com/alexander-nbg/appxc)
 # SPDX-License-Identifier: Apache-2.0
 """Cover detailed Setting and Setting Meta Class behavior
 
@@ -7,20 +7,20 @@ Note that most functionality is covered with tests in test_setting_types.
 
 import pytest
 
-from appxf.setting import AppxfSettingError, Setting
-from appxf.setting import base_types as base_types_module
+from appxc.setting import AppxcSettingError, Setting
+from appxc.setting import base_types as base_types_module
 
 # pylint: disable=protected-access
 # pylint: disable=missing-function-docstring
 
 
 # #########################################/
-# # AppxfSetting and Registry (Meta Class)
+# # AppxcSetting and Registry (Meta Class)
 # #/
 def test_setting_register_type_twice():
-    with pytest.raises(AppxfSettingError) as exc_info:
+    with pytest.raises(AppxcSettingError) as exc_info:
 
-        class DummyAppxfString(Setting):
+        class DummyAppxcString(Setting):
             @classmethod
             def get_supported_types(cls) -> list[type | str]:
                 return ["email"]
@@ -33,12 +33,12 @@ def test_setting_register_type_twice():
                 return False, self.get_default()
 
     assert "is already registered" in str(exc_info.value)
-    assert "DummyAppxfString" in str(exc_info.value)
+    assert "DummyAppxcString" in str(exc_info.value)
     assert "SettingEmail" in str(exc_info.value)
 
 
 def test_setting_register_class_twice():
-    with pytest.raises(AppxfSettingError) as exc_info:
+    with pytest.raises(AppxcSettingError) as exc_info:
 
         class SettingEmail(Setting):
             @classmethod
@@ -57,9 +57,9 @@ def test_setting_register_class_twice():
 
 
 def test_setting_register_no_supported_type():
-    with pytest.raises(AppxfSettingError) as exc_info:
+    with pytest.raises(AppxcSettingError) as exc_info:
 
-        class DummyAppxfString(Setting):
+        class DummyAppxcString(Setting):
             @classmethod
             def get_supported_types(cls) -> list[type | str]:
                 return []
@@ -75,9 +75,9 @@ def test_setting_register_no_supported_type():
 
 
 def test_setting_register_incopmlete_class():
-    with pytest.raises(AppxfSettingError) as exc_info:
+    with pytest.raises(AppxcSettingError) as exc_info:
 
-        class DummyAppxfString(Setting):
+        class DummyAppxcString(Setting):
             @classmethod
             def get_supported_types(cls) -> list[type | str]:
                 return ["myEmail"]
@@ -87,14 +87,14 @@ def test_setting_register_incopmlete_class():
 
 
 def test_setting_init_with_base_class():
-    with pytest.raises(AppxfSettingError) as exc_info:
+    with pytest.raises(AppxcSettingError) as exc_info:
         Setting.new(Setting)
     assert "You need to provide a fully implemented class" in str(exc_info.value)
     assert "Setting is not" in str(exc_info.value)
 
 
 def test_setting_init_with_unknown_type():
-    with pytest.raises(AppxfSettingError) as exc_info:
+    with pytest.raises(AppxcSettingError) as exc_info:
         Setting.new("non_existing_type")
     assert "Setting type [non_existing_type] is unknown." in str(exc_info.value)
 

@@ -1,4 +1,4 @@
-# Copyright 2023-2026 the contributors of APPXF (github.com/alexander-nbg/appxf)
+# Copyright 2023-2026 the contributors of APPXC (github.com/alexander-nbg/appxc)
 # SPDX-License-Identifier: Apache-2.0
 import os.path
 
@@ -6,14 +6,14 @@ from pytest import fixture
 from pytest_bdd import given, parsers, scenarios, then, when
 
 import tests.fixtures.test_sandbox
-from appxf.config import Config
-from appxf.registry import Registry, SecureSharedStorage
-from appxf.security import SecurePrivateStorage
-from appxf.storage import LocalStorage, Storage, StorageToBytes, sync
+from appxc.config import Config
+from appxc.registry import Registry, SecureSharedStorage
+from appxc.security import SecurePrivateStorage
+from appxc.storage import LocalStorage, Storage, StorageToBytes, sync
 
 # Fixtures upon which the ones we require are depenent on must be included as
 # well. Otherwise, we will get a "fixture not found".
-from tests.fixtures import appxf_objects
+from tests.fixtures import appxc_objects
 
 scenarios("test_bdd_sync.feature")
 
@@ -27,7 +27,7 @@ def env(request):
 
     env = {"dir": tests.fixtures.test_sandbox.init_test_sandbox_from_fixture(request)}
     # commonly used objects:
-    env["security"] = appxf_objects.get_security_unlocked(path=env["dir"])
+    env["security"] = appxc_objects.get_security_unlocked(path=env["dir"])
     env["config"] = Config(
         default_storage_factory=LocalStorage.get_factory(
             path=os.path.join(env["dir"], "config"),

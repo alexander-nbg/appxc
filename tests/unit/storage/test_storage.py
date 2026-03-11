@@ -1,4 +1,4 @@
-# Copyright 2024-2026 the contributors of APPXF (github.com/alexander-nbg/appxf)
+# Copyright 2024-2026 the contributors of APPXC (github.com/alexander-nbg/appxc)
 # SPDX-License-Identifier: Apache-2.0
 """Test Storage Base Class
 
@@ -21,7 +21,7 @@ from __future__ import annotations
 
 from collections.abc import Callable
 
-from appxf.storage import Storage
+from appxc.storage import Storage
 
 
 def test_storage_simple_abstract_derivative():

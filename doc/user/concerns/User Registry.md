@@ -1,4 +1,4 @@
-<!--Copyright 2026 the contributors of APPXF (github.com/alexander-nbg/appxf)-->
+<!--Copyright 2026 the contributors of APPXC (github.com/alexander-nbg/appxc)-->
 <!--SPDX-License-Identifier: 0BSD-->
 # User Registry
 
@@ -16,6 +16,6 @@ If the admin removes a user or changes roles, the user registry will be uploaded
 ### Can users rights be revoked?
 You can remove a user. Without cleanup, the user-id will remain blocked. You can add or remove roles from a user. At least one role must remain. Access permissions will be forwarded accordingly. Please be aware of the [[Limitations|security limitations]].
 ### What happens if a user lost it's data?
-If the application data is lost or corrupted, the user just needs to re-register with a fresh application. Shared data will be available again after registration. Since APPXF defines the user-id and the users public key as identification data, the user will get a *new* entry in the user registry.
+If the application data is lost or corrupted, the user just needs to re-register with a fresh application. Shared data will be available again after registration. Since APPXC defines the user-id and the users public key as identification data, the user will get a *new* entry in the user registry.
 
 A manual mapping to the old user ID is not supported since the added complexity does not seem to match the benefit.

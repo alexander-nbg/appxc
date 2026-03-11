@@ -15,7 +15,7 @@ Based on the reproduction steps, what was the ***expected* behavior**?
 
 ## Situation
 For obvious defects, list the operating system, Python version, and package versions
-(including APPXF). For broader problems, provide context about your application use
+(including APPXC). For broader problems, provide context about your application use
 case (environment, workflow) where the behavior was observed.
 
 ## Guide

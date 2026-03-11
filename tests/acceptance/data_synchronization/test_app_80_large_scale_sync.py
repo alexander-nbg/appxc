@@ -1,12 +1,12 @@
-# Copyright 2024-2026 the contributors of APPXF (github.com/alexander-nbg/appxf)
+# Copyright 2024-2026 the contributors of APPXC (github.com/alexander-nbg/appxc)
 # SPDX-License-Identifier: Apache-2.0
 
 # import pytest
 
-# from tests.fixtures import application, appxf_objects
+# from tests.fixtures import application, appxc_objects
 
 # TODO: CURRENT REFACTORING: move unlocked user/admin pair from registry test
-#       to appxf_objects to use in here.
+#       to appxc_objects to use in here.
 
 
 def test_app_80_large_scale_sync(request):

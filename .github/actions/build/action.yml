@@ -1,4 +1,4 @@
-# Copyright 2024-2026 the contributors of APPXF (github.com/alexander-nbg/appxf)
+# Copyright 2024-2026 the contributors of APPXC (github.com/alexander-nbg/appxc)
 # SPDX-License-Identifier: 0BSD
 
 name: Run Tox
@@ -38,7 +38,7 @@ runs:
 
     - name: Building
       run: |
-        python -m appxf.build.pyinstaller \
+        python -m appxc.build.pyinstaller \
           --main-file ${{ inputs.main-file }} \
           --additional-files "${{ inputs.additional-files }}" \
           --hidden-imports "${{ inputs.hidden-imports }}" \

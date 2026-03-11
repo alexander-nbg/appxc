@@ -1,12 +1,12 @@
-# Copyright 2024-2026 the contributors of APPXF (github.com/alexander-nbg/appxf)
+# Copyright 2024-2026 the contributors of APPXC (github.com/alexander-nbg/appxc)
 # SPDX-License-Identifier: Apache-2.0
 """
 TBD
 """
 
-from appxf.gui.setting_dict import SettingDictSingleFrame
-from appxf.setting import Setting, SettingDict
-from appxf_matema.case_runner import ManualCaseRunner
+from appxc.gui.setting_dict import SettingDictSingleFrame
+from appxc.setting import Setting, SettingDict
+from appxc_matema.case_runner import ManualCaseRunner
 
 # Scope: SettingSelect edit options functionality
 

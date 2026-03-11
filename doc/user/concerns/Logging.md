@@ -1,13 +1,13 @@
-<!--Copyright 2026 the contributors of APPXF (github.com/alexander-nbg/appxf)-->
+<!--Copyright 2026 the contributors of APPXC (github.com/alexander-nbg/appxc)-->
 <!--SPDX-License-Identifier: 0BSD-->
 # Logging
 
 ## Basic Logging
-Logging during development shows progress and hints you left in your messages. Any log you issue will be __printed to the console__. When your application is shipped out of your hands, you rely on __logging written to a file__. Once log files are written, some __log rotation and cleanup of storage would be nice__: appxf starts a new log file for each application session (log rotation) and will only keep the last five log files (cleanup).
+Logging during development shows progress and hints you left in your messages. Any log you issue will be __printed to the console__. When your application is shipped out of your hands, you rely on __logging written to a file__. Once log files are written, some __log rotation and cleanup of storage would be nice__: appxc starts a new log file for each application session (log rotation) and will only keep the last five log files (cleanup).
 
 Assumption is that your application structures code into one top-level package. The \_\_init\_\_.py of this top-level package is the place to activate logging:
 ```python
-from appxf import logging
+from appxc import logging
 
 logging.activate_logging(__name__)
 ```
@@ -16,7 +16,7 @@ The function __activate_logging()__ must only be called once within your applica
 
 Each module from which you want to log will then use:
 ```python
-from appxf import logging
+from appxc import logging
 
 log = logging.getLogger(__name__)
 ```
@@ -39,7 +39,7 @@ Note that date is part of the file name (`./data/logging_yyyyMMdd_00.log`) and, 
 ## Logging Classes
 If you are working with classes, you likely want to have the class name contained in the log lines. In this case, you can setup logging like:
 ```python
-from appxf import logging
+from appxc import logging
 
 
 class YourClass():
@@ -47,9 +47,9 @@ class YourClass():
 ```
 
 ## Logging Other Modules
-Warnings and Errors of other modules are logged to console and file just like logs of appxf and your application. What would be missing is uncought exceptions. For that reason, you should embed your main code into:
+Warnings and Errors of other modules are logged to console and file just like logs of appxc and your application. What would be missing is uncought exceptions. For that reason, you should embed your main code into:
  ```python
-from appxf import logging
+from appxc import logging
 
 import your_application
 
@@ -79,7 +79,7 @@ def _handle_gui_exception(exception, value, traceback):
 ## Logging to GUI (not yet implemented)
 Some of your logging is relevant as feedback to the user, like: "Password is too short" or "Process finished OK". For this, you can embed a __logging frame__. This will show a single line with the latest info message __showing progress__ and __showing the latest INFO message__. Because you will sometimes need to allow the user accessing more lines of such logging (like for: "Process finished with 4 warnings (see above)") the logging frame can __extend to 5 lines of scrollable log lines__.
 ```python
-from appxf.logging.gui import LoggingFrame
+from appxc.logging.gui import LoggingFrame
 
 # ... other code that generates your gui
 
@@ -89,7 +89,7 @@ log_frame = LoggingFrame(parent)
 ```
 
 ## Pop-Up-Messages
-No feature is provided here to link pop up warnings/errors with logging. Just forward the message also to the appxf logging module.
+No feature is provided here to link pop up warnings/errors with logging. Just forward the message also to the appxc logging module.
 
 ## Extentions (not yet implemented)
 * Sending bug report via Email. Automatically sends all available log files.

@@ -1,11 +1,11 @@
-# Copyright 2023-2026 the contributors of APPXF (github.com/alexander-nbg/appxf)
+# Copyright 2023-2026 the contributors of APPXC (github.com/alexander-nbg/appxc)
 # SPDX-License-Identifier: Apache-2.0
 from datetime import datetime, timedelta, timezone
 
 import ntplib
 import pytest
 
-from appxf.utility.ntptime import AppxfNtpTimeError, NtpTime
+from appxc.utility.ntptime import AppxcNtpTimeError, NtpTime
 
 
 def ntplib_request_failing(server):
@@ -45,7 +45,7 @@ def test_functional(fresh_ntp_time):
 @pytest.mark.skip(reason="NTP server is currently not used and occasionally fails")
 def test_server_all_fail(mocker, fresh_ntp_time):
     mocker.patch("ntplib.NTPClient.request", side_effect=ntplib_request_failing)
-    with pytest.raises(AppxfNtpTimeError) as excinfo:
+    with pytest.raises(AppxcNtpTimeError) as excinfo:
         fresh_ntp_time.get_offset_from_utc_now()
     assert "None of the server requests succeeded" in str(excinfo.value)
 

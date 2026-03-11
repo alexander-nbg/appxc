@@ -1,4 +1,4 @@
-# Copyright 2025-2026 the contributors of APPXF (github.com/alexander-nbg/appxf)
+# Copyright 2025-2026 the contributors of APPXC (github.com/alexander-nbg/appxc)
 # SPDX-License-Identifier: Apache-2.0
 """Test all serializer classes"""
 
@@ -6,7 +6,7 @@ import pickle
 
 import pytest
 
-from appxf.storage import CompactSerializer, Serializer
+from appxc.storage import CompactSerializer, Serializer
 from tests.unit.storage.test_serializer_base import (
     BaseSerializerTest,
     DummyClassNotSerializable,

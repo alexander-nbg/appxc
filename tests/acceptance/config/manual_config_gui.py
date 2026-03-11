@@ -1,11 +1,11 @@
-# Copyright 2023-2026 the contributors of APPXF (github.com/alexander-nbg/appxf)
+# Copyright 2023-2026 the contributors of APPXC (github.com/alexander-nbg/appxc)
 # SPDX-License-Identifier: Apache-2.0
 """Manual testing the configuration GUI."""
 
-from appxf.application_gui.config_gui import EditConfigWindow
+from appxc.application_gui.config_gui import EditConfigWindow
 
-from appxf.config import Config
-from appxf.gui import AppxfOption
+from appxc.config import Config
+from appxc.gui import AppxcOption
 
 config = Config()
 # config.language['USER'] = 'Benutzer'
@@ -17,10 +17,10 @@ config.add_section("EMPTY")
 config.add_section(
     "USER",
     {
-        "Email": AppxfOption(type="email"),
-        "Rolle": AppxfOption(type="str"),
-        "Ist Admin": AppxfOption(type="bool"),
-        "Irgendein Integer": AppxfOption(type="int"),
+        "Email": AppxcOption(type="email"),
+        "Rolle": AppxcOption(type="str"),
+        "Ist Admin": AppxcOption(type="bool"),
+        "Irgendein Integer": AppxcOption(type="int"),
     },
 )
 config.section("USER").set("Email", "empty@email.com")

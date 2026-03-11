@@ -1,4 +1,4 @@
-# Copyright 2024-2026 the contributors of APPXF (github.com/alexander-nbg/appxf)
+# Copyright 2024-2026 the contributors of APPXC (github.com/alexander-nbg/appxc)
 # SPDX-License-Identifier: Apache-2.0
 """Provide Base Class for Storage Testing
 
@@ -9,7 +9,7 @@ specific tests. Like in storage module: RamStorage or LocalStorage.
 from abc import ABC, abstractmethod
 from datetime import datetime, timezone
 
-from appxf.storage import MetaData, Storage
+from appxc.storage import MetaData, Storage
 
 # TODO: test cases need to be added to cover general derivation behavior when
 # it comes to object creation and registry. In particular: ensure that

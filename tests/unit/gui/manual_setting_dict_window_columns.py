@@ -1,4 +1,4 @@
-# Copyright 2024-2026 the contributors of APPXF (github.com/alexander-nbg/appxf)
+# Copyright 2024-2026 the contributors of APPXC (github.com/alexander-nbg/appxc)
 # SPDX-License-Identifier: Apache-2.0
 """
 Resizing: should affect columns evenly.
@@ -9,9 +9,9 @@ fields. Here, all properties are independent and entry fields start directly
 after the label.
 """
 
-from appxf.gui import setting_dict
-from appxf.setting import SettingBool, SettingDict
-from appxf_matema.case_runner import ManualCaseRunner
+from appxc.gui import setting_dict
+from appxc.setting import SettingBool, SettingDict
+from appxc_matema.case_runner import ManualCaseRunner
 
 prop_dict = SettingDict(
     {

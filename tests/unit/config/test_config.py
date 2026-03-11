@@ -1,11 +1,11 @@
-# Copyright 2024-2026 the contributors of APPXF (github.com/alexander-nbg/appxf)
+# Copyright 2024-2026 the contributors of APPXC (github.com/alexander-nbg/appxc)
 # SPDX-License-Identifier: Apache-2.0
 
 import pytest
 
-from appxf.config import AppxfConfigError, Config
-from appxf.setting import SettingDict
-from appxf.storage import AppxfStorableError, RamStorage, Storage
+from appxc.config import AppxcConfigError, Config
+from appxc.setting import SettingDict
+from appxc.storage import AppxcStorableError, RamStorage, Storage
 
 
 @pytest.fixture(autouse=True)
@@ -78,7 +78,7 @@ def test_config_store_load_custom_storage():
     config_restore.add_section("TESTB")["test"] = (str,)
     config_restore.section("TESTA").load()
     assert config_restore.section("TESTA")["test"] == "A"
-    with pytest.raises(AppxfStorableError) as exc_info:
+    with pytest.raises(AppxcStorableError) as exc_info:
         config_restore.section("TESTB").load()
     assert "Storage does not exist" in str(exc_info.value)
 
@@ -86,13 +86,13 @@ def test_config_store_load_custom_storage():
 def test_config_adding_existing_section():
     config = Config()
     config.add_section("TEST")
-    with pytest.raises(AppxfConfigError) as exc_info:
+    with pytest.raises(AppxcConfigError) as exc_info:
         config.add_section("TEST")
     assert "Cannot add section TEST" in str(exc_info.value)
 
 
 def test_config_access_non_existing_section():
     config = Config()
-    with pytest.raises(AppxfConfigError) as exc_info:
+    with pytest.raises(AppxcConfigError) as exc_info:
         config.section("TEST")
     assert "Cannot access section TEST" in str(exc_info.value)

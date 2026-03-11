@@ -1,11 +1,11 @@
 #!/bin/bash
-# Copyright 2026 the contributors of APPXF (github.com/alexander-nbg/appxf)
+# Copyright 2026 the contributors of APPXC (github.com/alexander-nbg/appxc)
 # SPDX-License-Identifier: 0BSD
 
 # locale_update.sh: Compile all POs and show statistics
 
 echo "Compiling PO files to MO"
-for po_file in src/appxf/locale/*/LC_MESSAGES/appxf-gui.po; do
+for po_file in src/appxc/locale/*/LC_MESSAGES/appxc-gui.po; do
     if [ -f "$po_file" ]; then
         mo_file="${po_file%.po}.mo"
         echo "Compiling $po_file -> $mo_file"
@@ -16,14 +16,14 @@ done
 echo -e "\nStatistics"
 
 # Show available contexts from POT file
-PYTHONPATH=src python -m appxf_dev.po_stats --contexts "src/appxf/locale/appxf-gui.pot"
+PYTHONPATH=src python -m appxc_dev.po_stats --contexts "src/appxc/locale/appxc-gui.pot"
 
 # Analyze each PO file
-for po_file in src/appxf/locale/*/LC_MESSAGES/appxf-gui.po; do
+for po_file in src/appxc/locale/*/LC_MESSAGES/appxc-gui.po; do
     if [ -f "$po_file" ]; then
         echo -e "\n$po_file:"
         echo -e "  Overall: $(msgfmt --statistics "$po_file" 2>&1)"
-        PYTHONPATH=src python -m appxf_dev.po_stats --incomplete "$po_file"
+        PYTHONPATH=src python -m appxc_dev.po_stats --incomplete "$po_file"
     fi
 done
 

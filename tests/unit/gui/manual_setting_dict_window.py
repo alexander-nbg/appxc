@@ -1,4 +1,4 @@
-# Copyright 2023-2026 the contributors of APPXF (github.com/alexander-nbg/appxf)
+# Copyright 2023-2026 the contributors of APPXC (github.com/alexander-nbg/appxc)
 # SPDX-License-Identifier: Apache-2.0
 """
 Resizing: should only affect the right entry part.
@@ -9,15 +9,15 @@ fields. Here, all properties are independent and entr fields start directly
 after the label.
 """
 
-from appxf.gui.setting_dict import SettingDictWindow
-from appxf.setting import (
+from appxc.gui.setting_dict import SettingDictWindow
+from appxc.setting import (
     SettingBase64,
     SettingBool,
     SettingDict,
     SettingEmail,
     SettingString,
 )
-from appxf_matema.case_runner import ManualCaseRunner
+from appxc_matema.case_runner import ManualCaseRunner
 
 # logging.activate_logging()
 # logging.console_handler.setFormatter(logging.file_formatter)

@@ -1,4 +1,4 @@
-# Copyright 2023-2026 the contributors of APPXF (github.com/alexander-nbg/appxf)
+# Copyright 2023-2026 the contributors of APPXC (github.com/alexander-nbg/appxc)
 # SPDX-License-Identifier: Apache-2.0
 import os
 from datetime import date
@@ -6,7 +6,7 @@ from datetime import date
 import pytest
 
 import tests.fixtures.test_sandbox
-from appxf import fileversions, logging
+from appxc import fileversions, logging
 
 
 @pytest.mark.parametrize(

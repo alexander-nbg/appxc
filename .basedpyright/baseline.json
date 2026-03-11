@@ -1,6 +1,6 @@
 {
     "files": {
-        "./src/appxf/__init__.py": [
+        "./src/appxc/__init__.py": [
             {
                 "code": "reportUnusedImport",
                 "range": {
@@ -18,7 +18,7 @@
                 }
             }
         ],
-        "./src/appxf/build/pyinstaller.py": [
+        "./src/appxc/build/pyinstaller.py": [
             {
                 "code": "reportUnannotatedClassAttribute",
                 "range": {
@@ -748,7 +748,7 @@
                 }
             }
         ],
-        "./src/appxf/config/__init__.py": [
+        "./src/appxc/config/__init__.py": [
             {
                 "code": "reportUnusedImport",
                 "range": {
@@ -766,7 +766,7 @@
                 }
             }
         ],
-        "./src/appxf/config/cleanup_parts.py": [
+        "./src/appxc/config/cleanup_parts.py": [
             {
                 "code": "reportUnknownParameterType",
                 "range": {
@@ -872,7 +872,7 @@
                 }
             }
         ],
-        "./src/appxf/config/config.py": [
+        "./src/appxc/config/config.py": [
             {
                 "code": "reportPrivateLocalImportUsage",
                 "range": {
@@ -938,7 +938,7 @@
                 }
             }
         ],
-        "./src/appxf/email/sendmail.py": [
+        "./src/appxc/email/sendmail.py": [
             {
                 "code": "reportPrivateLocalImportUsage",
                 "range": {
@@ -1164,7 +1164,7 @@
                 }
             }
         ],
-        "./src/appxf/fileversions.py": [
+        "./src/appxc/fileversions.py": [
             {
                 "code": "reportFunctionMemberAccess",
                 "range": {
@@ -1230,7 +1230,7 @@
                 }
             }
         ],
-        "./src/appxf/gui/__init__.py": [
+        "./src/appxc/gui/__init__.py": [
             {
                 "code": "reportImportCycles",
                 "range": {
@@ -1376,7 +1376,7 @@
                 }
             }
         ],
-        "./src/appxf/gui/application.py": [
+        "./src/appxc/gui/application.py": [
             {
                 "code": "reportMissingTypeStubs",
                 "range": {
@@ -1746,7 +1746,7 @@
                 }
             }
         ],
-        "./src/appxf/gui/common.py": [
+        "./src/appxc/gui/common.py": [
             {
                 "code": "reportAny",
                 "range": {
@@ -2676,7 +2676,7 @@
                 }
             }
         ],
-        "./src/appxf/gui/config.py": [
+        "./src/appxc/gui/config.py": [
             {
                 "code": "reportPrivateLocalImportUsage",
                 "range": {
@@ -2982,7 +2982,7 @@
                 }
             }
         ],
-        "./src/appxf/gui/login.py": [
+        "./src/appxc/gui/login.py": [
             {
                 "code": "reportPrivateLocalImportUsage",
                 "range": {
@@ -3352,7 +3352,7 @@
                 }
             }
         ],
-        "./src/appxf/gui/manual_config_update.py": [
+        "./src/appxc/gui/manual_config_update.py": [
             {
                 "code": "reportPrivateLocalImportUsage",
                 "range": {
@@ -3490,7 +3490,7 @@
                 }
             }
         ],
-        "./src/appxf/gui/registration_admin.py": [
+        "./src/appxc/gui/registration_admin.py": [
             {
                 "code": "reportPrivateLocalImportUsage",
                 "range": {
@@ -3860,7 +3860,7 @@
                 }
             }
         ],
-        "./src/appxf/gui/registration_user.py": [
+        "./src/appxc/gui/registration_user.py": [
             {
                 "code": "reportPrivateLocalImportUsage",
                 "range": {
@@ -4126,7 +4126,7 @@
                 }
             }
         ],
-        "./src/appxf/gui/setting_base.py": [
+        "./src/appxc/gui/setting_base.py": [
             {
                 "code": "reportPrivateLocalImportUsage",
                 "range": {
@@ -4856,7 +4856,7 @@
                 }
             }
         ],
-        "./src/appxf/gui/setting_dict.py": [
+        "./src/appxc/gui/setting_dict.py": [
             {
                 "code": "reportPrivateLocalImportUsage",
                 "range": {
@@ -5618,7 +5618,7 @@
                 }
             }
         ],
-        "./src/appxf/gui/setting_select.py": [
+        "./src/appxc/gui/setting_select.py": [
             {
                 "code": "reportPrivateLocalImportUsage",
                 "range": {
@@ -6980,7 +6980,7 @@
                 }
             }
         ],
-        "./src/appxf/logging.py": [
+        "./src/appxc/logging.py": [
             {
                 "code": "reportImplicitStringConcatenation",
                 "range": {
@@ -7094,7 +7094,7 @@
                 }
             }
         ],
-        "./src/appxf/options.py": [
+        "./src/appxc/options.py": [
             {
                 "code": "reportMissingModuleSource",
                 "range": {
@@ -7536,7 +7536,7 @@
                 }
             }
         ],
-        "./src/appxf/pyinstaller/hook-appxf_private.py": [
+        "./src/appxc/pyinstaller/hook-appxc_private.py": [
             {
                 "code": "reportMissingModuleSource",
                 "range": {
@@ -7546,7 +7546,7 @@
                 }
             }
         ],
-        "./src/appxf/registry/__init__.py": [
+        "./src/appxc/registry/__init__.py": [
             {
                 "code": "reportUnusedImport",
                 "range": {
@@ -7596,7 +7596,7 @@
                 }
             }
         ],
-        "./src/appxf/registry/_public_encryption.py": [
+        "./src/appxc/registry/_public_encryption.py": [
             {
                 "code": "reportPrivateLocalImportUsage",
                 "range": {
@@ -7718,7 +7718,7 @@
                 }
             }
         ],
-        "./src/appxf/registry/_registration_request.py": [
+        "./src/appxc/registry/_registration_request.py": [
             {
                 "code": "reportPrivateLocalImportUsage",
                 "range": {
@@ -7848,7 +7848,7 @@
                 }
             }
         ],
-        "./src/appxf/registry/_registration_response.py": [
+        "./src/appxc/registry/_registration_response.py": [
             {
                 "code": "reportPrivateLocalImportUsage",
                 "range": {
@@ -7906,7 +7906,7 @@
                 }
             }
         ],
-        "./src/appxf/registry/_registry_base.py": [
+        "./src/appxc/registry/_registry_base.py": [
             {
                 "code": "reportUnknownParameterType",
                 "range": {
@@ -7924,7 +7924,7 @@
                 }
             }
         ],
-        "./src/appxf/registry/_signature.py": [
+        "./src/appxc/registry/_signature.py": [
             {
                 "code": "reportPrivateLocalImportUsage",
                 "range": {
@@ -8014,7 +8014,7 @@
                 }
             }
         ],
-        "./src/appxf/registry/_user_db.py": [
+        "./src/appxc/registry/_user_db.py": [
             {
                 "code": "reportPrivateLocalImportUsage",
                 "range": {
@@ -8432,7 +8432,7 @@
                 }
             }
         ],
-        "./src/appxf/registry/_user_id.py": [
+        "./src/appxc/registry/_user_id.py": [
             {
                 "code": "reportPrivateLocalImportUsage",
                 "range": {
@@ -8514,7 +8514,7 @@
                 }
             }
         ],
-        "./src/appxf/registry/registry.py": [
+        "./src/appxc/registry/registry.py": [
             {
                 "code": "reportPrivateLocalImportUsage",
                 "range": {
@@ -9308,7 +9308,7 @@
                 }
             }
         ],
-        "./src/appxf/registry/shared_storage.py": [
+        "./src/appxc/registry/shared_storage.py": [
             {
                 "code": "reportPrivateLocalImportUsage",
                 "range": {
@@ -9518,7 +9518,7 @@
                 }
             }
         ],
-        "./src/appxf/registry/shared_sync.py": [
+        "./src/appxc/registry/shared_sync.py": [
             {
                 "code": "reportPrivateLocalImportUsage",
                 "range": {
@@ -9584,7 +9584,7 @@
                 }
             }
         ],
-        "./src/appxf/security/__init__.py": [
+        "./src/appxc/security/__init__.py": [
             {
                 "code": "reportUnusedImport",
                 "range": {
@@ -9610,7 +9610,7 @@
                 }
             }
         ],
-        "./src/appxf/security/private_storage.py": [
+        "./src/appxc/security/private_storage.py": [
             {
                 "code": "reportPrivateLocalImportUsage",
                 "range": {
@@ -9716,7 +9716,7 @@
                 }
             }
         ],
-        "./src/appxf/security/security.py": [
+        "./src/appxc/security/security.py": [
             {
                 "code": "reportPrivateLocalImportUsage",
                 "range": {
@@ -10294,7 +10294,7 @@
                 }
             }
         ],
-        "./src/appxf/setting/__init__.py": [
+        "./src/appxc/setting/__init__.py": [
             {
                 "code": "reportUnusedImport",
                 "range": {
@@ -10424,7 +10424,7 @@
                 }
             }
         ],
-        "./src/appxf/setting/base_types.py": [
+        "./src/appxc/setting/base_types.py": [
             {
                 "code": "reportImplicitOverride",
                 "range": {
@@ -10922,7 +10922,7 @@
                 }
             }
         ],
-        "./src/appxf/setting/setting.py": [
+        "./src/appxc/setting/setting.py": [
             {
                 "code": "reportPrivateLocalImportUsage",
                 "range": {
@@ -11940,7 +11940,7 @@
                 }
             }
         ],
-        "./src/appxf/setting/setting_dict.py": [
+        "./src/appxc/setting/setting_dict.py": [
             {
                 "code": "reportPrivateLocalImportUsage",
                 "range": {
@@ -13734,7 +13734,7 @@
                 }
             }
         ],
-        "./src/appxf/setting/setting_extension.py": [
+        "./src/appxc/setting/setting_extension.py": [
             {
                 "code": "reportPrivateUsage",
                 "range": {
@@ -13920,7 +13920,7 @@
                 }
             }
         ],
-        "./src/appxf/setting/setting_select.py": [
+        "./src/appxc/setting/setting_select.py": [
             {
                 "code": "reportPrivateUsage",
                 "range": {
@@ -14530,7 +14530,7 @@
                 }
             }
         ],
-        "./src/appxf/stateful.py": [
+        "./src/appxc/stateful.py": [
             {
                 "code": "reportDeprecated",
                 "range": {
@@ -14820,7 +14820,7 @@
                 }
             }
         ],
-        "./src/appxf/storage/__init__.py": [
+        "./src/appxc/storage/__init__.py": [
             {
                 "code": "reportImportCycles",
                 "range": {
@@ -14958,7 +14958,7 @@
                 }
             }
         ],
-        "./src/appxf/storage/buffer.py": [
+        "./src/appxc/storage/buffer.py": [
             {
                 "code": "reportPrivateLocalImportUsage",
                 "range": {
@@ -15752,7 +15752,7 @@
                 }
             }
         ],
-        "./src/appxf/storage/ftp.py": [
+        "./src/appxc/storage/ftp.py": [
             {
                 "code": "reportMissingTypeStubs",
                 "range": {
@@ -16154,7 +16154,7 @@
                 }
             }
         ],
-        "./src/appxf/storage/local.py": [
+        "./src/appxc/storage/local.py": [
             {
                 "code": "reportPrivateLocalImportUsage",
                 "range": {
@@ -16260,7 +16260,7 @@
                 }
             }
         ],
-        "./src/appxf/storage/meta_data.py": [
+        "./src/appxc/storage/meta_data.py": [
             {
                 "code": "reportUnknownParameterType",
                 "range": {
@@ -16310,7 +16310,7 @@
                 }
             }
         ],
-        "./src/appxf/storage/ram.py": [
+        "./src/appxc/storage/ram.py": [
             {
                 "code": "reportImplicitStringConcatenation",
                 "range": {
@@ -16384,7 +16384,7 @@
                 }
             }
         ],
-        "./src/appxf/storage/serializer_compact.py": [
+        "./src/appxc/storage/serializer_compact.py": [
             {
                 "code": "reportImplicitOverride",
                 "range": {
@@ -16498,7 +16498,7 @@
                 }
             }
         ],
-        "./src/appxf/storage/serializer_json.py": [
+        "./src/appxc/storage/serializer_json.py": [
             {
                 "code": "reportImplicitOverride",
                 "range": {
@@ -16972,7 +16972,7 @@
                 }
             }
         ],
-        "./src/appxf/storage/serializer_raw.py": [
+        "./src/appxc/storage/serializer_raw.py": [
             {
                 "code": "reportImplicitOverride",
                 "range": {
@@ -16990,7 +16990,7 @@
                 }
             }
         ],
-        "./src/appxf/storage/storable.py": [
+        "./src/appxc/storage/storable.py": [
             {
                 "code": "reportPrivateLocalImportUsage",
                 "range": {
@@ -17104,7 +17104,7 @@
                 }
             }
         ],
-        "./src/appxf/storage/storage.py": [
+        "./src/appxc/storage/storage.py": [
             {
                 "code": "reportUnknownParameterType",
                 "range": {
@@ -17306,7 +17306,7 @@
                 }
             }
         ],
-        "./src/appxf/storage/storage_to_bytes.py": [
+        "./src/appxc/storage/storage_to_bytes.py": [
             {
                 "code": "reportUnknownParameterType",
                 "range": {
@@ -17420,7 +17420,7 @@
                 }
             }
         ],
-        "./src/appxf/storage/sync.py": [
+        "./src/appxc/storage/sync.py": [
             {
                 "code": "reportUnknownParameterType",
                 "range": {
@@ -17630,7 +17630,7 @@
                 }
             }
         ],
-        "./src/appxf/utility/ntptime.py": [
+        "./src/appxc/utility/ntptime.py": [
             {
                 "code": "reportMissingTypeStubs",
                 "range": {
@@ -17784,7 +17784,7 @@
                 }
             }
         ],
-        "./src/appxf_dev/check_license_headers.py": [
+        "./src/appxc_dev/check_license_headers.py": [
             {
                 "code": "reportReturnType",
                 "range": {
@@ -17826,7 +17826,7 @@
                 }
             }
         ],
-        "./src/appxf_dev/po_stats.py": [
+        "./src/appxc_dev/po_stats.py": [
             {
                 "code": "reportUnknownParameterType",
                 "range": {
@@ -18164,7 +18164,7 @@
                 }
             }
         ],
-        "./src/appxf_matema/__init__.py": [
+        "./src/appxc_matema/__init__.py": [
             {
                 "code": "reportUnusedImport",
                 "range": {
@@ -18198,7 +18198,7 @@
                 }
             }
         ],
-        "./src/appxf_matema/case_data.py": [
+        "./src/appxc_matema/case_data.py": [
             {
                 "code": "reportPrivateLocalImportUsage",
                 "range": {
@@ -18392,7 +18392,7 @@
                 }
             }
         ],
-        "./src/appxf_matema/case_info.py": [
+        "./src/appxc_matema/case_info.py": [
             {
                 "code": "reportUnannotatedClassAttribute",
                 "range": {
@@ -18426,7 +18426,7 @@
                 }
             }
         ],
-        "./src/appxf_matema/case_parser.py": [
+        "./src/appxc_matema/case_parser.py": [
             {
                 "code": "reportUnannotatedClassAttribute",
                 "range": {
@@ -18596,7 +18596,7 @@
                 }
             }
         ],
-        "./src/appxf_matema/case_runner.py": [
+        "./src/appxc_matema/case_runner.py": [
             {
                 "code": "reportUnannotatedClassAttribute",
                 "range": {
@@ -19046,7 +19046,7 @@
                 }
             }
         ],
-        "./src/appxf_matema/case_runner_gui.py": [
+        "./src/appxc_matema/case_runner_gui.py": [
             {
                 "code": "reportMissingModuleSource",
                 "range": {
@@ -19232,7 +19232,7 @@
                 }
             }
         ],
-        "./src/appxf_matema/cmd.py": [
+        "./src/appxc_matema/cmd.py": [
             {
                 "code": "reportMissingImports",
                 "range": {
@@ -19314,7 +19314,7 @@
                 }
             }
         ],
-        "./src/appxf_matema/scanner.py": [
+        "./src/appxc_matema/scanner.py": [
             {
                 "code": "reportUnannotatedClassAttribute",
                 "range": {

@@ -1,10 +1,10 @@
-# Copyright 2025-2026 the contributors of APPXF (github.com/alexander-nbg/appxf)
+# Copyright 2025-2026 the contributors of APPXC (github.com/alexander-nbg/appxc)
 # SPDX-License-Identifier: Apache-2.0
 """Provide a GUI for the application harness"""
 
 import os
 
-from appxf.gui import AppxfApplication, ConfigMenu, Login, RegistrationUser
+from appxc.gui import AppxcApplication, ConfigMenu, Login, RegistrationUser
 from tests.fixtures.app_harness import AppHarness
 
 
@@ -17,7 +17,7 @@ class AppHarnessGui:
         self.app_name = f"AppHarnessGui for {harness.user}"
 
     def _run_application(self):
-        app = AppxfApplication()
+        app = AppxcApplication()
         # === Main Window === #
         app.geometry("600x200")
         app.title(self.app_name)
@@ -26,7 +26,7 @@ class AppHarnessGui:
         # There could be frames added via self.app.register_frame but the
         # application for testing does not have any behavior.
 
-        # TODO: The frame switching provided by AppxfApplication() should have a
+        # TODO: The frame switching provided by AppxcApplication() should have a
         # manual test where frames should be added. Optional: from the frames,
         # it should be possible to access other features that are typically
         # within the menus.

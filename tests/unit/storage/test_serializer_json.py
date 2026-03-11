@@ -1,8 +1,8 @@
-# Copyright 2025-2026 the contributors of APPXF (github.com/alexander-nbg/appxf)
+# Copyright 2025-2026 the contributors of APPXC (github.com/alexander-nbg/appxc)
 # SPDX-License-Identifier: Apache-2.0
 """Test all serializer classes"""
 
-from appxf.storage import JsonSerializer, Serializer
+from appxc.storage import JsonSerializer, Serializer
 from tests.unit.storage.test_serializer_base import BaseSerializerTest
 
 

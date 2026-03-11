@@ -1,13 +1,13 @@
-# Copyright 2025-2026 the contributors of APPXF (github.com/alexander-nbg/appxf)
+# Copyright 2025-2026 the contributors of APPXC (github.com/alexander-nbg/appxc)
 # SPDX-License-Identifier: Apache-2.0
 """Manual Test Runner
 
 Call via:  ./.venv/bin/python manual_tests.py
 
-Virtual environment (venv) is required since, without, appxf would be unknown.
+Virtual environment (venv) is required since, without, appxc would be unknown.
 """
 
-from appxf_matema import CaseData, CmdHelper, Scanner
+from appxc_matema import CaseData, CmdHelper, Scanner
 
 case_data = CaseData()
 

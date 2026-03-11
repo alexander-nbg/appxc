@@ -1,4 +1,4 @@
-# Copyright 2024-2026 the contributors of APPXF (github.com/alexander-nbg/appxf)
+# Copyright 2024-2026 the contributors of APPXC (github.com/alexander-nbg/appxc)
 # SPDX-License-Identifier: Apache-2.0
 """Location that requires fake-credentials to access
 
@@ -8,8 +8,8 @@ procedure.
 
 from typing import ClassVar
 
-from appxf.setting import Setting
-from appxf.storage import LocalStorage
+from appxc.setting import Setting
+from appxc.storage import LocalStorage
 
 
 class CredentialLocationMock(LocalStorage):

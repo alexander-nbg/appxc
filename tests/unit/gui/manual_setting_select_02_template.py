@@ -1,4 +1,4 @@
-# Copyright 2025-2026 the contributors of APPXF (github.com/alexander-nbg/appxf)
+# Copyright 2025-2026 the contributors of APPXC (github.com/alexander-nbg/appxc)
 # SPDX-License-Identifier: Apache-2.0
 """SettingSelect for altering existing content
 
@@ -22,9 +22,9 @@ save button on top, not a delete button.
 
 import tkinter as tk
 
-from appxf.gui import GridToplevel, SettingSelectDetailFrame
-from appxf.setting import Setting
-from appxf_matema.case_runner import ManualCaseRunner
+from appxc.gui import GridToplevel, SettingSelectDetailFrame
+from appxc.setting import Setting
+from appxc_matema.case_runner import ManualCaseRunner
 
 setting = Setting.new(
     "select::text",

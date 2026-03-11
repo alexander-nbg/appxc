@@ -1,4 +1,4 @@
-# Copyright 2024-2026 the contributors of APPXF (github.com/alexander-nbg/appxf)
+# Copyright 2024-2026 the contributors of APPXC (github.com/alexander-nbg/appxc)
 # SPDX-License-Identifier: Apache-2.0
 
 from collections import OrderedDict
@@ -6,9 +6,9 @@ from copy import deepcopy
 
 import pytest
 
-from appxf.setting import (
-    AppxfSettingError,
-    AppxfSettingWarning,
+from appxc.setting import (
+    AppxcSettingError,
+    AppxcSettingWarning,
     Setting,
     SettingBool,
     SettingDict,
@@ -16,7 +16,7 @@ from appxf.setting import (
     SettingInt,
     SettingString,
 )
-from appxf.storage import RamStorage
+from appxc.storage import RamStorage
 
 # REQ: SettingDict shall be able to be filled with settings by:
 #  1) settings parameter on constructor taking a dictionary {key: setting}
@@ -127,7 +127,7 @@ failure_cases = [
     ids=[t[0] for t in failure_cases],
 )
 def test_setting_dict_invalid_init(name, settings, error_parts):
-    with pytest.raises(AppxfSettingError) as exc_info:
+    with pytest.raises(AppxcSettingError) as exc_info:
         SettingDict(settings=settings)
     print(exc_info.value)
     print(exc_info.value.__cause__)
@@ -144,7 +144,7 @@ def test_setting_dict_invalid_init(name, settings, error_parts):
 )
 def test_setting_dict_invalid_value(name, settings, error_parts):
     setting_dict = SettingDict()
-    with pytest.raises(AppxfSettingError) as exc_info:
+    with pytest.raises(AppxcSettingError) as exc_info:
         setting_dict.value = settings
     print(exc_info.value)
     print(exc_info.value.__cause__)
@@ -165,7 +165,7 @@ def test_setting_dict_invalid_setitem(name, settings, error_parts):
         # those cases are only for __init__and value assignments
         return
     for key, value in settings.items():
-        with pytest.raises(AppxfSettingError) as exc_info:
+        with pytest.raises(AppxcSettingError) as exc_info:
             setting_dict[key] = value
     print(exc_info.value)
     print(exc_info.value.__cause__)
@@ -314,7 +314,7 @@ def test_setting_dict_invalid_not_applied():
     for change_key in setting_dict:
         change_dict = setting_dict.value
         change_dict[change_key] = "wrong-email"
-        with pytest.raises(AppxfSettingError) as exc_info:
+        with pytest.raises(AppxcSettingError) as exc_info:
             setting_dict.value = change_dict
         assert "wrong-email" in str(exc_info.value)
         # same checks as after init (no changes must be applied)
@@ -395,7 +395,7 @@ def test_setting_dict_not_mutable_delete_via_value():
     # try to delete
     values = setting_dict.value
     del values["test"]
-    with pytest.raises(AppxfSettingError) as exc_info:
+    with pytest.raises(AppxcSettingError) as exc_info:
         setting_dict.value = values
     evaluate_not_mutable_error(exc_info, "delete item")
     verify_setting_dict(setting_dict, init_values)
@@ -408,7 +408,7 @@ def test_setting_dict_not_mutable_delete_via_delitem():
     setting_dict.options.mutable = False
 
     # try to delete
-    with pytest.raises(AppxfSettingError) as exc_info:
+    with pytest.raises(AppxcSettingError) as exc_info:
         del setting_dict["test"]
     evaluate_not_mutable_error(exc_info, "delete item")
     verify_setting_dict(setting_dict, init_values)
@@ -422,7 +422,7 @@ def test_setting_dict_not_mutable_add_via_value():
 
     values = setting_dict.value
     values["test_new"] = (str, "should fail")
-    with pytest.raises(AppxfSettingError) as exc_info:
+    with pytest.raises(AppxcSettingError) as exc_info:
         setting_dict.value = values
     evaluate_not_mutable_error(exc_info, "add item")
     verify_setting_dict(setting_dict, init_values)
@@ -435,7 +435,7 @@ def test_setting_dict_not_mutable_add_via_setitem():
     setting_dict["test"] = (str, "init")
     setting_dict.options.mutable = False
 
-    with pytest.raises(AppxfSettingError) as exc_info:
+    with pytest.raises(AppxcSettingError) as exc_info:
         setting_dict["test_new"] = (str, "should fail")
     evaluate_not_mutable_error(exc_info, "add item")
     verify_setting_dict(setting_dict, init_values)
@@ -453,17 +453,17 @@ def test_setting_dict_not_mutable_overwrite_via_value():
 
     values = setting_dict.value
     values["test"] = (str, "should fail")
-    with pytest.raises(AppxfSettingError) as exc_info:
+    with pytest.raises(AppxcSettingError) as exc_info:
         setting_dict.value = values
     evaluate_not_mutable_error(exc_info, "overwrite item")
 
     values["test"] = SettingString
-    with pytest.raises(AppxfSettingError) as exc_info:
+    with pytest.raises(AppxcSettingError) as exc_info:
         setting_dict.value = values
     evaluate_not_mutable_error(exc_info, "overwrite item")
 
     values["test"] = SettingString()
-    with pytest.raises(AppxfSettingError) as exc_info:
+    with pytest.raises(AppxcSettingError) as exc_info:
         setting_dict.value = values
     evaluate_not_mutable_error(exc_info, "overwrite item")
 
@@ -471,15 +471,15 @@ def test_setting_dict_not_mutable_overwrite_via_value():
 def test_setting_dict_not_mutable_overwrite_via_setitem():
     setting_dict = SettingDict(settings={"test": (str, "init")}, mutable=False)
 
-    with pytest.raises(AppxfSettingError) as exc_info:
+    with pytest.raises(AppxcSettingError) as exc_info:
         setting_dict["test"] = (str, "should fail")
     evaluate_not_mutable_error(exc_info, "overwrite item")
 
-    with pytest.raises(AppxfSettingError) as exc_info:
+    with pytest.raises(AppxcSettingError) as exc_info:
         setting_dict["test"] = SettingString
     evaluate_not_mutable_error(exc_info, "overwrite item")
 
-    with pytest.raises(AppxfSettingError) as exc_info:
+    with pytest.raises(AppxcSettingError) as exc_info:
         setting_dict["test"] = SettingString()
     evaluate_not_mutable_error(exc_info, "overwrite item")
 
@@ -709,7 +709,7 @@ def test_setting_dict_set_state_default():
 # input data.
 def test_setting_dict_set_state_default_wrong_type():
     setting_dict = SettingDict()
-    with pytest.raises(AppxfSettingError) as exc_info:
+    with pytest.raises(AppxcSettingError) as exc_info:
         setting_dict.set_state(["test"])
 
     assert "Input to set_state must be a dictionary." in str(exc_info.value)
@@ -717,7 +717,7 @@ def test_setting_dict_set_state_default_wrong_type():
 
 def test_setting_dict_set_state_default_missing_version():
     setting_dict = SettingDict()
-    with pytest.raises(AppxfSettingError) as exc_info:
+    with pytest.raises(AppxcSettingError) as exc_info:
         setting_dict.set_state(OrderedDict())
 
     # sample: Cannot determine data version, input data is not a dict with
@@ -730,7 +730,7 @@ def test_setting_dict_set_state_default_missing_version():
 
 def test_setting_dict_set_state_default_wrong_version():
     setting_dict = SettingDict()
-    with pytest.raises(AppxfSettingError) as exc_info:
+    with pytest.raises(AppxcSettingError) as exc_info:
         setting_dict.set_state(OrderedDict({"_version": 1}))
 
     # sample: Cannot handle version 1 of data, supported is version 2 only.
@@ -745,7 +745,7 @@ def test_setting_dict_set_state_default_new_key_exception():
 
     del setting_dict["test"]
     assert "test" not in setting_dict
-    with pytest.raises(AppxfSettingError) as exc_info:
+    with pytest.raises(AppxcSettingError) as exc_info:
         setting_dict.set_state(data)
 
     assert not setting_dict.keys()
@@ -779,7 +779,7 @@ def test_setting_dict_set_state_default_missing_key_exception():
 
     data_a = deepcopy(data)
     del data_a["A"]
-    with pytest.raises(AppxfSettingError) as exc_a_info:
+    with pytest.raises(AppxcSettingError) as exc_a_info:
         setting_dict.set_state(data_a)
 
     # Note: there is NO requirement that the SettingDict state remains the same
@@ -791,7 +791,7 @@ def test_setting_dict_set_state_default_missing_key_exception():
     # We repeat the same for B.
     data_b = deepcopy(data)
     del data_b["B"]
-    with pytest.raises(AppxfSettingError) as exc_b_info:
+    with pytest.raises(AppxcSettingError) as exc_b_info:
         setting_dict.set_state(data_b)
 
     for exc in [("A", str(exc_a_info.value)), ("B", str(exc_b_info.value))]:
@@ -812,7 +812,7 @@ def test_setting_dict_set_state_new_key():
     del setting_dict["test"]
     assert "test" not in setting_dict
 
-    with pytest.warns(AppxfSettingWarning) as warn_info:
+    with pytest.warns(AppxcSettingWarning) as warn_info:
         setting_dict.set_state(data, add_new_keys=True)
     assert setting_dict["test"] == 42
     assert setting_dict.input["test"] == "42"
@@ -855,7 +855,7 @@ def test_setting_dict_set_state_type_new_key_no_type_exception():
 
     del setting_dict["test"]
     assert "test" not in setting_dict
-    with pytest.raises(AppxfSettingError) as exc_info:
+    with pytest.raises(AppxcSettingError) as exc_info:
         setting_dict.set_state(data, exception_on_new_key=False, add_new_keys=True)
 
     assert not setting_dict.keys()
@@ -900,7 +900,7 @@ def test_setting_dict_set_state_type_mismatch():
     print(setting_dict.get_setting("test"))
     setting_dict["test"] = (str, "new")
     print(setting_dict.get_setting("test"))
-    with pytest.raises(AppxfSettingError) as exc_info:
+    with pytest.raises(AppxcSettingError) as exc_info:
         setting_dict.set_state(data, type=True)
         print(setting_dict.get_setting("test"))
 
@@ -927,7 +927,7 @@ def test_setting_dict_set_state_missing_key_remove():
     # remove test_str from input data:
     del data["test_str"]
     # without disabling exceptions, there will still be a warning:
-    with pytest.warns(AppxfSettingWarning) as warn_info:
+    with pytest.warns(AppxcSettingWarning) as warn_info:
         setting_dict.set_state(data, remove_missing_keys=True)
     assert "test_str" not in setting_dict
     assert setting_dict["test_int"] == 42

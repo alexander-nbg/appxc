@@ -1,4 +1,4 @@
-# Copyright 2025-2026 the contributors of APPXF (github.com/alexander-nbg/appxf)
+# Copyright 2025-2026 the contributors of APPXC (github.com/alexander-nbg/appxc)
 # SPDX-License-Identifier: Apache-2.0
 """Test all serializer classes"""
 
@@ -10,8 +10,8 @@ from typing import Union, get_args, get_origin
 
 import pytest
 
-from appxf import Stateful
-from appxf.storage import JsonSerializer, Serializer
+from appxc import Stateful
+from appxc.storage import JsonSerializer, Serializer
 
 
 class DummyClassNotSerializable:

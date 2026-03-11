@@ -1,4 +1,4 @@
-# Copyright 2025-2026 the contributors of APPXF (github.com/alexander-nbg/appxf)
+# Copyright 2025-2026 the contributors of APPXC (github.com/alexander-nbg/appxc)
 # SPDX-License-Identifier: Apache-2.0
 """Covers all setting types
 Includes:
@@ -17,9 +17,9 @@ from typing import Any
 
 import pytest
 
-from appxf.setting import (
-    AppxfSettingConversionError,
-    AppxfSettingError,
+from appxc.setting import (
+    AppxcSettingConversionError,
+    AppxcSettingError,
     Setting,
     SettingBase64,
     SettingBool,
@@ -31,7 +31,7 @@ from appxf.setting import (
     SettingString,
     SettingText,
 )
-from appxf.setting import setting as setting_module
+from appxc.setting import setting as setting_module
 
 
 class SettingCase:
@@ -141,15 +141,15 @@ class BaseSettingTest:
             self.verify_valid("Verifying valid init", setting, case)
 
     def test_init_invalid(self):
-        # Utilizing AppxfSetting.new() still uses the corresponding __init__
+        # Utilizing AppxcSetting.new() still uses the corresponding __init__
         for value in self.invalid_init:
             with pytest.raises(
-                (AppxfSettingConversionError, AppxfSettingError),
+                (AppxcSettingConversionError, AppxcSettingError),
             ) as exc_info:
                 self.setting_class(value)
                 pytest.fail(
                     f"{self.setting_class} should raise "
-                    f"AppxfSettingConversionError on init "
+                    f"AppxcSettingConversionError on init "
                     f"for value: {value}",
                 )
             # General formulation
@@ -203,12 +203,12 @@ class BaseSettingTest:
         # (test_validate_invalid), it can still be set.
         for value in self.invalid_init:
             with pytest.raises(
-                (AppxfSettingConversionError, AppxfSettingError),
+                (AppxcSettingConversionError, AppxcSettingError),
             ) as exc_info:
                 setting.value = value
                 pytest.fail(
                     f"{self.setting_class} should raise "
-                    f"AppxfSettingConversionError on setting value "
+                    f"AppxcSettingConversionError on setting value "
                     f'for: "{value}"',
                 )
                 # General formulation
@@ -265,7 +265,7 @@ class BaseSettingTest:
     def test_setting_not_mutable(self):
         setting = self.setting_class()
         setting.options.mutable = False
-        with pytest.raises(AppxfSettingError) as exc_info:
+        with pytest.raises(AppxcSettingError) as exc_info:
             setting.value = self.simple_input.input
         if issubclass(self.setting_class, SettingDict):
             assert "SettingDict() mutable option is False" in str(exc_info.value) + str(

@@ -1,4 +1,4 @@
-# Copyright 2025-2026 the contributors of APPXF (github.com/alexander-nbg/appxf)
+# Copyright 2025-2026 the contributors of APPXC (github.com/alexander-nbg/appxc)
 # SPDX-License-Identifier: Apache-2.0
 
 # Prerequisite: I need two application instances:
@@ -27,7 +27,7 @@
 
 # ?? Do I really have a full application with tasks started from the
 # application window OR do I only test GUI elements?
-#  >> APPXF should provide a simple "all included" solution but this would
+#  >> APPXC should provide a simple "all included" solution but this would
 #  >> require an application frame that adds menu items if the Registration
 #  >> object is provided >> added complexity.
 #  >>
@@ -36,7 +36,7 @@
 #  >> generic.. ..the admin steps must be added SOMEWHERE to the menu.
 #  >>
 #  >> I think, overall - there should be default menu items as soon as there is
-#  >> the login feature (change password and user data). But APPXF should only
+#  >> the login feature (change password and user data). But APPXC should only
 #  >> proide a template and guideline - it's scope is NOT to make an
 #  >> application frame
 #

@@ -1,4 +1,4 @@
-<!--Copyright 2026 the contributors of APPXF (github.com/alexander-nbg/appxf)-->
+<!--Copyright 2026 the contributors of APPXC (github.com/alexander-nbg/appxc)-->
 <!--SPDX-License-Identifier: 0BSD-->
 # Definition of Done
 
@@ -6,7 +6,7 @@ For now - this is only a collection of ideas and nothing of binding character.
 
 ## Code
 * flake succeeds
-* unit test coverage (see [[APPXF Test Strategy]])
+* unit test coverage (see [[APPXC Test Strategy]])
 * ToDo remarks for any known open topics (including planning tickets and referenced in ToDos `"ToDo #42"`)
 * Ticket concluding remarks
 	* Planning follow-up tickets

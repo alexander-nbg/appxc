@@ -1,8 +1,8 @@
-# Copyright 2024-2026 the contributors of APPXF (github.com/alexander-nbg/appxf)
+# Copyright 2024-2026 the contributors of APPXC (github.com/alexander-nbg/appxc)
 # SPDX-License-Identifier: Apache-2.0
 
-# from appxf.storage.sync import SyncData
-# from appxf.storage import Storage
+# from appxc.storage.sync import SyncData
+# from appxc.storage import Storage
 # from datetime import datetime
 # import pytest
 

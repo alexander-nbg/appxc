@@ -1,7 +1,7 @@
-<!--Copyright 2026 the contributors of APPXF (github.com/alexander-nbg/appxf)-->
+<!--Copyright 2026 the contributors of APPXC (github.com/alexander-nbg/appxc)-->
 <!--SPDX-License-Identifier: 0BSD-->
-# APPXF
-APPXF covers an application's (APP) cross-functional concerns (XF), such as
+# APPXC
+APPXC covers an application's (APP) cross-cutting concerns (XC), such as
 settings, data sharing, logging, and secure storage, to reduce effort when
 writing desktop applications.
 
@@ -13,16 +13,16 @@ components, the *interfaces are unstable* and there is *no consistent
 documentation*.
 
 ## It may become
-APPXF may help close a gap when writing applications for
+APPXC may help close a gap when writing applications for
 small associations or non-profits. Development will continue with the clear
 understanding that one person’s free time cannot accomplish everything.
 
 ## Appreciation is Welcome
 If you find any part of this library useful, the currently best motivation and
 acknowledgement would be shareíng your story and project as a [discussion
-topic](https://github.com/alexander-nbg/appxf/discussions/new?category=show-and-tell)
+topic](https://github.com/alexander-nbg/appxc/discussions/new?category=show-and-tell)
 (example: [the app which initialized
-APPXF](https://github.com/alexander-nbg/appxf/discussions/10)). Additionally,
-while APPXF will not suddenly clean up all open topics or guarantee interface
+APPXC](https://github.com/alexander-nbg/appxc/discussions/10)). Additionally,
+while APPXC will not suddenly clean up all open topics or guarantee interface
 stability for features which are relevant to you, efforts are continuously
 prioritized based on the information available.

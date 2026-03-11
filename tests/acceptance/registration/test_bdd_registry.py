@@ -1,9 +1,9 @@
-# Copyright 2025-2026 the contributors of APPXF (github.com/alexander-nbg/appxf)
+# Copyright 2025-2026 the contributors of APPXC (github.com/alexander-nbg/appxc)
 # SPDX-License-Identifier: Apache-2.0
 from pytest import fixture
 from pytest_bdd import given, parsers, scenarios, then, when
 
-from appxf.storage import Storage
+from appxc.storage import Storage
 from tests.fixtures import application, test_sandbox
 from tests.fixtures.app_harness import AppHarness
 

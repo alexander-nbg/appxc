@@ -1,4 +1,4 @@
-# Copyright 2023-2026 the contributors of APPXF (github.com/alexander-nbg/appxf)
+# Copyright 2023-2026 the contributors of APPXC (github.com/alexander-nbg/appxc)
 # SPDX-License-Identifier: Apache-2.0
 """
 Resizing: First main frame has a border and is the only thing that must resize.
@@ -8,11 +8,11 @@ Switching must NOT resize the window.
 
 import tkinter as tk
 
-from appxf.gui.application import AppxfApplication
-from appxf_matema.case_runner import ManualCaseRunner
+from appxc.gui.application import AppxcApplication
+from appxc_matema.case_runner import ManualCaseRunner
 
-app = AppxfApplication()
-app.title("AppxfApplication Dummy")
+app = AppxcApplication()
+app.title("AppxcApplication Dummy")
 
 
 class DummyFrame(tk.Frame):

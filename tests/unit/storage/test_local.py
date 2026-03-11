@@ -1,4 +1,4 @@
-# Copyright 2024-2026 the contributors of APPXF (github.com/alexander-nbg/appxf)
+# Copyright 2024-2026 the contributors of APPXC (github.com/alexander-nbg/appxc)
 # SPDX-License-Identifier: Apache-2.0
 """Testing LocalStorage
 
@@ -7,7 +7,7 @@ Utilizing BaseStorageTest for test cases. See test_storage_base.py
 
 import pytest
 
-from appxf.storage import LocalStorage, Storage
+from appxc.storage import LocalStorage, Storage
 from tests.fixtures import test_sandbox
 from tests.unit.storage.test_storage_base import BaseStorageTest
 

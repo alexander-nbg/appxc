@@ -1,4 +1,4 @@
-# Copyright 2025-2026 the contributors of APPXF (github.com/alexander-nbg/appxf)
+# Copyright 2025-2026 the contributors of APPXC (github.com/alexander-nbg/appxc)
 # SPDX-License-Identifier: Apache-2.0
 """options module with Options object"""
 
@@ -6,7 +6,7 @@ from dataclasses import dataclass, field
 
 import pytest
 
-from appxf import Options
+from appxc import Options
 
 
 @dataclass

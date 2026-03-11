@@ -1,4 +1,4 @@
-<!--Copyright 2026 the contributors of APPXF (github.com/alexander-nbg/appxf)-->
+<!--Copyright 2026 the contributors of APPXC (github.com/alexander-nbg/appxc)-->
 <!--SPDX-License-Identifier: 0BSD-->
 # Update User Database
 
@@ -19,7 +19,7 @@ An alternative to returning a negative user ID would be to raise an error. Conse
 * which error class to use?
 Error class options:
 * a custom error class to allow precise filtering within try/catch?
-	* (-) added complexity even if APPXF custom error classes are commonly used
+	* (-) added complexity even if APPXC custom error classes are commonly used
 * an existing error class
 	* (-) not possible to filter for this situation in UI
 The negative user ID is preferred since it makes this particular error transparent without adding a specific error code.

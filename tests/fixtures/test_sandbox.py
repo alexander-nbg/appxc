@@ -1,4 +1,4 @@
-# Copyright 2025-2026 the contributors of APPXF (github.com/alexander-nbg/appxf)
+# Copyright 2025-2026 the contributors of APPXC (github.com/alexander-nbg/appxc)
 # SPDX-License-Identifier: Apache-2.0
 """Test sandbox path handling
 
@@ -22,7 +22,7 @@ try:
     # get current project version:
     project_version = toml_data["project"]["version"]
     # get sandbox root directory for testing:
-    test_sandbox_root = toml_data["tool"]["appxf"]["test-sandbox-root"]
+    test_sandbox_root = toml_data["tool"]["appxc"]["test-sandbox-root"]
     print(
         f"Configuration from pyproject.toml:\n"
         f"Testing sandbox root: {test_sandbox_root}\n"

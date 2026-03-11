@@ -1,4 +1,4 @@
-# Copyright 2023-2026 the contributors of APPXF (github.com/alexander-nbg/appxf)
+# Copyright 2023-2026 the contributors of APPXC (github.com/alexander-nbg/appxc)
 # SPDX-License-Identifier: Apache-2.0
 import os
 from datetime import datetime, timezone
@@ -6,7 +6,7 @@ from datetime import datetime, timezone
 import pytest
 from dotenv import load_dotenv
 
-from appxf.storage.ftp import FtpLocation
+from appxc.storage.ftp import FtpLocation
 
 # TODO: Test was disables upon transition to public repository. FTP was
 # currently not used in an application and before re-enabling, a better
@@ -16,9 +16,9 @@ from appxf.storage.ftp import FtpLocation
 # their own FTP credentials here to be able to execute the test.
 
 load_dotenv()
-host = os.environ.get("APPXF_FTP_HOST")
-user = os.environ.get("APPXF_FTP_USER")
-passwd = os.environ.get("APPXF_FTP_PASSWORD")
+host = os.environ.get("APPXC_FTP_HOST")
+user = os.environ.get("APPXC_FTP_USER")
+passwd = os.environ.get("APPXC_FTP_PASSWORD")
 
 
 @pytest.fixture

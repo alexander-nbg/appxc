@@ -1,4 +1,4 @@
-# Copyright 2025-2026 the contributors of APPXF (github.com/alexander-nbg/appxf)
+# Copyright 2025-2026 the contributors of APPXC (github.com/alexander-nbg/appxc)
 # SPDX-License-Identifier: Apache-2.0
 """Registration Cycle
 
@@ -39,7 +39,7 @@ __Step 8:__ Even if the admin closes the application and reloads the request
 and adds the user again, it will be added with the same user ID.
 """
 
-from appxf_matema.case_runner import ManualCaseRunner
+from appxc_matema.case_runner import ManualCaseRunner
 from tests.fixtures import test_sandbox
 from tests.fixtures.app_harness import AppHarness
 from tests.fixtures.app_harness_gui import AppHarnessGui
@@ -73,4 +73,4 @@ def process_app_admin():
     AppHarnessGui(app_admin).start()
 
 
-ManualCaseRunner(logging_context="appxf").run()
+ManualCaseRunner(logging_context="appxc").run()

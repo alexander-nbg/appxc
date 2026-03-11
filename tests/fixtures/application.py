@@ -1,4 +1,4 @@
-# Copyright 2024-2026 the contributors of APPXF (github.com/alexander-nbg/appxf)
+# Copyright 2024-2026 the contributors of APPXC (github.com/alexander-nbg/appxc)
 # SPDX-License-Identifier: Apache-2.0
 """provide fixtures with test application
 
@@ -10,7 +10,7 @@ import os
 import shutil
 
 import tests.fixtures.test_sandbox
-from appxf.storage import Storage
+from appxc.storage import Storage
 from tests.fixtures.app_harness import AppHarness
 from tests.fixtures.test_sandbox import project_version
 
@@ -143,7 +143,7 @@ def _init_path_from_origin(target_path, origin_path: str = ""):
 
 ### Cleanup support
 def test_cleanup(request):
-    """cleanup current APPXF directories
+    """cleanup current APPXC directories
 
     Function is expected to be executed before any test case. Modelled as test
     case to re-use fixtures.

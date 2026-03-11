@@ -1,4 +1,4 @@
-# Copyright 2025-2026 the contributors of APPXF (github.com/alexander-nbg/appxf)
+# Copyright 2025-2026 the contributors of APPXC (github.com/alexander-nbg/appxc)
 # SPDX-License-Identifier: Apache-2.0
 """
 Test case is less about ... TBD
@@ -6,10 +6,10 @@ Test case is less about ... TBD
 
 import tkinter as tk
 
-from appxf import logging
-from appxf.gui import GridToplevel, SettingDictColumnFrame
-from appxf.setting import Setting
-from appxf_matema.case_runner import ManualCaseRunner
+from appxc import logging
+from appxc.gui import GridToplevel, SettingDictColumnFrame
+from appxc.setting import Setting
+from appxc_matema.case_runner import ManualCaseRunner
 
 # Use Case: Create a bunch of settings let the user edit and handle results
 # upon button press.
@@ -45,7 +45,7 @@ class FrameForTesting(GridToplevel):
 # TODO: This does not yet work, frame is ineffective and changed values do not
 # apply to OK button readout. Also the entries are not marked red, yet.
 
-gui_logger = logging.get_logger("appxf.gui")
+gui_logger = logging.get_logger("appxc.gui")
 gui_logger.setLevel(logging.logging.WARNING)
 
 ManualCaseRunner().run(FrameForTesting, setting_dict)

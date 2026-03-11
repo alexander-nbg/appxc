@@ -1,13 +1,13 @@
-# Copyright 2024-2026 the contributors of APPXF (github.com/alexander-nbg/appxf)
+# Copyright 2024-2026 the contributors of APPXC (github.com/alexander-nbg/appxc)
 # SPDX-License-Identifier: Apache-2.0
 """AppHarness Class for Testing
 
-The application harness aggregates real APPXF objects for all supported
+The application harness aggregates real APPXC objects for all supported
 features that might be used in a real application. It also provides operations
 to get the objects into a consistent application state.
 
-Since it uses real APPXF objects, the ApplicationHarness must run on top of a
-directory within the file system. See appxf_objects.py for helpers on the test
+Since it uses real APPXC objects, the ApplicationHarness must run on top of a
+directory within the file system. See appxc_objects.py for helpers on the test
 directory.
 """
 
@@ -15,10 +15,10 @@ from __future__ import annotations
 
 import os
 
-from appxf.config import Config
-from appxf.registry import Registry, SecureSharedStorage, SharedSync
-from appxf.security import SecurePrivateStorage, Security
-from appxf.storage import LocalStorage, Storage
+from appxc.config import Config
+from appxc.registry import Registry, SecureSharedStorage, SharedSync
+from appxc.security import SecurePrivateStorage, Security
+from appxc.storage import LocalStorage, Storage
 
 from .restricted_location import CredentialLocationMock
 
@@ -31,7 +31,7 @@ class AppHarness:
         login_enabled: bool = True,
         registry_enabled: bool = False,
     ):
-        """Get a set of APPXF objects mimicing an application
+        """Get a set of APPXC objects mimicing an application
 
         A folder "app_<user>" is added to root_path for application specific
         data. Additional directories in the root path are created for remote
