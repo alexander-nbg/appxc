@@ -1,17 +1,25 @@
 ---
 name: Feature Request
-about: 'Suggest an idea '
+about: 'Propose a new feature or extension'
 title: ''
-labels: enhancement
-assignees: alexander-nbg
+labels: [feature]
+assignees: []
 
 ---
 
-**Problem Description**
-[mandatory] A clear and concise description of the problem. Please take some time to evaluate the actual problem you try to solve avoiding statements like "solution A is not present".
+## Situation.
+Describe a situation from which the problem to solve with a new or extended feature
+evolves.
 
-**Solutions and Alternatives**
-List solutions you already considered including their drawbacks. Describe the solution or solution alternatives, you think, that can be implemented as part of appxf.
+## Objective
+Formulate a short acceptance criterion for this request.
 
-**Additional context**
-Code snippets in the problem and solution/alternative section are appreciated. Also appreciated is adding additional context to the problem like what kind of application you are are developing.
+## Additional Considerations
+List constraints of the solution or detailed aspects of the objective (scope/not scope;
+impact on existing code/features; non-functional expectations). Typically, this list is
+adopted and extended during refinement.
+
+**Guide.** Keep all 3 **headings** and remove the template text. The ticket description
+intentionally focuses on the problem and avoids describing a specific solution. Share
+implementation ideas in the ticket discussion so they can be evaluated and refined
+collaboratively.
