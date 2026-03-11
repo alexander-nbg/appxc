@@ -9,10 +9,10 @@ which is required to reach initialized applications.
 import os
 import shutil
 
-import tests._fixtures.test_sandbox
+import tests.fixtures.test_sandbox
 from appxf.storage import Storage
-from tests._fixtures.app_harness import AppHarness
-from tests._fixtures.test_sandbox import project_version
+from tests.fixtures.app_harness import AppHarness
+from tests.fixtures.test_sandbox import project_version
 
 # TODO: Verify if the complexity in this file is actually required.
 # Implementation essentially allows to get an application sandbox/context from
@@ -25,7 +25,7 @@ from tests._fixtures.test_sandbox import project_version
 
 def get_fresh_application(request, user: str = "user") -> AppHarness:
     # ensure initialized test directory:
-    test_root_path = tests._fixtures.test_sandbox.init_test_sandbox_from_fixture(
+    test_root_path = tests.fixtures.test_sandbox.init_test_sandbox_from_fixture(
         request,
         cleanup=False,
     )
@@ -35,7 +35,7 @@ def get_fresh_application(request, user: str = "user") -> AppHarness:
 
 def get_application_login_initialized(request, user: str = "user") -> AppHarness:
     # initialize test directory:
-    test_root_path = tests._fixtures.test_sandbox.init_test_sandbox_from_fixture(
+    test_root_path = tests.fixtures.test_sandbox.init_test_sandbox_from_fixture(
         request,
         cleanup=False,
     )
@@ -53,7 +53,7 @@ def get_application_registration_admin_initialized(
     user: str = "user",
 ) -> AppHarness:
     # initialize test directory:
-    test_root_path = tests._fixtures.test_sandbox.init_test_sandbox_from_fixture(
+    test_root_path = tests.fixtures.test_sandbox.init_test_sandbox_from_fixture(
         request,
         cleanup=False,
     )
@@ -87,7 +87,7 @@ def get_unlocked_application(request, user: str = "user") -> AppHarness:
 
 def _init_app_context_login_initialized(user: str = "user"):
     path = os.path.join(
-        tests._fixtures.test_sandbox.test_sandbox_root,
+        tests.fixtures.test_sandbox.test_sandbox_root,
         f"app_login_initialized_{user}_{project_version}",
     )
     # do not repeat if already present:
@@ -102,7 +102,7 @@ def _init_app_context_login_initialized(user: str = "user"):
 
 def _init_app_context_registration_admin_initialized(user: str = "user"):
     path = os.path.join(
-        tests._fixtures.test_sandbox.test_sandbox_root,
+        tests.fixtures.test_sandbox.test_sandbox_root,
         f"app_registration_initialized_{user}_{project_version}",
     )
     if user != "admin":
@@ -148,7 +148,7 @@ def test_cleanup(request):
     Function is expected to be executed before any test case. Modelled as test
     case to re-use fixtures.
     """
-    base_dir = tests._fixtures.test_sandbox.test_sandbox_root
+    base_dir = tests.fixtures.test_sandbox.test_sandbox_root
     if not os.path.isdir(base_dir):
         print(f"No cleanup required, base dir missing: {base_dir}")
         return

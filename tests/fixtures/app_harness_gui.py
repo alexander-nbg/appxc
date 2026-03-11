@@ -5,7 +5,7 @@
 import os
 
 from appxf.gui import AppxfApplication, ConfigMenu, Login, RegistrationUser
-from tests._fixtures.app_harness import AppHarness
+from tests.fixtures.app_harness import AppHarness
 
 
 class AppHarnessGui:

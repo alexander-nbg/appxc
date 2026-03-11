@@ -3,7 +3,7 @@
 
 # import pytest
 
-# from tests._fixtures import application, appxf_objects
+# from tests.fixtures import application, appxf_objects
 
 # TODO: CURRENT REFACTORING: move unlocked user/admin pair from registry test
 #       to appxf_objects to use in here.

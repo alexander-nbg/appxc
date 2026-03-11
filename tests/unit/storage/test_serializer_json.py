@@ -3,7 +3,7 @@
 """Test all serializer classes"""
 
 from appxf.storage import JsonSerializer, Serializer
-from tests.storage.test_serializer_base import BaseSerializerTest
+from tests.unit.storage.test_serializer_base import BaseSerializerTest
 
 
 class TestJsonSerializer(BaseSerializerTest):

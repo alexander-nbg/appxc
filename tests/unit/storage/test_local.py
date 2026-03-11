@@ -8,8 +8,8 @@ Utilizing BaseStorageTest for test cases. See test_storage_base.py
 import pytest
 
 from appxf.storage import LocalStorage, Storage
-from tests._fixtures import test_sandbox
-from tests.storage.test_storage_base import BaseStorageTest
+from tests.fixtures import test_sandbox
+from tests.unit.storage.test_storage_base import BaseStorageTest
 
 # TODO: test for right place of meta storage
 

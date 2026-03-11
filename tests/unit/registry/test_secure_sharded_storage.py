@@ -7,11 +7,11 @@ Utilizing BaseStorageTest for test cases. See test_storage_base.py
 
 import pytest
 
-import tests._fixtures.test_sandbox
+import tests.fixtures.test_sandbox
 from appxf.registry import SecureSharedStorage
 from appxf.storage import LocalStorage, Storage
-from tests._fixtures import appxf_objects
-from tests.storage.test_storage_base import BaseStorageTest
+from tests.fixtures import appxf_objects
+from tests.unit.storage.test_storage_base import BaseStorageTest
 
 # TODO: test signature and decryption manually to ensure formats and proper
 # encryption. This will be a lot of duplicate code but the only way to test
@@ -26,7 +26,7 @@ from tests.storage.test_storage_base import BaseStorageTest
 @pytest.fixture(autouse=True)
 def setup_local(request):
     Storage.reset()
-    env = {"dir": tests._fixtures.test_sandbox.init_test_sandbox_from_fixture(request)}
+    env = {"dir": tests.fixtures.test_sandbox.init_test_sandbox_from_fixture(request)}
     env["config"] = appxf_objects.get_dummy_config()
     env["security"] = appxf_objects.get_security_unlocked(path=env["dir"])
     env["registry"] = appxf_objects.get_registry_admin_initialized(

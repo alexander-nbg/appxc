@@ -17,7 +17,7 @@ install pyenv and make python versions available: https://help.clouding.io/hc/en
 python3.12 -m venv .venv
 source .venv/bin/activate
 python -m pip install --upgrade pip
-pip install -e . -r requirements.txt -r requirements_test.txt
+pip install -e . -r requirements.txt -r tests/requirements.txt -r dev/requirements.txt
 ```
 ## Check Setup
 Run commands to verify setup, each line separately.
@@ -26,8 +26,8 @@ pytest -rA
 tox -e py312
 flake8 --count src
 python manual_test.py
-python tests/gui/manual_whatever.py
-python tests_features/gui/full_application/user_s0.py
+python tests/unit/gui/manual_whatever.py
+python tests/acceptance/gui/full_application/user_s0.py
 ```
 The last three steps are for manual test case execution which can have their own issues.
 # Obsidian Documentation

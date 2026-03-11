@@ -8,7 +8,7 @@ Utilizing BaseStorageTest for test cases. See test_storage_base.py
 import pytest
 
 from appxf.storage import RamStorage, Storage
-from tests.storage.test_storage_base import BaseStorageTest
+from tests.unit.storage.test_storage_base import BaseStorageTest
 
 
 @pytest.fixture(autouse=True)

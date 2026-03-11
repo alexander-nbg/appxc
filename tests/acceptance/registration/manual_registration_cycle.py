@@ -40,9 +40,9 @@ and adds the user again, it will be added with the same user ID.
 """
 
 from appxf_matema.case_runner import ManualCaseRunner
-from tests._fixtures import test_sandbox
-from tests._fixtures.app_harness import AppHarness
-from tests._fixtures.app_harness_gui import AppHarnessGui
+from tests.fixtures import test_sandbox
+from tests.fixtures.app_harness import AppHarness
+from tests.fixtures.app_harness_gui import AppHarnessGui
 
 
 def setup_once():

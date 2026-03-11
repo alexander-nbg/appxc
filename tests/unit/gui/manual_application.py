@@ -4,7 +4,7 @@ import tkinter as tk
 
 import pytest
 
-from tests._fixtures import fake_tkinter
+from tests.fixtures import fake_tkinter
 
 fake_tkinter.activate()
 

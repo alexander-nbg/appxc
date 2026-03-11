@@ -7,11 +7,11 @@ Utilizing BaseStorageTest for test cases. See storage/test_storage_base.py
 
 import pytest
 
-import tests._fixtures.test_sandbox
+import tests.fixtures.test_sandbox
 from appxf.security import SecurePrivateStorage
 from appxf.storage import LocalStorage, Storage
-from tests._fixtures import appxf_objects
-from tests.storage.test_storage_base import BaseStorageTest
+from tests.fixtures import appxf_objects
+from tests.unit.storage.test_storage_base import BaseStorageTest
 
 # Test manual decryption to ensure that details are stored with encryption.
 # Manual decryption should define the algorithms that were used as a regression
@@ -23,7 +23,7 @@ from tests.storage.test_storage_base import BaseStorageTest
 @pytest.fixture(autouse=True)
 def setup_local(request):
     Storage.reset()
-    env = {"dir": tests._fixtures.test_sandbox.init_test_sandbox_from_fixture(request)}
+    env = {"dir": tests.fixtures.test_sandbox.init_test_sandbox_from_fixture(request)}
     env["security"] = appxf_objects.get_security_unlocked(env["dir"])
     request.instance.env = env
 

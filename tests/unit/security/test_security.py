@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 """Tests for class Security in security module
 
-Rely on Security helpers from tests._fixtures.appxf_objects to avoid spinning
+Rely on Security helpers from tests.fixtures.appxf_objects to avoid spinning
 up the full application harness. Paths are isolated per test via the sandbox
 fixture.
 """
@@ -13,7 +13,7 @@ import pytest
 
 from appxf.security import SecurePrivateStorage, Security
 from appxf.storage import LocalStorage, Storage
-from tests._fixtures import appxf_objects, test_sandbox
+from tests.fixtures import appxf_objects, test_sandbox
 
 TEST_PASSWORD = "test-registry-password"
 

@@ -5,7 +5,7 @@ import os.path
 from pytest import fixture
 from pytest_bdd import given, parsers, scenarios, then, when
 
-import tests._fixtures.test_sandbox
+import tests.fixtures.test_sandbox
 from appxf.config import Config
 from appxf.registry import Registry, SecureSharedStorage
 from appxf.security import SecurePrivateStorage
@@ -13,7 +13,7 @@ from appxf.storage import LocalStorage, Storage, StorageToBytes, sync
 
 # Fixtures upon which the ones we require are depenent on must be included as
 # well. Otherwise, we will get a "fixture not found".
-from tests._fixtures import appxf_objects
+from tests.fixtures import appxf_objects
 
 scenarios("test_bdd_sync.feature")
 
@@ -25,7 +25,7 @@ scenarios("test_bdd_sync.feature")
 def env(request):
     Storage.reset()
 
-    env = {"dir": tests._fixtures.test_sandbox.init_test_sandbox_from_fixture(request)}
+    env = {"dir": tests.fixtures.test_sandbox.init_test_sandbox_from_fixture(request)}
     # commonly used objects:
     env["security"] = appxf_objects.get_security_unlocked(path=env["dir"])
     env["config"] = Config(

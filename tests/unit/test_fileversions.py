@@ -5,7 +5,7 @@ from datetime import date
 
 import pytest
 
-import tests._fixtures.test_sandbox
+import tests.fixtures.test_sandbox
 from appxf import fileversions, logging
 
 
@@ -74,7 +74,7 @@ def test_fileversions_format_errors():
 
 
 def test_fileversions_existing(request):
-    test_path = tests._fixtures.test_sandbox.init_test_sandbox_from_fixture(request)
+    test_path = tests.fixtures.test_sandbox.init_test_sandbox_from_fixture(request)
     # Still no files existing:
     assert (
         fileversions.get_filename("file_(00).txt", directory=test_path, existing=True)

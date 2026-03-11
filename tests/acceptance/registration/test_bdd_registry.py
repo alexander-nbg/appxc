@@ -4,8 +4,8 @@ from pytest import fixture
 from pytest_bdd import given, parsers, scenarios, then, when
 
 from appxf.storage import Storage
-from tests._fixtures import application, test_sandbox
-from tests._fixtures.app_harness import AppHarness
+from tests.fixtures import application, test_sandbox
+from tests.fixtures.app_harness import AppHarness
 
 # Fixtures upon which the ones we require are depenent on must be included as
 # well. Otherwise, we will get a "fixture not found".

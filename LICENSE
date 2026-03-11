@@ -22,7 +22,8 @@ Apache-2.0 licenses
 -------------------
 Apache-2.0 license applies with copyright by the contributors of APPXF
 (github.com/alexander-nbg/appxf) to:
- * requirements*.txt
+ * requirements.txt
+ * tests/requirements.txt
 
 0BSD license
 ------------

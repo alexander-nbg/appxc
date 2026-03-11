@@ -23,7 +23,6 @@ build-backend = "hatchling.build"
 exclude = [
   "/.*",
   "tests",
-  "requirements_test.txt"
 ]
 
 [project.entry-points.pyinstaller40]
@@ -147,16 +146,16 @@ legacy_tox_ini = """
              VIRTUALENV_DOWNLOAD=0
     deps =
       -r{toxinidir}/requirements.txt
-      -r{toxinidir}/requirements_test.txt
+      -r{toxinidir}/tests/requirements.txt
 
-    commands = pytest -rA tests/_fixtures/application.py::test_cleanup
+    commands = pytest -rA tests/fixtures/application.py::test_cleanup
                coverage erase
-               coverage run --source=appxf --context=UNIT --branch -m pytest -rA ./tests
+               coverage run --source=appxf --context=UNIT --branch -m pytest -rA ./tests/unit
                coverage report --contexts=UNIT
                coverage html --contexts=UNIT -d cov_html_UNIT
-               coverage run -a --source=appxf --context=FEATURE --branch -m pytest -rA ./tests_features
-               coverage report --contexts=FEATURE
-               coverage html --contexts=FEATURE -d cov_html_FEATURE
+               coverage run -a --source=appxf --context=ACCEPTANCE --branch -m pytest -rA ./tests/acceptance
+               coverage report --contexts=ACCEPTANCE
+               coverage html --contexts=ACCEPTANCE -d cov_html_ACCEPTANCE
                coverage report
                coverage html -d cov_html
 """
