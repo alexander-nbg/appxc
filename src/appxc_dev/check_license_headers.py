@@ -19,7 +19,7 @@ LICENSES = {
     ".po": "SPDX-License-Identifier: Apache-2.0",
     ".pot": "SPDX-License-Identifier: Apache-2.0",
     ".feature": "SPDX-License-Identifier: Apache-2.0",
-    ".toml": "SPDX-License-Identifier: 0BSD",
+    ".toml": "SPDX-License-Identifier: Apache-2.0",
     ".sh": "SPDX-License-Identifier: 0BSD",
     ".yml": "SPDX-License-Identifier: 0BSD",
     ".yaml": "SPDX-License-Identifier: 0BSD",

@@ -6,7 +6,7 @@ import sys
 import traceback
 import warnings
 
-from . import fileversions
+from . import __version__, fileversions
 
 # Expected usage will likely not include appxc.logging and python builtin
 # logging such that the following should be OK:
@@ -66,7 +66,9 @@ def activate_logging(
 
     if not os.path.exists(directory):
         os.mkdir(directory)
-    cleanup(directory, n_files)
+    # cleanup needs to remove one more file to retain n_files after the new one is
+    # created:
+    cleanup(directory, n_files - 1)
     filename = fileversions.get_filename(
         "logging_(yyyyMMdd)_(00).log",
         directory=directory,
@@ -86,7 +88,8 @@ def activate_logging(
     appxc_logger.addHandler(file_handler)
     appxc_logger.setLevel(logging.DEBUG)
     appxc_logger.propagate = False
-    appxc_logger.debug("start logging (appxc)")
+    # Logging on info level, not debug to ensure the APPXF version is included.
+    appxc_logger.info("APPXC v%s", __version__)
 
     if app_scope is not None:
         if isinstance(app_scope, str):
@@ -97,7 +100,7 @@ def activate_logging(
             app_logger.addHandler(file_handler)
             app_logger.setLevel(logging.DEBUG)
             app_logger.propagate = False
-            app_logger.debug("start logging (%s)", this_scope)
+            app_logger.debug("%s", this_scope)
 
 
 def cleanup(directory: str, n_files: int = 5):

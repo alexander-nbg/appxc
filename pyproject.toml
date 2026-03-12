@@ -1,5 +1,5 @@
 # Copyright 2026 the contributors of APPXC (github.com/alexander-nbg/appxc)
-# SPDX-License-Identifier: 0BSD
+# SPDX-License-Identifier: Apache-2.0
 [project]
 name = "appxc"
 dynamic = ["version"]
@@ -26,8 +26,6 @@ source = "vcs"
 version_scheme = "guess-next-dev"
 
 [tool.hatch.build.hooks.vcs]
-# Write resolved version into the source tree so it is importable at runtime
-# (e.g. after a pip install -e . or inside a frozen application).
 version-file = "src/appxc/_version.py"
 
 [tool.hatch.build]

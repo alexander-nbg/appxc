@@ -21,7 +21,7 @@ plantuml.jar
 src/appxc/_version.py
 
 # notes during development
-__dev_notes.md
+__*.md
 # stored github tokens
 gh_token
 gh_token_classic
