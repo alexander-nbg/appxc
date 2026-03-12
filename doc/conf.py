@@ -1,7 +1,11 @@
 # Copyright 2026 the contributors of APPXC (github.com/alexander-nbg/appxc)
 # SPDX-License-Identifier: 0BSD
 from datetime import date
+from importlib.metadata import version as get_version
 from pathlib import Path
+
+release = get_version("appxc")
+version = release
 
 project = "APPXC"
 html_title = "APPXC"

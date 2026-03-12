@@ -9,11 +9,19 @@ authors = [
 description = "APPXC application (APP) cross functional concerns (XC)"
 readme = "README.md"
 requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+    "Development Status :: 1 - Planning",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
+]
 license="Apache-2.0"
 license_file = "LICENSES/Apache-2.0"
-classifiers = [
-    "Programming Language :: Python :: 3"
-]
+
+[project.urls]
+Repository = "https://github.com/alexander-nbg/appxc"
+Issues = "https://github.com/alexander-nbg/appxc/issues"
+Documentation = "https://appxc.readthedocs.io/en/stable"
 
 [build-system]
 requires = ["hatchling", "hatch-vcs"]
