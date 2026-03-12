@@ -5,10 +5,11 @@ from importlib.metadata import version as get_version
 from pathlib import Path
 
 release = get_version("appxc")
-version = release
+# strip, at least, the local versioning
+version = release.split("+")[0]
 
 project = "APPXC"
-html_title = "APPXC"
+html_title = f"APPXC - v{version}"
 author = "the contributors of APPXC (github.com/alexander-nbg/appxc)"
 copyright_year = date.today().year  # noqa: DTZ011 no timezone for correct year
 copyright = (  # noqa: A001
