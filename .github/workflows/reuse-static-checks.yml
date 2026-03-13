@@ -1,0 +1,45 @@
+# Copyright 2026 the contributors of APPXC (github.com/alexander-nbg/appxc)
+# SPDX-License-Identifier: 0BSD
+
+name: reuse-static-checks
+
+on:
+  workflow_call: {}
+
+jobs:
+  ruff:
+    name: linter [ruff]
+    runs-on: ubuntu-slim
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v6
+        with:
+          cache: "pip"
+          cache-dependency-path: |
+            **/requirements.txt
+            pyproject.toml
+      - run: pip install -r dev/requirements.txt
+      - run: ruff check
+      - run: ruff format --check
+
+  basedpyright:
+    name: static type checker [basedpyright]
+    runs-on: ubuntu-slim
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v6
+        with:
+          cache: "pip"
+          cache-dependency-path: |
+            **/requirements.txt
+            pyproject.toml
+      - run: pip install -r dev/requirements.txt -r requirements.txt
+      - run: basedpyright
+
+  license-headers:
+    name: license headers
+    runs-on: ubuntu-slim
+    steps:
+      - uses: actions/checkout@v4
+      - run: dev/check_license_headers.sh

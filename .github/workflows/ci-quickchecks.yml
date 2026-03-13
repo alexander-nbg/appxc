@@ -1,0 +1,26 @@
+# Copyright 2026 the contributors of APPXC (github.com/alexander-nbg/appxc)
+# SPDX-License-Identifier: 0BSD
+
+name: ci-quickchecks
+
+on:
+  pull_request: {}
+
+# Performing sanity checks on pull requests without deployment.
+
+jobs:
+  static-checks:
+    uses: ./.github/workflows/reuse-static-checks.yml
+
+  tests:
+    name: tests [${{ matrix.os }}, py${{ matrix.python-version }}]
+    needs: static-checks
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python-version: ['3.12']
+    uses: ./.github/workflows/reuse-testing.yml
+    with:
+      os: ${{ matrix.os }}
+      python-version: ${{ matrix.python-version }}

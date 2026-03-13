@@ -3,5 +3,4 @@ cryptography
 email-validator
 ftputil
 ntplib
-pandas
 recordclass

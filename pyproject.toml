@@ -47,6 +47,9 @@ include = [
   "/CONTRIBUTORS",
 ]
 
+[tool.hatch.build.targets.wheel]
+packages = ["src/appxc"]
+
 [project.entry-points.pyinstaller40]
 hook-dirs = "appxc.pyinstaller:get_hook_dirs"
 

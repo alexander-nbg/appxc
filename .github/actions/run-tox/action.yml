@@ -13,12 +13,11 @@ runs:
       shell: bash
 
     - name: Cache .tox directory
-      uses: actions/cache@v3
+      uses: actions/cache@v5
       with:
         path: .tox
-        key: tox-${{ runner.os }}-${{ env.PYTHON_VERSION }}-${{ hashFiles('**/requirements*.txt', 'pyproject.toml', 'tox.ini') }}
-        restore-keys: |
-          tox-${{ runner.os }}-${{ env.PYTHON_VERSION }}
+        key: tox-${{ runner.os }}-${{ runner.arch }}-py${{ env.PYTHON_VERSION }}-${{ hashFiles('**/requirements.txt', 'pyproject.toml') }}
+        # no restore key - if something changes, better to fully reinstall
 
     - name: Run tox
       run: tox

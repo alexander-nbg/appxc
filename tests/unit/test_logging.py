@@ -8,6 +8,8 @@ import textwrap
 from collections.abc import Callable
 from pathlib import Path
 
+import babel.dates
+
 from appxc import __version__, fileversions, logging
 from tests.fixtures.test_sandbox import init_test_sandbox_from_fixture
 
@@ -57,7 +59,7 @@ def test_activate_logging_multiple_files(request):
     assert len(created_files) == 3, "Expected exactly 3 log files"
 
     # get todays data in format YYYYMMDD
-    today = fileversions.format_date(date=None, format="yyyyMMdd")
+    today = babel.dates.format_date(date=None, format="yyyyMMdd", locale="en_US")
     assert f"logging_{today}_00.log" in created_files
     assert f"logging_{today}_01.log" in created_files
     assert f"logging_{today}_02.log" in created_files
@@ -82,7 +84,7 @@ def test_activate_logging_file_rotation(request):
     assert len(created_files) == 3, "Expected exactly 3 log files"
 
     # get todays data in format YYYYMMDD
-    today = fileversions.format_date(date=None, format="yyyyMMdd")
+    today = babel.dates.format_date(date=None, format="yyyyMMdd", locale="en_US")
     assert f"logging_{today}_02.log" in created_files
     assert f"logging_{today}_03.log" in created_files
     assert f"logging_{today}_04.log" in created_files
