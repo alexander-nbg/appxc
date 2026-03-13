@@ -28,6 +28,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: set up python ${{ inputs.python-version }}
+        id: setup-python
         uses: actions/setup-python@v6
         with:
           python-version: ${{ inputs.python-version }}
@@ -43,7 +44,7 @@ jobs:
         uses: actions/cache@v5
         with:
           path: .tox
-          key: tox-${{ runner.os }}-${{ runner.arch }}-py${{ env.PYTHON_VERSION }}-${{ hashFiles('**/requirements.txt', 'pyproject.toml') }}
+          key: tox-${{ runner.os }}-${{ runner.arch }}-py${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/requirements.txt', 'pyproject.toml') }}
           # no restore key - if something changes, better to fully reinstall
 
       - name: Run tox
