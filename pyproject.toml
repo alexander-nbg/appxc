@@ -33,9 +33,6 @@ source = "vcs"
 [tool.hatch.version.raw-options]
 version_scheme = "guess-next-dev"
 
-[tool.hatch.build.hooks.vcs]
-version-file = "src/appxc/_version.py"
-
 [tool.hatch.build]
 include = [
   # Library package only; appxc_dev and appxc_matema are not shipped to PyPI.

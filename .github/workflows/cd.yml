@@ -4,13 +4,14 @@
 name: cd
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
-  pull_request: {}
   release:
     types:
       - published
+
 # TODO LATER: remove the trigger for PRs again
 
 # Run shared checks on main and publish to PyPI after successful validation.
@@ -31,7 +32,6 @@ jobs:
     with:
       os: ${{ matrix.os }}
       python-version: ${{ matrix.python-version }}
-      environment: pytest
 
   deploy-pypi:
     name: deploy [pypi]

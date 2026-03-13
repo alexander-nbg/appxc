@@ -8,6 +8,10 @@ build:
   tools:
     python: '3.12'
   jobs:
+    post_checkout:
+      # Read the Docs has no native fetch-depth option here. Fetch full history
+      # and tags so versioning based on Git tags works correctly.
+      - git fetch --force --tags --unshallow || git fetch --force --tags
     pre_build:
       - bash dev/_ensure_plantuml_jar.sh
   apt_packages:
@@ -19,3 +23,7 @@ sphinx:
 python:
   install:
     - requirements: doc/requirements.txt
+    # Installation of appxc needed for metadata access to package version during sphinx
+    # build:
+    - method: pip
+      path: .

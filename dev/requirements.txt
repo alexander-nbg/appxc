@@ -1,5 +1,6 @@
 # Fixed basedpyright avoiding new rules breaking the CI.
 basedpyright==1.38.2
+build
 # Fixed ruff version avoiding new rules breaking the CI.
 ruff==0.15.2
 # Build backend plugin for VCS-based version tagging (used by pyproject.toml build-system)

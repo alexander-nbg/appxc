@@ -4,7 +4,12 @@
 name: reuse-static-checks
 
 on:
-  workflow_call: {}
+  workflow_call:
+    inputs:
+      python-version:
+        required: false
+        type: string
+        default: '3.12'
 
 jobs:
   ruff:
@@ -13,29 +18,74 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v6
+      # Added YAML anchors to the venv setup to reuse in further jobs. The steps could
+      # not be summarized into a single setup-venv anchor. A github reusable action was
+      # not a good alternative because the timing for respective steps need to remain
+      # visible vor analysis (cache hit vs. miss).
+      - &step-setup-python
+        name: set up python ${{ inputs.python-version }}
+        id: setup-python
+        uses: actions/setup-python@v6
         with:
-          cache: "pip"
-          cache-dependency-path: |
-            **/requirements.txt
-            pyproject.toml
-      - run: pip install -r dev/requirements.txt
-      - run: ruff check
-      - run: ruff format --check
+          python-version: ${{ inputs.python-version }}
+          cache: 'pip'
+
+      - &step-cache-venv
+        name: Cache venv directory
+        id: cache-venv
+        uses: actions/cache@v5
+        with:
+          path: ".venv"
+          key: venv-${{ runner.os }}-${{ runner.arch }}-py${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('requirements.txt', 'dev/requirements.txt', 'tests/requirements.txt', 'pyproject.toml') }}
+
+      - &step-create-venv
+        name: Create venv (on cache miss)
+        if: steps.cache-venv.outputs.cache-hit != 'true'
+        shell: bash
+        run: python -m venv .venv
+
+      - &step-detect-venv
+        name: Detect venv executable
+        id: detect-venv
+        shell: bash
+        run: |
+          if [ -x ".venv/bin/python" ]; then
+            echo "venv-python=.venv/bin/python" >> "$GITHUB_OUTPUT"
+          else
+            echo "venv-python=.venv/Scripts/python" >> "$GITHUB_OUTPUT"
+          fi
+
+      - &step-install-venv-deps
+        name: Install dependencies into venv
+        if: steps.cache-venv.outputs.cache-hit != 'true'
+        shell: bash
+        run: |
+          "${{ steps.detect-venv.outputs.venv-python }}" -m pip install --upgrade pip
+          "${{ steps.detect-venv.outputs.venv-python }}" -m pip install \
+            -r requirements.txt \
+            -r dev/requirements.txt \
+            -r tests/requirements.txt \
+            -e .
+      # ^^ END of reusable venv steps
+
+      - run: "${{ steps.detect-venv.outputs.venv-python }} -m ruff check"
+      - run: "${{ steps.detect-venv.outputs.venv-python }} -m ruff format --check"
 
   basedpyright:
     name: static type checker [basedpyright]
+    needs: ruff
     runs-on: ubuntu-slim
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v6
-        with:
-          cache: "pip"
-          cache-dependency-path: |
-            **/requirements.txt
-            pyproject.toml
-      - run: pip install -r dev/requirements.txt -r requirements.txt
-      - run: basedpyright
+
+      # Reuse steps from ruff job for venv setup:
+      - *step-setup-python
+      - *step-cache-venv
+      - *step-create-venv
+      - *step-detect-venv
+      - *step-install-venv-deps
+
+      - run: "${{ steps.detect-venv.outputs.venv-python }} -m basedpyright"
 
   license-headers:
     name: license headers
