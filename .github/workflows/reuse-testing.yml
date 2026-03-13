@@ -27,11 +27,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - id: setup_call
-        uses: ./.github/actions/setup
+      - name: set up python ${{ inputs.python-version }}
+        uses: actions/setup-python@v6
         with:
           python-version: ${{ inputs.python-version }}
-          caller-is-appxc: 'yes'
+
+      # note: requirements are not installed since this is handled by TOX within
+      # the venv
 
       - name: Install tox
         run: pip install tox tox-gh-actions
