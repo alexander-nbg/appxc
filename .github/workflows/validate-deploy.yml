@@ -1,7 +1,7 @@
 # Copyright 2026 the contributors of APPXC (github.com/alexander-nbg/appxc)
 # SPDX-License-Identifier: 0BSD
 
-name: reuse-deploy
+name: validate-deploy
 
 on:
   workflow_call:
@@ -18,44 +18,8 @@ on:
         default: '3.12'
 
 jobs:
-  deploy:
-    name: deploy
-    runs-on: ubuntu-latest
-    # ensure that only one deployment (same branch, pypi/testpypi) can run at a time.
-    # This is theoretically possible due to workflow_dispatch.
-    concurrency:
-      group: deploy-${{ inputs.target-repository }}-${{ github.ref }}
-      cancel-in-progress: false
-    permissions:
-      contents: read
-      id-token: write
-    environment:
-      name: ${{ inputs.target-repository }}
-      # The environment uses protection rules. Branch must be main or tag v*.
-
-    steps:
-      - name: Download built distributions
-        uses: actions/download-artifact@v8
-        with:
-          name: dist-${{ github.run_id }}
-          path: dist/
-
-      - name: Publish package to TestPyPI
-        if: inputs.target-repository == 'testpypi'
-        uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          repository-url: https://test.pypi.org/legacy/
-          packages-dir: dist/
-
-      - name: Publish package to PyPI
-        if: inputs.target-repository == 'pypi'
-        uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          packages-dir: dist/
-
   validate:
-    name: validate [${{ inputs.target-repository }}]
-    needs: deploy
+    name: validate
     runs-on: ubuntu-latest
 
     steps:

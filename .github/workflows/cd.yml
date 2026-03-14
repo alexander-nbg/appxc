@@ -9,23 +9,71 @@ on:
     types:
       - published
 
-# Publish to TestPyPI from main or release, then publish to PyPI on release
-# after successful TestPyPI deployment and validation.
+# Publish and validate published packages (first testpypi, then pypi).
 
 jobs:
   build:
     uses: ./.github/workflows/reuse-build.yml
 
-  testpypi:
+  deploy-testpypi:
     needs: build
-    uses: ./.github/workflows/reuse-deploy-pypi.yml
+    permissions:
+      contents: read
+      id-token: write
+    runs-on: ubuntu-latest
+    concurrency:
+      group: deploy-testpypi-${{ github.ref }}
+      cancel-in-progress: false
+    environment:
+      name: testpypi
+
+    steps:
+      - name: Download built distributions
+        uses: actions/download-artifact@v8
+        with:
+          name: dist-${{ github.run_id }}
+          path: dist/
+
+      - name: Publish package to TestPyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          repository-url: https://test.pypi.org/legacy/
+          packages-dir: dist/
+
+  validate-testpypi:
+    needs: [build, deploy-testpypi]
+    uses: ./.github/workflows/validate-deploy.yml
     with:
       target-repository: testpypi
       package-version: ${{ needs.build.outputs['package_version'] }}
 
-  pypi:
-    needs: [build, testpypi]
-    uses: ./.github/workflows/reuse-deploy-pypi.yml
+  deploy-pypi:
+    needs: [build, validate-testpypi]
+    permissions:
+      contents: read
+      id-token: write
+    runs-on: ubuntu-latest
+    concurrency:
+      group: deploy-pypi-${{ github.ref }}
+      cancel-in-progress: false
+    environment:
+      name: pypi
+
+    steps:
+      - name: Download built distributions
+        uses: actions/download-artifact@v8
+        with:
+          name: dist-${{ github.run_id }}
+          path: dist/
+
+      - name: Publish package to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: dist/
+
+  validate-pypi:
+    needs: [build, deploy-pypi]
+    uses: ./.github/workflows/validate-deploy.yml
     with:
       target-repository: pypi
       package-version: ${{ needs.build.outputs['package_version'] }}
