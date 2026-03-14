@@ -31,14 +31,27 @@ jobs:
           cache: 'pip'
 
       - name: Install build tooling
-        run: python -m pip install --upgrade pip build
+        run: python -m pip install --upgrade pip build setuptools-scm
+
+      - name: Determine clean package version
+        id: clean-version
+        shell: bash
+        run: |
+          package_version="$(python - <<'PY'
+          from setuptools_scm import get_version
+
+          print(get_version(version_scheme="guess-next-dev", local_scheme="no-local-version"))
+          PY
+          )"
+          echo "package_version=$package_version" >> "$GITHUB_OUTPUT"
+          echo "Clean package version: $package_version"
 
       - name: Build package
         env:
-          SETUPTOOLS_SCM_OVERRIDES_FOR_APPXC: '{local_scheme = "no-local-version"}'
+          SETUPTOOLS_SCM_PRETEND_VERSION: ${{ steps.clean-version.outputs.package_version }}
         shell: bash
         run: |
-          echo "SETUPTOOLS_SCM_OVERRIDES_FOR_APPXC=$SETUPTOOLS_SCM_OVERRIDES_FOR_APPXC"
+          echo "SETUPTOOLS_SCM_PRETEND_VERSION=$SETUPTOOLS_SCM_PRETEND_VERSION"
           python -m build
 
       - name: Upload built distributions
