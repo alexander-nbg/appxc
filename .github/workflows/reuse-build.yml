@@ -13,14 +13,12 @@ on:
     outputs:
       package_version:
         description: Version reported by the installed built wheel
-        value: ${{ jobs.verify.outputs.package_version }}
+        value: ${{ jobs.validate.outputs.package_version }}
 
 jobs:
   build:
     name: build
     runs-on: ubuntu-latest
-    env:
-      SETUPTOOLS_SCM_OVERRIDES_FOR_APPXC: '{local_scheme = "no-local-version"}'
 
     steps:
       - uses: actions/checkout@v6
@@ -36,7 +34,12 @@ jobs:
         run: python -m pip install --upgrade pip build
 
       - name: Build package
-        run: python -m build
+        env:
+          SETUPTOOLS_SCM_OVERRIDES_FOR_APPXC: '{local_scheme = "no-local-version"}'
+        shell: bash
+        run: |
+          echo "SETUPTOOLS_SCM_OVERRIDES_FOR_APPXC=$SETUPTOOLS_SCM_OVERRIDES_FOR_APPXC"
+          python -m build
 
       - name: Upload built distributions
         uses: actions/upload-artifact@v6
