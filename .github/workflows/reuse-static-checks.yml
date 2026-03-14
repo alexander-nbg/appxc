@@ -22,6 +22,10 @@ jobs:
       # not be summarized into a single setup-venv anchor. A github reusable action was
       # not a good alternative because the timing for respective steps need to remain
       # visible vor analysis (cache hit vs. miss).
+      #
+      # TODO 57: using this venv here just for linter and type checks seems excessive
+      # but pipeline will extend to test execution with report generation in the future
+      # (currently, this is part of tox but it's no use, there)
       - &step-setup-python
         name: set up python ${{ inputs.python-version }}
         id: setup-python
@@ -36,7 +40,7 @@ jobs:
         uses: actions/cache@v5
         with:
           path: ".venv"
-          key: venv-${{ runner.os }}-${{ runner.arch }}-py${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('requirements.txt', 'dev/requirements.txt', 'tests/requirements.txt', 'pyproject.toml') }}
+          key: venv-${{ runner.os }}-${{ runner.arch }}-py${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('src/requirements.txt', 'dev/requirements.txt', 'tests/requirements.txt', 'pyproject.toml') }}
 
       - &step-create-venv
         name: Create venv (on cache miss)
@@ -62,7 +66,7 @@ jobs:
         run: |
           "${{ steps.detect-venv.outputs.venv-python }}" -m pip install --upgrade pip
           "${{ steps.detect-venv.outputs.venv-python }}" -m pip install \
-            -r requirements.txt \
+            -r src/requirements.txt \
             -r dev/requirements.txt \
             -r tests/requirements.txt \
             -e .
@@ -73,7 +77,6 @@ jobs:
 
   basedpyright:
     name: static type checker [basedpyright]
-    needs: ruff
     runs-on: ubuntu-slim
     steps:
       - uses: actions/checkout@v4

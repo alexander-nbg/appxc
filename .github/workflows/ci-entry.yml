@@ -4,23 +4,32 @@
 name: ci-entry
 
 on:
+  workflow_dispatch:
   pull_request: {}
 
 # Performing sanity checks on pull requests without deployment.
 
 jobs:
   static-checks:
+    name: static checks
     uses: ./.github/workflows/reuse-static-checks.yml
 
-  tests:
-    name: tests [${{ matrix.os }}, py${{ matrix.python-version }}]
-    needs: static-checks
+  tox:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest]
-        python-version: ['3.12']
+        include:
+          # Only default version on ubuntu for the quick-check. Leaving as matrix to
+          # extend when needed:
+          - os: ubuntu-latest
+            python-version: '3.12'
     uses: ./.github/workflows/reuse-testing.yml
     with:
       os: ${{ matrix.os }}
       python-version: ${{ matrix.python-version }}
+
+  validate-package:
+    name: package validation
+    uses: ./.github/workflows/reuse-build.yml
+    with:
+      python-version: '3.12'

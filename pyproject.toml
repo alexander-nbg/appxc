@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 [project]
 name = "appxc"
-dynamic = ["version"]
+dynamic = ["version", "dependencies"]
 authors = [
   { name = "alexander-nbg", email="mail@alexander-nbg.de" }
 ]
@@ -24,7 +24,7 @@ Issues = "https://github.com/alexander-nbg/appxc/issues"
 Documentation = "https://appxc.readthedocs.io/en/stable"
 
 [build-system]
-requires = ["hatchling", "hatch-vcs"]
+requires = ["hatchling", "hatch-vcs", "hatch-requirements-txt"]
 build-backend = "hatchling.build"
 
 [tool.hatch.version]
@@ -32,6 +32,9 @@ source = "vcs"
 
 [tool.hatch.version.raw-options]
 version_scheme = "guess-next-dev"
+
+[tool.hatch.metadata.hooks.requirements_txt]
+files = ["src/requirements.txt"]
 
 [tool.hatch.build]
 include = [
@@ -167,7 +170,7 @@ legacy_tox_ini = """
     setenv = PYTHONPATH = {toxinidir}
              VIRTUALENV_DOWNLOAD=0
     deps =
-      -r{toxinidir}/requirements.txt
+      -r{toxinidir}/src/requirements.txt
       -r{toxinidir}/tests/requirements.txt
 
     commands = pytest -rA tests/fixtures/application.py::test_cleanup

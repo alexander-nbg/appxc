@@ -1,0 +1,42 @@
+# Copyright 2026 the contributors of APPXC (github.com/alexander-nbg/appxc)
+# SPDX-License-Identifier: 0BSD
+
+name: ci-approval
+
+on:
+  workflow_dispatch:
+  pull_request: {}
+
+# Execute full test set on pull requests.
+
+# Approval will be required to (1) use the secrets and (2) to limit number of executions
+# during PR updates.
+
+jobs:
+  tox:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Active python versions on ubuntu
+          - os: ubuntu-latest
+            python-version: '3.10'
+          - os: ubuntu-latest
+            python-version: '3.11'
+          - os: ubuntu-latest
+            python-version: '3.12'
+          - os: ubuntu-latest
+            python-version: '3.13'
+          - os: ubuntu-latest
+            python-version: '3.14'
+          # Default 3.12 python version on other OSes:
+          - os: windows-latest
+            python-version: '3.12'
+          - os: macos-latest
+            python-version: '3.12'
+    uses: ./.github/workflows/reuse-testing.yml
+    secrets: inherit
+    with:
+      os: ${{ matrix.os }}
+      python-version: ${{ matrix.python-version }}
+      environment: pytest

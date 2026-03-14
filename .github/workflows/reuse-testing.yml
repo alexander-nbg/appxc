@@ -20,9 +20,15 @@ on:
 
 jobs:
   test:
-    name: test [${{ inputs.os }}, py${{ inputs.python-version }}]
+    name: tox
     runs-on: ${{ inputs.os }}
     environment: ${{ inputs.environment }}
+    env:
+      # TODO #5: this FTP_DUMMY needs to be replaced by proper secrets for FTP testing.
+      #
+      # The pytest environment provides these secrets. They are defined unconditionally
+      # to keep things simple.
+      FTP_DUMMY: ${{ secrets.FTP_DUMMY }}
 
     steps:
       - uses: actions/checkout@v4

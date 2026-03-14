@@ -1,0 +1,102 @@
+# Copyright 2026 the contributors of APPXC (github.com/alexander-nbg/appxc)
+# SPDX-License-Identifier: 0BSD
+
+name: reuse-deploy
+
+on:
+  workflow_call:
+    inputs:
+      target-repository:
+        required: true
+        type: string
+      package-version:
+        required: true
+        type: string
+      python-version:
+        required: false
+        type: string
+        default: '3.12'
+
+jobs:
+  deploy:
+    name: deploy
+    runs-on: ubuntu-latest
+    # ensure that only one deployment (same branch, pypi/testpypi) can run at a time.
+    # This is theoretically possible due to workflow_dispatch.
+    concurrency:
+      group: deploy-${{ inputs.target-repository }}-${{ github.ref }}
+      cancel-in-progress: false
+    permissions:
+      contents: read
+      id-token: write
+    environment:
+      name: ${{ inputs.target-repository }}
+      # The environment uses protection rules. Branch must be main or tag v*.
+
+    steps:
+      - name: Download built distributions
+        uses: actions/download-artifact@v4
+        with:
+          name: dist-${{ github.run_id }}
+          path: dist/
+
+      - name: Publish package to TestPyPI
+        if: inputs.target-repository == 'testpypi'
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          repository-url: https://test.pypi.org/legacy/
+          packages-dir: dist/
+
+      - name: Publish package to PyPI
+        if: inputs.target-repository == 'pypi'
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: dist/
+
+  validate:
+    name: validate [${{ inputs.target-repository }}]
+    needs: deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ inputs.python-version }}
+          cache: 'pip'
+
+      - name: Create venv and install test dependencies
+        shell: bash
+        run: |
+          python -m venv .venv
+          .venv/bin/python -m pip install --upgrade pip
+          .venv/bin/python -m pip install -r tests/requirements.txt
+
+      - name: Install appxc from TestPyPI
+        if: inputs.target-repository == 'testpypi'
+        shell: bash
+        run: |
+          for attempt in 1 2 3 4 5; do
+            if .venv/bin/python -m pip install \
+              --index-url https://test.pypi.org/simple/ \
+              --extra-index-url https://pypi.org/simple/ \
+              appxc==${{ inputs.package-version }}; then
+              break
+            fi
+
+            if [ "$attempt" -eq 5 ]; then
+              exit 1
+            fi
+
+            sleep 15
+          done
+
+      - name: Install appxc from PyPI
+        if: inputs.target-repository == 'pypi'
+        shell: bash
+        run: .venv/bin/python -m pip install appxc==${{ inputs.package-version }}
+
+      - name: Run tests from checkout
+        shell: bash
+        run: .venv/bin/python -m pytest -rfE tests
