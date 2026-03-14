@@ -23,7 +23,7 @@ jobs:
       SETUPTOOLS_SCM_OVERRIDES_FOR_APPXC: '{local_scheme = "no-local-version"}'
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0  # needed to get versions right from tag history
 
@@ -39,7 +39,7 @@ jobs:
         run: python -m build
 
       - name: Upload built distributions
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: dist-${{ github.run_id }}
           path: dist/
@@ -54,7 +54,7 @@ jobs:
       package_version: ${{ steps.package_version.outputs.package_version }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - uses: actions/setup-python@v6
         with:
@@ -69,7 +69,7 @@ jobs:
           .venv/bin/python -m pip install -r tests/requirements.txt
 
       - name: Download built distributions
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: dist-${{ github.run_id }}
           path: dist/

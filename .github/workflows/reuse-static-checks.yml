@@ -16,7 +16,7 @@ jobs:
     name: linter [ruff]
     runs-on: ubuntu-slim
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       # Added YAML anchors to the venv setup to reuse in further jobs. The steps could
       # not be summarized into a single setup-venv anchor. A github reusable action was
@@ -79,7 +79,7 @@ jobs:
     name: static type checker [basedpyright]
     runs-on: ubuntu-slim
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       # Reuse steps from ruff job for venv setup:
       - *step-setup-python
@@ -94,5 +94,5 @@ jobs:
     name: license headers
     runs-on: ubuntu-slim
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - run: dev/check_license_headers.sh

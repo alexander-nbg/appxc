@@ -31,7 +31,7 @@ jobs:
       FTP_DUMMY: ${{ secrets.FTP_DUMMY }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: set up python ${{ inputs.python-version }}
         id: setup-python
