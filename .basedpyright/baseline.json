@@ -448,7 +448,7 @@
                 "range": {
                     "startColumn": 4,
                     "endColumn": 5,
-                    "lineCount": 11
+                    "lineCount": 8
                 }
             },
             {
@@ -7095,14 +7095,6 @@
             }
         ],
         "./src/appxc/options.py": [
-            {
-                "code": "reportMissingModuleSource",
-                "range": {
-                    "startColumn": 5,
-                    "endColumn": 22,
-                    "lineCount": 1
-                }
-            },
             {
                 "code": "reportExplicitAny",
                 "range": {
@@ -19048,26 +19040,10 @@
         ],
         "./src/appxc_matema/case_runner_gui.py": [
             {
-                "code": "reportMissingModuleSource",
-                "range": {
-                    "startColumn": 7,
-                    "endColumn": 15,
-                    "lineCount": 1
-                }
-            },
-            {
-                "code": "reportMissingImports",
+                "code": "reportMissingTypeStubs",
                 "range": {
                     "startColumn": 5,
                     "endColumn": 15,
-                    "lineCount": 1
-                }
-            },
-            {
-                "code": "reportUnknownVariableType",
-                "range": {
-                    "startColumn": 23,
-                    "endColumn": 32,
                     "lineCount": 1
                 }
             },
@@ -19144,34 +19120,18 @@
                 }
             },
             {
-                "code": "reportUnknownVariableType",
+                "code": "reportUnknownArgumentType",
+                "range": {
+                    "startColumn": 27,
+                    "endColumn": 33,
+                    "lineCount": 1
+                }
+            },
+            {
+                "code": "reportUnusedCallResult",
                 "range": {
                     "startColumn": 8,
-                    "endColumn": 14,
-                    "lineCount": 1
-                }
-            },
-            {
-                "code": "reportUnknownMemberType",
-                "range": {
-                    "startColumn": 8,
-                    "endColumn": 20,
-                    "lineCount": 1
-                }
-            },
-            {
-                "code": "reportUnknownMemberType",
-                "range": {
-                    "startColumn": 26,
-                    "endColumn": 43,
-                    "lineCount": 1
-                }
-            },
-            {
-                "code": "reportUnknownVariableType",
-                "range": {
-                    "startColumn": 15,
-                    "endColumn": 21,
+                    "endColumn": 44,
                     "lineCount": 1
                 }
             },
@@ -19234,58 +19194,10 @@
         ],
         "./src/appxc_matema/cmd.py": [
             {
-                "code": "reportMissingImports",
-                "range": {
-                    "startColumn": 5,
-                    "endColumn": 19,
-                    "lineCount": 1
-                }
-            },
-            {
-                "code": "reportUnknownVariableType",
-                "range": {
-                    "startColumn": 27,
-                    "endColumn": 33,
-                    "lineCount": 1
-                }
-            },
-            {
-                "code": "reportMissingImports",
-                "range": {
-                    "startColumn": 5,
-                    "endColumn": 30,
-                    "lineCount": 1
-                }
-            },
-            {
-                "code": "reportUnknownVariableType",
-                "range": {
-                    "startColumn": 38,
-                    "endColumn": 51,
-                    "lineCount": 1
-                }
-            },
-            {
                 "code": "reportUnannotatedClassAttribute",
                 "range": {
                     "startColumn": 13,
                     "endColumn": 21,
-                    "lineCount": 1
-                }
-            },
-            {
-                "code": "reportUnknownVariableType",
-                "range": {
-                    "startColumn": 8,
-                    "endColumn": 22,
-                    "lineCount": 1
-                }
-            },
-            {
-                "code": "reportUnknownVariableType",
-                "range": {
-                    "startColumn": 15,
-                    "endColumn": 53,
                     "lineCount": 1
                 }
             },

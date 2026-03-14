@@ -15,12 +15,14 @@ from pathlib import Path
 import pytest
 import toml
 
+from appxc import __version__
+
 ### Reading configuration from pyproject.toml
 try:
     with open("pyproject.toml") as pyproject_file:
         toml_data = toml.load(pyproject_file)
     # get current project version:
-    project_version = toml_data["project"]["version"]
+    project_version = __version__
     # get sandbox root directory for testing:
     test_sandbox_root = toml_data["tool"]["appxc"]["test-sandbox-root"]
     print(

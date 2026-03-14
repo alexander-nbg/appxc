@@ -1,0 +1,59 @@
+# Copyright 2026 the contributors of APPXC (github.com/alexander-nbg/appxc)
+# SPDX-License-Identifier: 0BSD
+
+name: reuse-testing
+
+on:
+  workflow_call:
+    inputs:
+      os:
+        required: true
+        type: string
+      python-version:
+        required: false
+        type: string
+        default: '3.12'
+      environment:
+        required: false
+        type: string
+        default: ''
+
+jobs:
+  test:
+    name: tox
+    runs-on: ${{ inputs.os }}
+    environment: ${{ inputs.environment }}
+    env:
+      # TODO #5: this FTP_DUMMY needs to be replaced by proper secrets for FTP testing.
+      #
+      # The pytest environment provides these secrets. They are defined unconditionally
+      # to keep things simple.
+      FTP_DUMMY: ${{ secrets.FTP_DUMMY }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: set up python ${{ inputs.python-version }}
+        id: setup-python
+        uses: actions/setup-python@v6
+        with:
+          python-version: ${{ inputs.python-version }}
+          cache: 'pip'
+
+      # note: requirements are not installed since this is handled by TOX within
+      # the venv
+
+      - name: Install tox
+        run: pip install tox tox-gh-actions
+        shell: bash
+
+      - name: Cache .tox directory
+        uses: actions/cache@v5
+        with:
+          path: .tox
+          key: tox-${{ runner.os }}-${{ runner.arch }}-py${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/requirements.txt', 'pyproject.toml') }}
+          # no restore key - if something changes, better to fully reinstall
+
+      - name: Run tox
+        run: tox
+        shell: bash

@@ -273,10 +273,7 @@ Build outputs:
         type=Path,
         nargs="*",
         default=[],
-        help=(
-            "Additional requirements files to install "
-            "(default: requirements.txt, appxc/requirements.txt)"
-        ),
+        help=("Additional requirements files to install (default: requirements.txt)"),
     )
     parser.add_argument(
         "--editable-packages",
@@ -320,7 +317,6 @@ Build outputs:
     # Set default requirements if none provided
     requirements_files = args.requirements or [
         Path("requirements.txt"),
-        Path("appxc/requirements.txt"),
     ]
 
     # Set default editable packages if none provided

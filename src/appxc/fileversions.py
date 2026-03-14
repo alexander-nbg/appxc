@@ -44,7 +44,7 @@ log = logging.getLogger(__name__)
 #
 # Is there a babel "set locale" default??
 def set_locale(locale: str):
-    log.info("Set locale to {locale}")
+    log.info("Set locale to %s", locale)
     set_locale.locale = locale
 
 

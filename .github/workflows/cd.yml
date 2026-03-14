@@ -1,0 +1,31 @@
+# Copyright 2026 the contributors of APPXC (github.com/alexander-nbg/appxc)
+# SPDX-License-Identifier: 0BSD
+
+name: cd
+
+on:
+  workflow_dispatch:
+  release:
+    types:
+      - published
+
+# Publish to TestPyPI from main or release, then publish to PyPI on release
+# after successful TestPyPI deployment and validation.
+
+jobs:
+  build:
+    uses: ./.github/workflows/reuse-build.yml
+
+  testpypi:
+    needs: build
+    uses: ./.github/workflows/reuse-deploy-pypi.yml
+    with:
+      target-repository: testpypi
+      package-version: ${{ needs.build.outputs['package_version'] }}
+
+  pypi:
+    needs: [build, testpypi]
+    uses: ./.github/workflows/reuse-deploy-pypi.yml
+    with:
+      target-repository: pypi
+      package-version: ${{ needs.build.outputs['package_version'] }}

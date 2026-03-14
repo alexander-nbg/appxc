@@ -1,29 +1,54 @@
 # Copyright 2026 the contributors of APPXC (github.com/alexander-nbg/appxc)
-# SPDX-License-Identifier: 0BSD
+# SPDX-License-Identifier: Apache-2.0
 [project]
 name = "appxc"
-version = "0.0.3a0"
+dynamic = ["version", "dependencies"]
 authors = [
   { name = "alexander-nbg", email="mail@alexander-nbg.de" }
 ]
 description = "APPXC application (APP) cross functional concerns (XC)"
 readme = "README.md"
 requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+    "Development Status :: 1 - Planning",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
+]
 license="Apache-2.0"
 license_file = "LICENSES/Apache-2.0"
-classifiers = [
-    "Programming Language :: Python :: 3"
-]
+
+[project.urls]
+Repository = "https://github.com/alexander-nbg/appxc"
+Issues = "https://github.com/alexander-nbg/appxc/issues"
+Documentation = "https://appxc.readthedocs.io/en/stable"
 
 [build-system]
-requires = ["hatchling"]
+requires = ["hatchling", "hatch-vcs", "hatch-requirements-txt"]
 build-backend = "hatchling.build"
 
+[tool.hatch.version]
+source = "vcs"
+
+[tool.hatch.version.raw-options]
+version_scheme = "guess-next-dev"
+
+[tool.hatch.metadata.hooks.requirements_txt]
+files = ["src/requirements.txt"]
+
 [tool.hatch.build]
-exclude = [
-  "/.*",
-  "tests",
+include = [
+  # Library package only; appxc_dev and appxc_matema are not shipped to PyPI.
+  "src/appxc/",
+  # Additional information:
+  "/LICENSE",
+  "/LICENSES/",
+  "/README.md",
+  "/CONTRIBUTORS",
 ]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/appxc"]
 
 [project.entry-points.pyinstaller40]
 hook-dirs = "appxc.pyinstaller:get_hook_dirs"
@@ -145,7 +170,7 @@ legacy_tox_ini = """
     setenv = PYTHONPATH = {toxinidir}
              VIRTUALENV_DOWNLOAD=0
     deps =
-      -r{toxinidir}/requirements.txt
+      -r{toxinidir}/src/requirements.txt
       -r{toxinidir}/tests/requirements.txt
 
     commands = pytest -rA tests/fixtures/application.py::test_cleanup

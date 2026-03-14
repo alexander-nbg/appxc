@@ -6,5 +6,20 @@
 # using APPXC shall not enforce loading of unnecessary dependencies which are
 # typically present in sub-modules.
 
+# try:
+#     from ._version import __version__ as __version__
+# except ImportError:
+#     # Package was not installed; version metadata is unknown (e.g. running directly
+#     # from source without hatch-vcs build hook execution).
+#     __version__: str = "0.0.0.dev0+unknown"
+
+from importlib.metadata import PackageNotFoundError, version
+
+try:
+    __version__ = version("package-name")
+except PackageNotFoundError:
+    # package is not installed
+    __version__ = "0.0.0.dev0+unknown"
+
 from .options import Options
 from .stateful import Stateful

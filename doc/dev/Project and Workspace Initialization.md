@@ -17,7 +17,7 @@ install pyenv and make python versions available: https://help.clouding.io/hc/en
 python3.12 -m venv .venv
 source .venv/bin/activate
 python -m pip install --upgrade pip
-pip install -e . -r requirements.txt -r tests/requirements.txt -r dev/requirements.txt
+pip install -e . -r src/requirements.txt -r tests/requirements.txt -r dev/requirements.txt
 ```
 ## Check Setup
 Run commands to verify setup, each line separately.
