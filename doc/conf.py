@@ -28,6 +28,7 @@ myst_enable_extensions = [
 ]
 
 templates_path = ["_templates"]
+html_static_path = ["_static"]
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
 source_suffix = {
@@ -47,6 +48,14 @@ html_theme_options = {
         'target="_blank">issue #48</a>.'
     ),
 }
+
+html_css_files = [
+    "external-links.css",
+]
+
+html_js_files = [
+    "external-links.js",
+]
 
 project_root = Path(__file__).resolve().parent.parent
 plantuml_jar = project_root / "doc" / "plantuml.jar"

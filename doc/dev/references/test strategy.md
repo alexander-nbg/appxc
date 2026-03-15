@@ -1,6 +1,6 @@
 <!--Copyright 2026 the contributors of APPXC (github.com/alexander-nbg/appxc)-->
 <!--SPDX-License-Identifier: 0BSD-->
-# APPXC Test Strategy
+# Test Strategy
 
 The test strategy considers two test levels:
 * __Unit Tests__ are driven by code coverage of the individual modules and *should cover
