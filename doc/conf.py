@@ -1,8 +1,12 @@
 # Copyright 2026 the contributors of APPXC (github.com/alexander-nbg/appxc)
 # SPDX-License-Identifier: 0BSD
+import sys
 from datetime import date
 from importlib.metadata import version as get_version
 from pathlib import Path
+
+# make APPXC specific Sphinx extensions available without installation:
+sys.path.insert(0, str(Path(__file__).resolve().parent / "_ext"))
 
 release = get_version("appxc")
 # strip, at least, the local versioning
@@ -17,10 +21,23 @@ copyright = (  # noqa: A001
 )
 
 extensions = [
+    "page_status",
     "myst_parser",
     "sphinxcontrib.plantuml",
     "sphinx.ext.duration",
 ]
+
+# See doc/dev/concepts/page_status.md for details as well as doc/_ext/page_status.py:
+page_status_linked_page = "dev/concepts/page_status"
+page_status_hide_all = False  # set True to suppress the sidebar widget on every page
+page_status_default_summary = {
+    "stub": "Added to already link to it or to drop initial ideas.",
+    "obsolete": "",
+    "draft": "Pending, just dropping ideas.",
+    "incomplete": "NO SUMMARY AVAILABLE. This is a bug, please report to maintainers.",
+    "usable": "",
+    "unknown": "Page not yet rated and may not be useful.",
+}
 
 myst_enable_extensions = [
     "colon_fence",
@@ -50,6 +67,7 @@ html_theme_options = {
 }
 
 html_css_files = [
+    "page-status.css",
     "external-links.css",
 ]
 

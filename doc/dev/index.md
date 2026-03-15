@@ -1,12 +1,16 @@
 <!--Copyright 2026 the contributors of APPXC (github.com/alexander-nbg/appxc)-->
 <!--SPDX-License-Identifier: 0BSD-->
-# Developer Documentation
+# Developing
 ```{toctree}
 :maxdepth: 1
 :titlesonly:
 :hidden:
 :glob:
 */index
+```
+
+```{page-status} incomplete
+:summary: The description on structure/ditataxis is inconsistent.
 ```
 
 ## Contributing
@@ -27,4 +31,8 @@ concise, most pages are **[references](references/index)** with **explanations**
 typically left in corresponding tickets, PRs and/or commit messages.
 [How-To's](how-to/index) are sparse and **tutorials** are not used.
 
-While APPXC is evolving, the developer documentation also holds draft [feature](draft_features/index) and [module](draft_modules/index) documentations.
+While APPXC is evolving, the developer documentation also holds draft
+[feature](draft_features/index) and [module](draft_modules/index) documentation.
+**Feature** pages explain the involved context and concerns and summarize required
+modules. **Module** pages include details on interfaces and behavior as ***reference***
+for implementation and usage.

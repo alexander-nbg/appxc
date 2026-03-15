@@ -1,0 +1,80 @@
+/* Copyright 2026 the contributors of APPXC (github.com/alexander-nbg/appxc) */
+/* SPDX-License-Identifier: 0BSD */
+
+/* page-status feature was added and is maintained by AI */
+
+:root,
+html[data-theme="light"] {
+  --appxc-page-status-draft-rgb: 178, 66, 56;
+  --appxc-page-status-stub-rgb: 109, 117, 126;
+  --appxc-page-status-usable-rgb: 51, 122, 77;
+  --appxc-page-status-incomplete-rgb: 181, 131, 18;
+}
+
+html[data-theme="dark"] {
+  --appxc-page-status-draft-rgb: 219, 106, 96;
+  --appxc-page-status-stub-rgb: 144, 153, 163;
+  --appxc-page-status-usable-rgb: 94, 182, 123;
+  --appxc-page-status-incomplete-rgb: 219, 178, 67;
+}
+
+.appxc-page-status {
+  margin-bottom: 0.75rem;
+}
+
+.appxc-page-status__heading a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.appxc-page-status__body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.35rem;
+  padding: 0.55rem 0.65rem;
+  border-left: 0.24rem solid rgba(var(--appxc-page-status-rgb), 0.55);
+  border-radius: 0.35rem;
+  background-color: rgba(var(--appxc-page-status-rgb), 0.12);
+}
+
+.appxc-page-status__state {
+  display: inline-flex;
+  align-items: center;
+  margin: 0;
+  padding: 0.12rem 0.42rem;
+  border-radius: 999px;
+  background-color: rgba(var(--appxc-page-status-rgb), 0.18);
+  color: rgb(var(--appxc-page-status-rgb));
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.appxc-page-status__summary {
+  display: block;
+  margin: 0;
+  color: inherit;
+  font-size: 0.84rem;
+  line-height: 1.35;
+  word-break: break-word;
+}
+
+.appxc-page-status--draft,
+.appxc-page-status--unknown {
+  --appxc-page-status-rgb: var(--appxc-page-status-draft-rgb);
+}
+
+.appxc-page-status--usable {
+  --appxc-page-status-rgb: var(--appxc-page-status-usable-rgb);
+}
+
+.appxc-page-status--stub,
+.appxc-page-status--obsolete {
+  --appxc-page-status-rgb: var(--appxc-page-status-stub-rgb);
+}
+
+.appxc-page-status--incomplete {
+  --appxc-page-status-rgb: var(--appxc-page-status-incomplete-rgb);
+}

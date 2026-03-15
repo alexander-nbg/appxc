@@ -1,0 +1,14 @@
+
+<!--this file was added for the page-status on the right column -->
+<!--page-status feature was added and is maintained by AI-->
+
+{% if secondary_sidebar_items or appxc_page_status_show -%}
+<div class="sidebar-secondary-items sidebar-secondary__inner">
+{% if appxc_page_status_show %}
+  <div class="sidebar-secondary-item">{% include "components/page-status.html" %}</div>
+{% endif %}
+{% for toc_item in secondary_sidebar_items %}
+  <div class="sidebar-secondary-item">{% include toc_item %}</div>
+{% endfor %}
+</div>
+{%- endif %}
