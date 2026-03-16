@@ -7,7 +7,7 @@
 :maxdepth: 1
 :titlesonly:
 :hidden:
-user/concerns/index
-user/modules/index
+
+user/_user
 dev/index
 ```
