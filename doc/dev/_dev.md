@@ -1,12 +1,15 @@
 <!--Copyright 2026 the contributors of APPXC (github.com/alexander-nbg/appxc)-->
 <!--SPDX-License-Identifier: 0BSD-->
-# Developing
+# Developer
 ```{toctree}
 :maxdepth: 1
 :titlesonly:
 :hidden:
 :glob:
-*/index
+how-to/_how-to
+references/_references
+concepts/_concepts
+drafts/_drafts
 ```
 
 ```{page-status} incomplete
@@ -27,12 +30,14 @@ infrastructure is touched, content will be extended. As soon as there is any int
 supporting supporters will be prioritized.
 
 The documentaiton follows [diataxis](https://diataxis.fr/start-here/). Keeping things
-concise, most pages are **[references](references/index)** with **explanations**
+concise, most pages are **[references](references/_references)** with **explanations**
 typically left in corresponding tickets, PRs and/or commit messages.
-[How-To's](how-to/index) are sparse and **tutorials** are not used.
+[How-To's](how-to/_how-to) are sparse and **tutorials** are not used.
 
+<!--
 While APPXC is evolving, the developer documentation also holds draft
-[feature](draft_features/index) and [module](draft_modules/index) documentation.
+[feature](draft_features/_draft_features) and [module](draft_modules/_draft_modules) documentation.
 **Feature** pages explain the involved context and concerns and summarize required
 modules. **Module** pages include details on interfaces and behavior as ***reference***
 for implementation and usage.
+-->

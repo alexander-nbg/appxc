@@ -9,5 +9,5 @@
 :hidden:
 
 user/_user
-dev/index
+dev/_dev
 ```

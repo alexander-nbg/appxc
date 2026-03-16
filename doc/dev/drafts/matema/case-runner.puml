@@ -1,7 +1,7 @@
 ' Copyright 2026 the contributors of APPXC (github.com/alexander-nbg/appxc)
 ' SPDX-License-Identifier: 0BSD
 @startuml
-!include ../../style.puml
+!include ../../../style.puml
 
 participant MaTeMa as MATEMA
 participant manual_case.py as CASE
