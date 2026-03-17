@@ -2,6 +2,10 @@
 <!--SPDX-License-Identifier: 0BSD-->
 # MaTeMa Case Runner
 
+```{page-status} draft
+:summary: MaTeMa would be great but it's too much for now (2026/03)
+```
+
 The CaseRunner is used within your manual test case to operate with the MaTeMa. The following outlines the interactions.
 
 * **Initialization**: The MaTeMa uses the ***command line arguments*** to pass information to the CaseRunner. This includes details on how to pass test execution details *back* to the MaTeMa.

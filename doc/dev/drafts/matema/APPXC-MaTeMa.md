@@ -2,6 +2,10 @@
 <!--SPDX-License-Identifier: 0BSD-->
 # **MaTeMa** - **Ma**nual **Te**st **Ma**nager
 
+```{page-status} draft
+:summary: MaTeMa would be great but it's too much for now (2026/03)
+```
+
 **Situation and Problem.** Assume you are developer or tester in a reasonable complex project running on low budget that needs manual test cases because it has GUI elements to test. You already have some test cases but fear to add more because you have no means to maintain an overview nor do you have time to run all tests for every code change you do. But you also do not want to sacrifice quality.
 
 The tools in APPXC-ManualTests are supposed to help. Let's go through some typical development tests.

@@ -77,7 +77,6 @@ html_js_files = [
 
 project_root = Path(__file__).resolve().parent.parent
 plantuml_jar = project_root / "doc" / "plantuml.jar"
-plantuml = f"java -jar {plantuml_jar}"
-plantuml_args = ["-I", project_root / "doc"]
+plantuml = f"java -jar {plantuml_jar} --include {project_root / 'doc' / 'style.puml'}"
 plantuml_output_format = "svg"
 plantuml_syntax_error_image = True

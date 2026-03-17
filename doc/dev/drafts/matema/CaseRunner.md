@@ -2,6 +2,10 @@
 <!--SPDX-License-Identifier: 0BSD-->
 # MaTeMa Case Runner
 
+```{page-status} draft
+:summary: MaTeMa would be great but it's too much for now (2026/03)
+```
+
 ## Initialization Tree
 * Doing nothing when: no command line arguments
 * If command line arguments include any "process_*"

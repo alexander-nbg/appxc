@@ -2,6 +2,10 @@
 <!--SPDX-License-Identifier: 0BSD-->
 # Manual Test Manager (MaTeMa)
 
+```{page-status} draft
+:summary: MaTeMa would be great but it's too much for now (2026/03)
+```
+
 ## Requirements
 * The manual test case must be executable directly without any test management.
 	* The script may still use any helpers
