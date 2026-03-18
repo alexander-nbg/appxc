@@ -41,7 +41,7 @@ page_status_default_summary = {
 
 myst_enable_extensions = [
     "colon_fence",
-    #'linkify',
+    "linkify",
 ]
 
 templates_path = ["_templates"]
@@ -69,6 +69,7 @@ html_theme_options = {
 html_css_files = [
     "page-status.css",
     "external-links.css",
+    "typography.css",
 ]
 
 html_js_files = [

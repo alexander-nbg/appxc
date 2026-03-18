@@ -1,13 +1,10 @@
 <!--Copyright 2026 the contributors of APPXC (github.com/alexander-nbg/appxc)-->
 <!--SPDX-License-Identifier: 0BSD-->
-# How-To Contribute
+# Contribution Checklist
 
 ```{page-status} draft
 :summary: Partly outdated and no clear seperation on what's usable (2026/03)
 ```
-
-??? Is this really a how-to, enabling developers to perform a change? It's not even primarily on explaining the expectations. It's more a list of expectations which is more likely a ***reference***.
-
 
 **Purpose.** Details to be considered before a pull request can be merged are
 summarized, primarily, to support by providing an overview and including references or

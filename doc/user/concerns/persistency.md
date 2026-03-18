@@ -3,11 +3,15 @@
 # Persistency
 
 ```{page-status} stub
-:summary: added to outline a few typical concerns (2026/03)
+:summary: see page introduction for details (2026/03)
 ```
 
- * settings and configuration
- * general application data
+This page is **just a stub/draft** for now to list a few concerns and collect resulting features and aspects for later refinement.
+
+Features:
+ * storing/loading settings and configuration
+ * storing/loading general application data
  * synchronizing between instances
 
-This page would extend to a more detailed desciption and linking to resulting features.
+Aspects to the development procedure:
+ * persistency triggers the need to consider backwards compatibility (old files)

@@ -20,24 +20,18 @@ drafts/_drafts
 
 **Yes, please!** You're welcome to contribute. Just get in touch by commenting a
 [ticket](https://github.com/alexander-nbg/appxc/issues), opening a new one or dropping
-an Email (see my [github profile](https://github.com/alexander-nbg)). Currently, I
-prefer some chat and discussion before reviewing a pull request.
+an Email (see my [github profile](https://github.com/alexander-nbg)).
 
 ## Documentation
 
 The developer documentation is only partly usable (as of March 2026) but whenever
 infrastructure is touched, content will be extended. As soon as there is any interest,
-supporting supporters will be prioritized.
+supporting supporters with documentation updates will be prioritized.
 
-The documentaiton follows [diataxis](https://diataxis.fr/start-here/). Keeping things
-concise, most pages are **[references](references/_references)** with **explanations**
-typically left in corresponding tickets, PRs and/or commit messages.
-[How-To's](how-to/_how-to) are sparse and **tutorials** are not used.
+The documentaiton follows [diataxis](https://diataxis.fr/start-here/).
+* **[How-To's](how-to/_how-to)** are sparse and **tutorials** are not used.
+* Keeping things concise, most pages are **[references](references/_references)**.
+* Specialties on the development approach or tooling are *explained* as
+  **[concepts](concepts/_concepts)**, if required.
 
-<!--
-While APPXC is evolving, the developer documentation also holds draft
-[feature](draft_features/_draft_features) and [module](draft_modules/_draft_modules) documentation.
-**Feature** pages explain the involved context and concerns and summarize required
-modules. **Module** pages include details on interfaces and behavior as ***reference***
-for implementation and usage.
--->
+The developer area also prepares feature and module pages for the user area with content being transferred when the implementation becomes usable. See **[drafts](drafts/_drafts)** for more detailed on the approach.
