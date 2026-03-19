@@ -15,19 +15,24 @@ COPYRIGHT_AUTHOR = "the contributors of APPXC (github.com/alexander-nbg/appxc)"
 # License phrases are fixed strings and no alterations are expected. With
 # SPDX-License-Identifier, only a single line is expected.
 LICENSES = {
-    ".py": "SPDX-License-Identifier: Apache-2.0",
-    ".po": "SPDX-License-Identifier: Apache-2.0",
-    ".pot": "SPDX-License-Identifier: Apache-2.0",
-    ".feature": "SPDX-License-Identifier: Apache-2.0",
-    ".toml": "SPDX-License-Identifier: Apache-2.0",
-    ".sh": "SPDX-License-Identifier: 0BSD",
-    ".yml": "SPDX-License-Identifier: 0BSD",
-    ".yaml": "SPDX-License-Identifier: 0BSD",
-    ".md": "SPDX-License-Identifier: 0BSD",
-    ".puml": "SPDX-License-Identifier: 0BSD",
-    ".js": "SPDX-License-Identifier: 0BSD",
-    ".css": "SPDX-License-Identifier: 0BSD",
-    ".html": "SPDX-License-Identifier: 0BSD",
+    "./doc/_ext": {
+        ".py": "SPDX-License-Identifier: 0BSD",
+    },
+    "default": {
+        ".py": "SPDX-License-Identifier: Apache-2.0",
+        ".po": "SPDX-License-Identifier: Apache-2.0",
+        ".pot": "SPDX-License-Identifier: Apache-2.0",
+        ".feature": "SPDX-License-Identifier: Apache-2.0",
+        ".toml": "SPDX-License-Identifier: Apache-2.0",
+        ".sh": "SPDX-License-Identifier: 0BSD",
+        ".yml": "SPDX-License-Identifier: 0BSD",
+        ".yaml": "SPDX-License-Identifier: 0BSD",
+        ".md": "SPDX-License-Identifier: 0BSD",
+        ".puml": "SPDX-License-Identifier: 0BSD",
+        ".js": "SPDX-License-Identifier: 0BSD",
+        ".css": "SPDX-License-Identifier: 0BSD",
+        ".html": "SPDX-License-Identifier: 0BSD",
+    },
 }
 
 EXCLUSION_FILE = "LICENSE"
@@ -93,6 +98,27 @@ def is_excluded_file(file: str, patterns: list[str]) -> bool:
     return any(fnmatch(file, pattern) for pattern in patterns)
 
 
+def get_expected_license(file: Path, repo_root: Path) -> str | None:
+    """Resolve expected SPDX line for one file
+
+    Non-default path mappings are checked first. If no path-specific mapping
+    applies, the default mapping is used.
+    """
+    relative_path = file.relative_to(repo_root).as_posix()
+
+    for location, extension_licenses in LICENSES.items():
+        if location == "default":
+            continue
+        normalized_location = location.removeprefix("./")
+        if relative_path.startswith(normalized_location + "/"):
+            if file.suffix in extension_licenses:
+                return extension_licenses[file.suffix]
+            break
+
+    default_licenses = LICENSES["default"]
+    return default_licenses.get(file.suffix)
+
+
 def _read_header_lines(
     file: Path,
     *,
@@ -105,7 +131,7 @@ def _read_header_lines(
     Leading blank lines are ignored.
     """
     header_lines: list[str] = []
-    log_lines = []
+    log_lines: list[str] = []
     with file.open(encoding="utf-8") as fh:
         in_block_comment = False
         for line in fh:
@@ -143,7 +169,7 @@ def _read_header_lines(
     return header_lines
 
 
-def verify_file_header(file: Path) -> bool:
+def verify_file_header(file: Path, repo_root: Path) -> bool:
     """Verify required information in file headers
 
     Expected are copyright and license information. Note some file types
@@ -151,6 +177,11 @@ def verify_file_header(file: Path) -> bool:
     """
     has_copyright = False
     has_license = False
+    expected_license = get_expected_license(file, repo_root)
+
+    if expected_license is None:
+        print(f"{file}:\n  Unsupported file type for header verification")
+        return False
 
     if file.suffix in [
         ".py",
@@ -189,7 +220,7 @@ def verify_file_header(file: Path) -> bool:
     for line in header_lines:
         if line.lower().startswith("copyright") and COPYRIGHT_AUTHOR in line:
             has_copyright = True
-        if line.startswith(LICENSES[file.suffix]):
+        if line.startswith(expected_license):
             has_license = True
 
     if not has_copyright or not has_license:
@@ -197,7 +228,7 @@ def verify_file_header(file: Path) -> bool:
         if not has_copyright:
             print("  Missing or invalid copyright")
         if not has_license:
-            spdx_id = LICENSES[file.suffix].split(": ")[1]
+            spdx_id = expected_license.split(": ")[1]
             print(f"  Missing SPDX license identifier: {spdx_id}")
         return False
     return True
@@ -219,7 +250,7 @@ def verify_git_files() -> bool:
         if is_excluded_file(file, exclusion_patterns):
             continue
 
-        if not verify_file_header(absolute_file):
+        if not verify_file_header(absolute_file, repo_root):
             # verify_file() prints details while the loop shall continue to
             # report all findings.
             not_verified_files += 1
