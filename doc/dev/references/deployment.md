@@ -12,7 +12,7 @@ As of 2026/03, only versions 0.0.x and 0.0.x.devN are used.
    efforts on enabling separate bugfix releases for unused code is avoided by this
    approach.
  * devN releases allow to access updates before the release milestone is reached. Quick
-   reaction times are considered crucial in the current projcet state. Development
+   reaction times are considered crucial in the current project state. Development
    releases may be deleted from pypi and the approach will be reconsidered, latest when
    reaching v0.1.0.
 
@@ -24,9 +24,9 @@ Note that community feedback is affecting when a version 0.1.0 is created and a 
 1.0.0 will never exist without positive feedback.
 
 ## Continuous Deployment
-The deployment is automated via github actions. Enrty points to the procedure are
+The deployment is automated via github actions. Entry points to the procedure are
 `pyproject.toml` and `.github/workflows/cd.yaml`. It has three top level steps:
-1) The **package** is build and validated
+1) The **package** is built and validated
 1) Upload to **testpypi** and validation (same build)
 1) Final upload to **pypi** and validation (same build)
 

@@ -2,100 +2,75 @@
 <!--SPDX-License-Identifier: 0BSD-->
 # Test Strategy
 
-The test strategy considers two test levels:
-* __Unit Tests__ are driven by code coverage of the individual modules and *should cover
-  100%* (lines and branches) while *80% branch coverage is acceptable for initial
-  versions*. While focusing on individual modules, tests may or may not cut free
-  interfaces to other modules. Modules include GUI modules which must be covered by
-  manual tests.
-* __Acceptance Tests__ are driven by the APPXC supported ***use cases*** and
-  ***performance targets*** while *appropriate coverage is determined by review*. If use
-  cases are already well covered by the unit tests, they do not need to be repeated but
-  a corresponding file shall still be present with corresponding arugments. Acceptance
-  tests shall use the APPXC implementation as-is wherever possible.
+```{page-status} usable
+:summary: content is up to date while there are gaps in realizing the strategy (2026/03)
+```
 
-Remark: While use cases like login/registration involve many modules like GUI elements,
-storage and settings which *shall also* ensure proper interaction between the APPXC
-modules, the term *integration test* will not be used since the focus of the test cases
-is ensuring acceptance of the resolved cross-cutting concerns.
+The test strategy applies to all [features](/user/features/_features) in the user area
+and to all modules in `src/appxc`. It does not cover development tools in
+`src/appxc-dev`, the scripts in `dev` or documentation related extensions in `doc/**`.
 
-The following details shall be considered:
-* __Backwards Compatibility__ shall be ensured by either unit tests or acceptance tests
-  (not yet available).
-* Test execution shall be __automated__. For manual test cases, this implies: results
-  are checked-in, compared against changes and their execution is validated in an
-  automated test case. Test coverage from (valid) manual test executions will be merged
-  with the automated ones.
+## Test Levels
+Considered are the following two test levels:
+* __Unit Tests__ are driven by code coverage of the individual ***modules*** and *should
+  cover 100%* (lines and branches) while *80% branch coverage is acceptable for initial
+  versions*.
+* __Acceptance Tests__ are driven by the APPXC supported ***features*** and *appropriate
+  coverage is determined by review*.
 
-# Test Methods
-All methods, mentioned below may be combined!
-## Pytest
-The default approach is straight-forward pytest test cases. Pytest is preferred (not
-mandated) for automated unit tests since BDD test would add the complexity of two-files,
-a more abstract implementation and the abstraction of the Gherkin language.
-## Behavior Driven Tests (bdd)
+**Integration test**. The term *integration test* will not be used because neither unit
+tests nor acceptance tests *focus* on validating the interfaces between modules.
+Validating those interactions in acceptance tests is intended, but remains implicit.
+
+### Unit Tests
+**Purity of *unit***. While unit tests focus on a single module (python file), unit
+tests may or may not cut free interfaces to other modules by mocks with following consequences:
+* Not isolating a unit's behavior increases the complexity of the object under test.
+  There are no rules applied to triage this risk.
+* Other units which are called may be implicitly covered, reaching coverage goals
+  without having their own dedicated test cases. This is accepted and intended for
+  abstract classes and (base) classes which are not used outside of the module's scope.
+  A module in this item means any set of python files in a folder `src/appxc/*`. It is
+  not acceptable for any class or function which is used by another module or by users
+  of the APPXC package.
+
+**Manual GUI tests.** GUI modules need manual tests but they are no exception from needing
+unit tests. However, as of 2026/03, there are no means to effectively collect the test
+coverage or results from manual test cases.
+
+### Acceptance Tests
+**No duplication**. If feature use cases are well covered by unit tests, they do not
+need to be repeated as acceptance test. A corresponding file shall still be present, the unit test references shall be listed and some explanation should be provided.
+
+**User perspective**. Acceptance tests shall use the APPXC implementation as-is wherever
+possible to cover all user aspects. A rationale is required when deviating from this
+expectation.
+
+## Test Methods
+All methods in this section may be combined.
+
+### Pytest
+The default approach is straightforward pytest test cases. Pytest is preferred, but not
+mandated, for automated unit tests because BDD tests would add the complexity of
+two files, a more abstract implementation and the abstraction of the Gherkin language.
+
+### Behavior Driven Tests (bdd)
 They are included in a pytest run and just use the capabilities of python-bdd with
-Gherkin syntax. They are preferred for use case based acceptance testing and the added
-complexity in comparison to plain pytest is reasonable since the feature files shall
-represent functional requirements.
-## Manual Tests (GUI)
-__This is work in progress.__ Most of the required helpers are not yet existing! The idea comprises steps in the automation via TOX:
-* updating the manual test case database (validity of test cases based on code changes
-  and scanning for existing manual test cases)
-* a test case that is FAILING if any planned test case has no valid test execution
-* merging the coverage of valid manual test case executions with the automated unit tests or feature tests
-and scripting (or an application) assisting with:
-* triggering the steps mentioned above in TOX
-* listing invalid test cases
-* triggering test case execution including adding to database
+Gherkin syntax. They are preferred for acceptance testing because the feature files are
+easily readable functional requirements.
 
-During manual test case execution:
-* the tester has one window with the test descriptions (things to check) and
-commenting results with OK/FAILED
-* the tester gets the window or frame in a second window to play around
-* the test execution may include additional checks after test execution
+```{admonition} concept maturity
+:class: attention
+As of 2026/03, acceptance test implementation has various implementation attempts which are not yet consolidated. It should be consolidated with the features being lifted into
+a usable maturity.
+```
 
-#TODO: General TODO of implementation and mentioning a specific example of such a GUI
-test. Further details likely require a separate markdown page. See ticket #25
+### Manual Tests (GUI)
 
-#TODO: For application level testing, the test preparation steps *must be separated*
-for the coverage. Example: even though the user data (login) preparation is executed for
-a test case concerning registry, the login steps are not tested in such a test case.
-Hence, the test case for registration should not be invalidated by changing the login
-implementation. This is a trade-off.
-## Application Testing
-### Application Harness
-**Definition.** In APPXC context, an application harness aggregates objects for a basic
-application. It ***does*** provide methods for operations on the aggregated objects
-while it ***does not*** provide any user interface or enforces behavior more than
-initialization.
+As of 2026/03, parts of the concept are realized, but not well documented. This section will be updated at a later point. See also [MaTeMa](../drafts/matema/_matema.md).
 
-The __AppHarness__ for testing is stored in `tests/fixtures/app_harness.py`. The
-fixtures in `tests/fixtures/application.py` may combine several ApplicationMock
-instances. They are prepared and used as follows:
-1. The file structure is prepared once for the appxc library version at location:
-   `.testing/app_\<context\>_\<appxc version\>`.
-2. The prepared folder is copied for the specific test case. The dictionary of the
-   fixture contains entries like `app_user` which return an ApplicationMock object. This
-   ApplicationMock includes all objects and required paths in context of the
-   ApplicationMock.
-### Application Harness User Interface
-**Definition.** In APPXC context, an application harness user interface just puts a
-default user interface on top of an application harness.
-
-## Backwards Compatibility
-__This is work in progress.__ Most of the required helpers are not yet existing!
-
-Testing of backwards compatibility shall be based on the __ApplicationMock__ fixtures
-with the following procedure:
-* At a release, the appxc-version specific prepared file structures `.testing/app_*` are
-  checked-in while the release version of the main branch is increased.
-* The behavior driven sceanrio outlines are extended by incorporating the old version.
-
-#TODO: Mention a specific example of such a test application fixture.
-#TODO: It may be necessary to also use this approach for non BDD tests.
-# Additional Guidelines
 ## Folder Structure
+### Unit tests
 Unit tests are in `tests/unit` and in subfolders according to the modules in `src`.
 Different test files exist (see test methods):
 * normal unit tests should use the naming of the `src` file with the prefix `test_`.
@@ -105,14 +80,20 @@ Different test files exist (see test methods):
 * behavior driven tests (bdd) need to use the prefix `test_bdd` and come along with a
   second `*.feature` file.
 
-Acceptance tests are all stored in `tests/acceptance` while following the same folder
-and file name conventions.
-
 Examples:
 * `tests/unit/test_buffer.py`
 * `tests/unit/storage/test_ram.py`
 * `tests/unit/gui/manual_setting_dict_column_frame.py`
+
+
+### Acceptance tests
+Acceptance tests are all stored in `tests/acceptance` while following the same folder
+and file naming conventions.
+
+Examples:
 * `tests/acceptance/sync/test_bdd_sync.py` and
 * `tests/acceptance/sync/test_bdd_sync.feature`
 
-#TODO: file guideline should include the fixtures folder.
+<!--
+TODO: file guideline should include the fixtures folder. However, there is some refactoring required based on one core aspect: if APPXC needs additions for test case execution, may deriving projects need the same additions? This would mean, moving fixtures and testing into an implementation module of APPXC.
+-->

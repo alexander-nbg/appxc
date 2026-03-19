@@ -3,7 +3,7 @@
 # Contribution Checklist
 
 ```{page-status} draft
-:summary: Partly outdated and no clear seperation on what's usable (2026/03)
+:summary: Partly outdated and no clear separation on what's usable (2026/03)
 ```
 
 **Purpose.** Details to be considered before a pull request can be merged are
@@ -25,7 +25,7 @@ Every update shall enter via **pull request**s while each is linked to at least 
    * branches must use the pattern `<issue-number>_<summary>` with `summary` in
      [snake_case](https://en.wikipedia.org/wiki/Snake_case). Example:
      "42_compute_answer".
- * Developers ***without repo access***.. ..let me know which details are missing, here.
+ * Developers ***without repo access***... let me know which details are missing here.
 
 ## Code Changes
 

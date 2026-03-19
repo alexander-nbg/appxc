@@ -1,7 +1,7 @@
 # Registry
 
 ```{page-status} draft
-:summary: collecting drafts and still containing alternative analyis (2026/03)
+:summary: collecting drafts and still containing alternative analysis (2026/03)
 ```
 
 ## Behavior

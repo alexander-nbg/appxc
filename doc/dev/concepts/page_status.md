@@ -28,13 +28,13 @@ consider:
 1) Remarks on an incomplete or outdated status in the introduction of a page are
    explicit mentions of flaws but will likely be missed when reading a subsection.
 1) It is and will remain hard to catch up documenting *everything* in high quality. As
-   of 2026/03, this is particularly true after taking over of the privatly maintainted
+   of 2026/03, this is particularly true after taking over of the privately maintained
    library into v0.0.3.
 
 ## Approach
 
-Each page prominently classifies it's maturity as **page status** on the right side. The
-possible page status are:
+Each page prominently classifies its maturity as **page status** on the right side. The
+possible page statuses are:
 
 |status|use case|
 |---|---|
@@ -62,12 +62,12 @@ is `doc/_ext/doc_status.py`.
 
 ### Limitations
 * The page status is not prominent when viewing pages on the mobile phone. This is
-  accepted, assuming developers using APPXC will reguarly *also* view the docs on a
+   accepted, assuming developers using APPXC will regularly *also* view the docs on a
   desktop browser
 
 ### Future Ideas
 * Adding a CI check to avoid **unknown** status
-* Pages on features/moduels may indicate feature/module maturity analogously to the
+* Pages on features/modules may indicate feature/module maturity analogously to the
   documentation status. The status may also be merged or substituted on those pages.
 * The page status for features and modules *may become a dependency* when promoting
   feature/module maturity. A mature feature/module should have a usable documentation.

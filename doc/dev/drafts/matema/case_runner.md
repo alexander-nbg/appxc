@@ -1,9 +1,9 @@
 <!--Copyright 2026 the contributors of APPXC (github.com/alexander-nbg/appxc)-->
 <!--SPDX-License-Identifier: 0BSD-->
-# MaTeMa Case Runner
+# Module: Case Runner
 
 ```{page-status} draft
-:summary: MaTeMa would be great but it's too much for now (2026/03)
+:summary: needs review and alignment into structure but content could be mostly up to date (2026/03)
 ```
 
 The CaseRunner is used within your manual test case to operate with the MaTeMa. The following outlines the interactions.
@@ -15,7 +15,7 @@ The CaseRunner is used within your manual test case to operate with the MaTeMa. 
 ```
 ## General Remarks
 * ***Limitation***: The manual test must not use command line arguments. Since the MaTeMa and the CaseRunner itself uses this interface for test control, inconsistencies can lead to unexpected behavior.
-* ***Limitation***: The CaseRunner typically controls logging and coverage collection such that you test script should not also try to control those details.
+* ***Limitation***: The CaseRunner typically controls logging and coverage collection such that your test script should not also try to control those details.
 * ***Limitation***: If the test case generates a tkinter.Tk instance, it must pass it via `CaseRunner(parent=...)`. Exceptions are Tk instances confined in any `test()` or `process_*()` which will run in their own process.
 * *Remark*: The naming convention `manual_*.py` is only required for the MaTeMa, the CaseRunner can also be used without this constraint.
 # Use Case: no change to existing test cases
@@ -34,14 +34,14 @@ Remarks:
 * The overhead to your existing manual test case comprises: loading additional dependencies and checking whether there are command line arguments via CaseRunner().
 * You can put the test case description in the modules docstring like shown in the "Single Instance" use case.
 
-#TODO The CaseRunner currently does not restrict it's actions to just command line reading. There is no feature to ***not*** start the file parsing. The examples already draft expected behavior.
+#TODO The CaseRunner currently does not restrict its actions to just command line reading. There is no feature to ***not*** start the file parsing. The examples already draft expected behavior.
 ## Use Case: Single Instance
 Split `startup()` and `teardown()` code. This has two effects:
 * this code is not increasing your coverage, the case runner will start coverage only for the execution of `test()`
 * because of the above, you limit the file dependencies to the test case and avoid marking the case invalid due to changes in the corresponding files
 ```python
 '''
-Test case __description__ that can apply mardown.
+Test case __description__ that can apply markdown.
 '''
 from appxc_metama import CaseRunner
 
@@ -99,7 +99,7 @@ The following reference sequence is still an outline but hopefully clarifies any
 	2. The CaseRunner takes over responsibilities: see next steps
 3. CaseRunner parses the module
 4. CaseRunner GUI is initialized
-	1. This incluces adding the buttons from any `process_()` function in your test case
+	1. This includes adding the buttons from any `process_()` function in your test case
 5. CaseRunner executes `setup_once()`
 6. CaseRunner initializes the test
 	1. Run `setup()`

@@ -7,10 +7,10 @@
 ```
 
 The page content is collected only during setup of my own environment which is basically
-never repeated and did include some back and forth. I currenlty use Ubuntu 24.04 with VS
+never repeated and included some back and forth. I currently use Ubuntu 24.04 with VS
 Code and Python 3.12 as default. As a consequence:
  * setup is almost certainly incomplete
- * superflous steps are also likely
+ * superfluous steps are also likely
  * it is not considering other OSes, yet
 
 If this works out well for you, let me know. For any updates, just modify yourself or
@@ -63,7 +63,7 @@ browser as protected ubuntu snap, you may use `python3 -m http.server 8000` and 
 ### Manual Test Cases
 Despite the manual test case runner infrastructure, running any manual test case will
 verify the GUI is working. The first command is some tool helper, not yet being
-productive, the third and second are two random manual test cases.
+productive, the second and third are two random manual test cases.
 ```bash
 python manual_test.py
 python tests/unit/gui/manual_setting_frame.py
@@ -74,7 +74,7 @@ Note the `PYTHONPATH=.` in the last line which is required to find module import
 
 ## Optional: VS Code Extensions
 Recommended are:
- * Ruff by Astral Software (Ruff formating on save and inline issue highlighting)
+ * Ruff by Astral Software (Ruff formatting on save and inline issue highlighting)
  * Pylance (for inline highlighting even if final checks are basedpyright)
  * Rewrap Revived by Drew Nutter (`[Alt]+[Q]` auto wrapping lines)
 
