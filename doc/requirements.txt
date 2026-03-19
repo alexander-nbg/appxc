@@ -1,4 +1,5 @@
 sphinx
 myst-parser
+linkify-it-py
 pydata-sphinx-theme
 sphinxcontrib-plantuml

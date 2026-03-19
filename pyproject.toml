@@ -6,7 +6,7 @@ dynamic = ["version", "dependencies"]
 authors = [
   { name = "alexander-nbg", email="mail@alexander-nbg.de" }
 ]
-description = "APPXC application (APP) cross functional concerns (XC)"
+description = "APPXC application (APP) cross-cutting concerns (XC)"
 readme = "README.md"
 requires-python = ">=3.10"
 classifiers = [
@@ -153,6 +153,10 @@ suppress-none-returning = true
 [tool.basedpyright]
 include = ["src"]
 # This is a very initial setup of basedpyright which is intended to evolve over time.
+
+# Implicit string concatenation is commonly used for exceptions and ruff formatter would
+# remove "+"
+reportImplicitStringConcatenation = false
 
 [tool.tox]
 legacy_tox_ini = """

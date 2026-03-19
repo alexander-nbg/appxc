@@ -1,0 +1,32 @@
+/* Copyright 2026 the contributors of APPXC (github.com/alexander-nbg/appxc) */
+/* SPDX-License-Identifier: 0BSD */
+
+/*
+ * Reduce the gap between a paragraph and an immediately following list.
+ *
+ * Background: Sphinx/MyST produces identical HTML whether or not a blank line
+ * separates the paragraph from the list in the source; the :has() selector
+ * therefore applies uniformly to all p→list transitions.  Authors who need the
+ * full paragraph gap before a list can insert an empty span between the two
+ * blocks to break the adjacent-sibling relationship (HTML comments are not DOM
+ * elements and are invisible to CSS selectors):
+ *
+ *   Some normal paragraph.
+ *
+ *   <span class="list-gap"></span>
+ *
+ *    * list item
+ *
+ * The rule is scoped to <article> to leave navigation chrome unaffected.
+ * :has() is supported in all evergreen browsers (Chrome 105+, FF 121+, Safari 15.4+).
+ */
+article p:has(+ ul),
+article p:has(+ ol) {
+    margin-bottom: 0.25rem;
+}
+
+/* Restore normal paragraph gap before a list when explicitly requested. */
+span.list-gap {
+    display: block;
+    margin-bottom: 0.9rem;
+}

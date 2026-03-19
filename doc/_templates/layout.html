@@ -1,0 +1,13 @@
+<!--Copyright 2026 the contributors of APPXC (github.com/alexander-nbg/appxc)-->
+<!--SPDX-License-Identifier: 0BSD-->
+<!--this file was added for the page-status on the right column -->
+<!--page-status feature was added and is maintained by AI-->
+
+{% extends "!layout.html" %}
+
+{% block docs_toc %}
+  {% if not remove_sidebar_secondary or appxc_page_status_show %}
+    <dialog id="pst-secondary-sidebar-modal"></dialog>
+    <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc">{% include "sections/sidebar-secondary.html" %}</div>
+  {% endif %}
+{% endblock docs_toc %}

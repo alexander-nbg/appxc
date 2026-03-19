@@ -1,0 +1,20 @@
+<!--Copyright 2026 the contributors of APPXC (github.com/alexander-nbg/appxc)-->
+<!--SPDX-License-Identifier: 0BSD-->
+<!--this file was added for the page-status on the right column -->
+<!--page-status feature was added and is maintained by AI-->
+
+{% set page_status = appxc_page_status %}
+{% set page_status_heading_id = unique_html_id("appxc-page-status-heading") %}
+<div class="appxc-page-status">
+  <div
+    id="{{ page_status_heading_id }}"
+    class="page-toc tocsection onthispage appxc-page-status__heading">
+    {% if appxc_page_status_linked_page %}<a href="{{ pathto(appxc_page_status_linked_page) }}">{% endif %}<i class="fa-solid fa-circle-info"></i> {{ _("Page Status") }}{% if appxc_page_status_linked_page %}</a>{% endif %}
+  </div>
+  <div
+    class="appxc-page-status__body appxc-page-status--{{ page_status.status }}"
+    aria-labelledby="{{ page_status_heading_id }}">
+    <span class="appxc-page-status__state">{{ page_status.label }}</span>
+    {% if page_status.text %}<span class="appxc-page-status__summary">{{ page_status.text }}</span>{% endif %}
+  </div>
+</div>
