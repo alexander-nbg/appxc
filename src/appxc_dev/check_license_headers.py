@@ -25,6 +25,9 @@ LICENSES = {
     ".yaml": "SPDX-License-Identifier: 0BSD",
     ".md": "SPDX-License-Identifier: 0BSD",
     ".puml": "SPDX-License-Identifier: 0BSD",
+    ".js": "SPDX-License-Identifier: 0BSD",
+    ".css": "SPDX-License-Identifier: 0BSD",
+    ".html": "SPDX-License-Identifier: 0BSD",
 }
 
 EXCLUSION_FILE = "LICENSE"
@@ -43,7 +46,7 @@ def get_git_repo_root() -> Path:
     return Path(root_result.stdout.strip())
 
 
-def get_git_files() -> list[Path]:
+def get_git_files() -> list[str]:
     """Get list of files maintained by git
 
     The git repository is identified by the main caller's execution path.
@@ -71,7 +74,7 @@ def get_exclusion_patterns() -> list[str]:
     repo_root = get_git_repo_root()
     exclusion_file = repo_root / EXCLUSION_FILE
     found_marker = False
-    pattern_list = []
+    pattern_list: list[str] = []
     with exclusion_file.open(encoding="utf-8") as fh:
         for line in fh:
             if not found_marker and EXCLUSION_START_MARKER in line:
@@ -88,6 +91,56 @@ def get_exclusion_patterns() -> list[str]:
 def is_excluded_file(file: str, patterns: list[str]) -> bool:
     """Check if file matches an exclusion pattern"""
     return any(fnmatch(file, pattern) for pattern in patterns)
+
+
+def _read_header_lines(
+    file: Path,
+    *,
+    line_prefix: str | None = None,
+    block_start: str | None = None,
+    block_end: str | None = None,
+) -> list[str]:
+    """Read leading header comment lines from file
+
+    Leading blank lines are ignored.
+    """
+    header_lines: list[str] = []
+    log_lines = []
+    with file.open(encoding="utf-8") as fh:
+        in_block_comment = False
+        for line in fh:
+            log_lines.append(line)
+            stripped = line.rstrip("\n").strip()
+            if not stripped:
+                continue
+
+            if line_prefix is not None and stripped.startswith(line_prefix):
+                header_lines.append(stripped.removeprefix(line_prefix).strip())
+                continue
+
+            if block_start is None or block_end is None:
+                continue
+            block_starting = stripped.startswith(block_start)
+            block_ending = stripped.endswith(block_end)
+            block_starting_ending = block_starting and block_ending
+            if (in_block_comment and block_starting) or (
+                (not in_block_comment and block_ending) and not block_starting_ending
+            ):
+                raise ValueError(
+                    f"Nested block comments are not supported."
+                    f"\nFile: {file}\nLine: {line}\nContext:\n{''.join(log_lines)}"
+                )
+
+            if stripped.startswith(block_start):
+                in_block_comment = True
+            if in_block_comment:
+                header_lines.append(
+                    stripped.removeprefix(block_start).removesuffix(block_end).strip()
+                )
+            if stripped.endswith(block_end):
+                in_block_comment = False
+
+    return header_lines
 
 
 def verify_file_header(file: Path) -> bool:
@@ -109,47 +162,35 @@ def verify_file_header(file: Path) -> bool:
         ".yml",
         ".yaml",
     ]:
-        # Expected are copyright lines followed by SPDX license identifyer
+        # Expected are copyright lines followed by SPDX license identifier
         # (Apache). There may be more copyright lines - only one must contain
         # the expected author/contributor text.
-        with file.open(encoding="utf-8") as fh:
-            while True:
-                line = fh.readline().rstrip("\n")
-                # resolve comment line:
-                if not line.startswith("#"):
-                    break
-                line = line.lstrip("#").strip()
-                if line.lower().startswith("copyright") and COPYRIGHT_AUTHOR in line:
-                    has_copyright = True
-                if line.startswith(LICENSES[file.suffix]):
-                    has_license = True
-    elif file.suffix == ".md":
-        with file.open(encoding="utf-8") as fh:
-            while True:
-                line = fh.readline().rstrip("\n").strip()
-                # resolve comment line:
-                if not line.startswith("<!--"):
-                    break
-                line = line.removeprefix("<!--").removesuffix("-->").strip()
-                if line.lower().startswith("copyright") and COPYRIGHT_AUTHOR in line:
-                    has_copyright = True
-                if line.startswith(LICENSES[file.suffix]):
-                    has_license = True
+        header_lines = _read_header_lines(file, line_prefix="#")
+    elif file.suffix == ".js":
+        header_lines = _read_header_lines(file, line_prefix="//")
+    elif file.suffix in [".md", ".html"]:
+        header_lines = _read_header_lines(
+            file,
+            block_start="<!--",
+            block_end="-->",
+        )
+    elif file.suffix == ".css":
+        header_lines = _read_header_lines(
+            file,
+            block_start="/*",
+            block_end="*/",
+        )
     elif file.suffix == ".puml":
-        with file.open(encoding="utf-8") as fh:
-            while True:
-                line = fh.readline().rstrip("\n").strip()
-                # resolve comment line:
-                if not line.startswith("'"):
-                    break
-                line = line.removeprefix("'").strip()
-                if line.lower().startswith("copyright") and COPYRIGHT_AUTHOR in line:
-                    has_copyright = True
-                if line.startswith(LICENSES[file.suffix]):
-                    has_license = True
+        header_lines = _read_header_lines(file, line_prefix="'")
     else:
         print(f"{file}:\n  Unsupported file type for header verification")
         return False
+
+    for line in header_lines:
+        if line.lower().startswith("copyright") and COPYRIGHT_AUTHOR in line:
+            has_copyright = True
+        if line.startswith(LICENSES[file.suffix]):
+            has_license = True
 
     if not has_copyright or not has_license:
         print(f"{file}:")

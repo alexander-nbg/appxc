@@ -1,7 +1,9 @@
+<!--Copyright 2026 the contributors of APPXC (github.com/alexander-nbg/appxc)-->
+<!--SPDX-License-Identifier: 0BSD-->
 # Scope
 
 ```{page-status} draft
-:summary: text just taken over from an old REDME (2026/03)
+:summary: text just taken over from an old README (2026/03)
 ```
 
 This toolbox covers cross-cutting concerns like configuration, persisting
