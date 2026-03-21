@@ -187,6 +187,7 @@ legacy_tox_ini = """
                coverage html --contexts=ACCEPTANCE -d cov_html_ACCEPTANCE
                coverage report
                coverage html -d cov_html
+               pytest -rA ./tests/doc
 """
 # commands = pytest --cov=appxc --cov-report html --cov-report term
 # commands = coverage run --source src -m pytest

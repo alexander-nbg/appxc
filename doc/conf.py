@@ -8,6 +8,7 @@ from pathlib import Path
 # make APPXC specific Sphinx extensions available without installation:
 sys.path.insert(0, str(Path(__file__).resolve().parent / "_ext"))
 
+
 release = get_version("appxc")
 # strip, at least, the local versioning
 version = release.split("+")[0]
@@ -21,14 +22,20 @@ copyright = (  # noqa: A001
 )
 
 extensions = [
+    "github_links",
     "page_status",
     "myst_parser",
     "sphinxcontrib.plantuml",
     "sphinx.ext.duration",
 ]
 
-# See doc/dev/concepts/page_status.md for details as well as doc/_ext/page_status.py:
-page_status_linked_page = "dev/concepts/page_status"
+# See doc/dev/concepts/doc_gihub_links.md for details as well as
+# doc/_ext/github_links.py:
+github_links_repo_url = "https://github.com/alexander-nbg/appxc"
+
+# See doc/dev/concepts/doc_page_status.md for details as well as
+# doc/_ext/page_status.py:
+page_status_linked_page = "dev/concepts/doc_page_status"
 page_status_hide_all = False  # set True to suppress the sidebar widget on every page
 page_status_default_summary = {
     "stub": "Added to already link to it or to drop initial ideas.",
@@ -46,7 +53,7 @@ myst_enable_extensions = [
 
 templates_path = ["_templates"]
 html_static_path = ["_static"]
-exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
+exclude_patterns = ["_build", "Thumbs.db", ".DS_Store", "**/AGENTS.md"]
 
 source_suffix = {
     ".md": "markdown",
@@ -70,6 +77,7 @@ html_css_files = [
     "page-status.css",
     "external-links.css",
     "typography.css",
+    "custom.css",
 ]
 
 html_js_files = [

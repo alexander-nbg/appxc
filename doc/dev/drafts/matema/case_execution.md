@@ -8,7 +8,7 @@
 
 ```{admonition} Draft Status
 :class: warning
-Anything below is not well sorted into a structure and potentially outdated. See issue #62.
+Anything below is not well sorted into a structure and potentially outdated. See issue [#62](gh).
 ```
 
 ## Initialization Tree

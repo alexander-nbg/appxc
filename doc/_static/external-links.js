@@ -34,6 +34,11 @@
 
       anchor.setAttribute("target", "_blank");
       anchor.setAttribute("rel", "noopener noreferrer");
+
+      if (anchor.classList.contains("appxc-gh-link")) {
+        continue;
+      }
+
       anchor.classList.add("external-link-global");
 
       if (anchor.querySelector(".external-link-icon")) {
