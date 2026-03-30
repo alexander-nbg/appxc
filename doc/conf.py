@@ -14,7 +14,7 @@ release = get_version("appxc")
 version = release.split("+")[0]
 
 project = "APPXC"
-html_title = f"APPXC - v{version}"
+html_title = "APPXC"
 author = "the contributors of APPXC (github.com/alexander-nbg/appxc)"
 copyright_year = date.today().year  # noqa: DTZ011 no timezone for correct year
 copyright = (  # noqa: A001
@@ -71,6 +71,10 @@ html_theme_options = {
         'See <a href="https://github.com/alexander-nbg/appxc/issues/48" '
         'target="_blank">issue #48</a>.'
     ),
+}
+
+html_context = {
+    "appxc_sidebar_version": f"v{version}",
 }
 
 html_css_files = [

@@ -1,0 +1,351 @@
+/* Copyright 2026 the contributors of APPXC (github.com/alexander-nbg/appxc) */
+/* SPDX-License-Identifier: 0BSD */
+
+/* APPXC PyData theme adaption
+ *
+ * - main color BLUE with accent YELLOW
+ * - breaking PyData theme: separate sidebar color from main text color
+ * - blue/yellow markers for page title and navigation
+ */
+
+/* ─── Level 1: Palette ──────────────────────────────────────────────────── */
+:root {
+  /* --- Neutrals --- */
+  --appxc-neutral-0: #ffffff;
+  --appxc-neutral-950: #0f1722;
+
+  /* --- Main blue palette --- */
+  --appxc-main-blue-100: #f2f6fb;
+  --appxc-main-blue-200: #dce8f3;
+  --appxc-main-blue-300: #c3d2e6;
+  --appxc-main-blue-400: #9fb9d4;
+  --appxc-main-blue-500: #3f6788;
+  --appxc-main-blue-toned-500: #33546f;
+  --appxc-main-blue-toned-600: #3b4558;
+  --appxc-main-blue-toned-700: #213647;
+  --appxc-main-blue-toned-800: #1c2e3c;
+  --appxc-main-blue-toned-900: #172632;
+
+  /* --- Accent yellow palette --- */
+  --appxc-yellow-100: #f8f3de;
+  --appxc-yellow-200: #eadf9a;
+  --appxc-yellow-300: #d8c35f;
+  --appxc-yellow-400: #b39f3b;
+  --appxc-yellow-500: #8f7b28;
+  --appxc-yellow-toned-500: #6b5200;
+  --appxc-yellow-toned-700: #4a4027;
+
+  /* --- Semantic support colors (admonitions, intent names) --- */
+  --appxc-info-base: #4f8fcc;
+  --appxc-info-light-bg: #dceaf8;
+  --appxc-info-light-text: #2a567f;
+  --appxc-info-dark-bg: #132333;
+
+  --appxc-success-base: #3f9b74;
+  --appxc-success-light-bg: #deefe8;
+  --appxc-success-light-text: #20543f;
+  --appxc-success-dark-bg: #11251d;
+
+  --appxc-warning-base: #b38634;
+  --appxc-warning-light-bg: #f5ead7;
+  --appxc-warning-light-text: #654a1f;
+  --appxc-warning-dark-bg: #2a2114;
+
+  --appxc-danger-base: #c25555;
+  --appxc-danger-light-bg: #f8e3e3;
+  --appxc-danger-light-text: #6f2f2f;
+  --appxc-danger-dark-bg: #2c1717;
+}
+
+/* ─── Level 2: Semantic tokens — light theme ────────────────────────────────── */
+html[data-theme="light"] {
+  /* HEADER/FOOTER */
+  --pst-xc-color-head-bg-left: var(--appxc-yellow-toned-500);
+  --pst-xc-color-head-bg-right: var(--appxc-main-blue-200);
+
+  /* MAIN TEXT AREA */
+  --pst-color-background: var(--appxc-main-blue-200);
+  /* PyData theme colors text area and sidebars (panes) the same color. The pst-xc-main
+     color overwrites the main text area and the color-onbackground is more a "color on
+     this main text area" */
+  --pst-xc-color-main-area-background:var(--appxc-neutral-0);
+  --pst-color-on-background: var(--appxc-main-blue-100);
+  /* block elements (code, quotes and table header) + search bar background
+     Note: text is still text-base below. */
+  --pst-color-surface: var(--appxc-main-blue-200);
+  --pst-color-on-surface: var(--appxc-main-blue-500);
+  /* ALL normal text */
+  --pst-color-text-base: var(--appxc-main-blue-toned-700);
+  /* main text headings */
+  --pst-xc-color-headings: var(--appxc-main-blue-500);
+
+  /* SPECIAL TEXT ELEMENTS */
+  /* link colors */
+  --pst-color-link: var(--appxc-main-blue-500);
+  --pst-color-link-hover: var(--appxc-yellow-toned-500);
+  /* like for block quotes */
+  --pst-color-text-muted: var(--appxc-main-blue-toned-500);
+  /* tables header */
+  --pst-color-table: var(--appxc-main-blue-toned-700);
+
+  /* ACCENT COLORS */
+  /* accent lines in main text area */
+  --pst-xc-color-accent-line: var(--appxc-yellow-300);
+  /* primary accent (text link, nav bar current) */
+  --pst-color-primary: var(--appxc-main-blue-500);
+  /* following only for search bar */
+  --pst-color-primary-text: var(--appxc-neutral-0);
+  /* secondary for link hover */
+  --pst-color-secondary: var(--appxc-main-blue-toned-500);
+  /* secondary text only for back-to-top" */
+  --pst-color-secondary-text: var(--appxc-neutral-0);
+  /* secondary-highlight only used for back-to-top hovering */
+  --pst-color-secondary-highlight: var(--appxc-yellow-500);
+  --pst-color-secondary-highlight-text: var(--appxc-main-blue-toned-700);
+  /* borders code blocks, search bar + vertical bar on right pane */
+  --pst-color-border: var(--appxc-main-blue-500);
+
+  /* ADMONITIONS */
+  /* Note: the text area of admonitions use color-on-background, same as table rows some
+     elements in the search bar */
+  /* info */
+  --pst-color-info: var(--appxc-info-base);
+  --pst-color-info-bg: var(--appxc-info-light-bg);
+  /* success */
+  --pst-color-success: var(--appxc-success-base);
+  --pst-color-success-bg: var(--appxc-success-light-bg);
+  /* warning */
+  --pst-color-warning: var(--appxc-warning-base);
+  --pst-color-warning-bg: var(--appxc-warning-light-bg);
+  /* danger - danger-text is not used in PyData theme but kept for consistency.
+     Highlight is for version warnings. */
+  --pst-color-danger: var(--appxc-danger-base);
+  --pst-color-danger-bg: var(--appxc-danger-light-bg);
+  --pst-color-danger-text: var(--appxc-danger-light-text);
+  --pst-color-danger-highlight: var(--appxc-danger-light-bg);
+  --pst-color-danger-highlight-text: var(--appxc-danger-light-text);
+}
+
+/* ─── Level 2: Semantic tokens — dark theme ─────────────────────────────────── */
+html[data-theme="dark"] {
+  /* HEADER/FOOTER */
+  --pst-xc-color-head-bg-left: var(--appxc-yellow-toned-500);
+  --pst-xc-color-head-bg-right: var(--appxc-main-blue-toned-900);
+
+  /* MAIN TEXT AREA */
+  --pst-color-background: var(--appxc-main-blue-toned-900);
+  /* PyData theme colors text area and sidebars (panes) the same color. The pst-xc-main
+     color overwrites the main text area and the color-onbackground is more a "color on
+     this main text area" */
+  --pst-xc-color-main-area-background: var(--appxc-main-blue-toned-700);
+  --pst-color-on-background: var(--appxc-main-blue-toned-800);
+  /* block elements (code, quotes and table header) + search bar background
+     Note: text is still text-base below. */
+  --pst-color-surface: var(--appxc-main-blue-toned-900);
+  --pst-color-on-surface: var(--appxc-main-blue-300);
+  /* ALL normal text */
+  --pst-color-text-base: var(--appxc-main-blue-200);
+  /* main text headings */
+  --pst-xc-color-headings: var(--appxc-main-blue-100);
+
+  /* SPECIAL TEXT ELEMENTS */
+  /* link colors */
+  --pst-color-link: var(--appxc-main-blue-400);
+  --pst-color-link-hover: var(--appxc-yellow-500);
+  /* nav bar text + search bar */
+  --pst-color-text-muted: var(--appxc-main-blue-400);
+  /* tables header */
+  --pst-color-table: var(--appxc-main-blue-100);
+
+  /* ACCENT COLORS */
+  /* accent lines in main text area */
+  /*--pst-xc-color-accent-line: var(--appxc-yellow-toned-500);*/
+  --pst-xc-color-accent-line: var(--appxc-yellow-500);
+  /* primary accent (text link, nav bar current) */
+  --pst-color-primary: var(--appxc-main-blue-400);
+  /* following only for search bar */
+  --pst-color-primary-text: var(--appxc-neutral-950);
+  /* secondary for link hover */
+  --pst-color-secondary: var(--appxc-main-blue-500);
+  /* secondary text only for back-to-top" */
+  --pst-color-secondary-text: var(--appxc-neutral-0);
+  /* secondary-highlight only used for back-to-top hovering */
+  --pst-color-secondary-highlight: var(--appxc-main-blue-400);
+  --pst-color-secondary-highlight-text: var(--appxc-neutral-950);
+  /* borders code blocks, search bar + vertical bar on right pane */
+  --pst-color-border: var(--appxc-main-blue-toned-500);
+
+  /* ADMONITIONS */
+  /* Note: the text area of admonitions use color-on-background, same as table rows some
+     elements in the search bar */
+  /* info */
+  --pst-color-info: var(--appxc-info-base);
+  --pst-color-info-bg: var(--appxc-info-dark-bg);
+  /* success */
+  --pst-color-success: var(--appxc-success-base);
+  --pst-color-success-bg: var(--appxc-success-dark-bg);
+  /* warning */
+  --pst-color-warning: var(--appxc-warning-base);
+  --pst-color-warning-bg: var(--appxc-warning-dark-bg);
+  /* danger - danger-text is not used in PyData theme but kept for consistency.
+     Highlight is for version warnings. */
+  --pst-color-danger: var(--appxc-danger-base);
+  --pst-color-danger-bg: var(--appxc-danger-dark-bg);
+  --pst-color-danger-text: var(--appxc-main-blue-300);
+  --pst-color-danger-highlight: var(--appxc-danger-base);
+  --pst-color-danger-highlight-text: var(--appxc-neutral-0);
+}
+
+/* ─── Level 3: Selector applications ───────────────────────────────────────── */
+
+/* --- MAIN TEXT AREA --- */
+/* ... MAIN: Content ... */
+
+/* Intend: For PyData theme, the page background is the same as the main text
+   background. Changing the color for only [body] makes this visible. The main text area
+   needs to be colored separately. */
+.bd-main .bd-content .bd-article-container {
+  background-color: var(--pst-xc-color-main-area-background);
+}
+
+/* Intent: unify heading foreground across all article heading levels. */
+.bd-article-container h1,
+.bd-article-container h2,
+.bd-article-container h3,
+.bd-article-container h4,
+.bd-article-container h5,
+.bd-article-container h6 {
+  color: var(--pst-xc-color-headings);
+}
+
+/* Intent: page heading to use blue/yellow marker like in toc left/right sidebar */
+.bd-article-container h1 {
+  border-left: 4px solid var(--pst-color-border);
+  box-shadow: inset 4px 0 0 var(--pst-xc-color-accent-line);
+  padding-left: 0.65rem;
+}
+/* Intent: second headings use yellow accent line */
+.bd-article-container h2 {
+  border-bottom: 2px solid var(--pst-xc-color-accent-line);
+  padding-bottom: 0.15em;
+}
+
+/* ... Prev/Next Navigation ... */
+/* Intent: Separate from main text with accent line */
+.prev-next-area {
+  border-top: 2px solid var(--pst-xc-color-accent-line);
+  margin-top: 2.5rem;
+  padding-top: 0.8rem;
+  font-size: 0.95em;
+}
+/* Intent: Reduce consumed spacing, making it less prominent */
+.prev-next-area a {
+  padding: 0.2rem 0.35rem;
+}
+
+
+/* --- HEADER / FOOTER --- */
+
+/* Intent: apply header border and gradient using head-area bridge tokens from Level 2. */
+.bd-header {
+  background: linear-gradient(90deg,
+    var(--pst-xc-color-head-bg-left) 0%,
+    var(--pst-xc-color-main-area-background) 33%,
+    var(--pst-xc-color-main-area-background) 66%,
+    var(--pst-xc-color-head-bg-right) 100%) !important;
+  border-bottom: 1px solid var(--pst-xc-color-head-bg-left);
+}
+/* Intent: same as above for footer */
+.bd-footer,
+.bd-footer-article {
+  border-top: 1px solid var(--pst-xc-color-head-bg-left);
+  background: linear-gradient(90deg,
+    var(--pst-xc-color-head-bg-right) 33%,
+    var(--pst-xc-color-head-bg-left) 100%);
+}
+
+/* Intent: keep the brand mark visually emphasized in the header. */
+.bd-header .navbar-brand {
+  font-size: 2.5em;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+}
+.logo__title {
+  color: var(--appxc-main-blue-500) !important;
+}
+
+/* Intent: use clear red for version warning banner. The PyData theme does not have a
+   color token for this banner background. */
+.bd-header-announcement,
+#bd-header-version-warning {
+  background-color: var(--pst-color-danger);
+  color: var(--pst-color-text-base);
+}
+
+/* --- SIDEBAR --- */
+
+/* Intent: apply blue/yellow marker to active navigation */
+nav.bd-links li.current > a,
+.toc-entry a.nav-link.active {
+  border-left: 3px solid var(--pst-color-border);
+  box-shadow: inset 3px 0 0 var(--pst-xc-color-accent-line);
+  padding-left: calc(0.5rem - 3px);
+}
+
+/* Intent: left sidebar heading color to not stick out */
+nav.bd-links p.bd-links__title{
+  color: var(--pst-color-text-muted);
+}
+
+/* Intent: right sidebar heading colors (like on this page) to not stick out */
+.bd-sidebar-secondary .page-toc.tocsection.onthispage,
+.bd-sidebar-secondary .sidebar-secondary-item h3 {
+  color: var(--pst-color-text-muted);
+}
+
+/* Intent: keep version at top-right without padding towards the header. */
+.appxc-sidebar-version-container {
+  width: 100%;
+  padding: 0px 0 0 0;
+  text-align: right;
+}
+
+/* Intent: style documentation version with theme monospace font. */
+.appxc-sidebar-version {
+  /*display: block;*/
+  margin: 0;
+  font-family: var(--pst-font-family-monospace);
+  font-size: 0.8rem;
+  color: var(--pst-color-text-muted);
+}
+
+/* --- ADDITIONAL FORMATTING --- */
+
+/* ... ADDITIONAL: Code/PRE ... */
+
+/* Intent: remove box/chip styling around literal inline code variants for visual consistency. */
+code.literal,
+code.docutils.literal,
+code.literal.pre,
+code.docutils.literal.pre {
+  background-color: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  font-size: 1.00em;
+  font-weight: 550;
+  color: var(--pst-color-text-base);
+  padding: 0;
+}
+
+/* Intent: differentiate table header (broken after separate background color). Idea for
+   light: invert text and background. For dark, having a brighter table header does not
+   work out well.*/
+html[data-theme="light"] .bd-content table.table th {
+  background-color: var(--pst-color-text-muted);
+  color: var(--pst-xc-color-main-area-background);
+}
+html[data-theme="dark"] .bd-content table.table th {
+  background-color: var(--appxc-neutral-950);
+  color: var(--pst-color-text-base);
+}

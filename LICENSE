@@ -41,6 +41,7 @@ Those files belong to the documentation:
  * doc/conf.py
 To avoid AI's needing to digest license information, it is not included:
  * AGENTS.md
+ * **/AGENTS.md
 
 No license
 ----------
