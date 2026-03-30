@@ -21,10 +21,10 @@
   --appxc-main-blue-400: #9fb9d4;
   --appxc-main-blue-500: #3f6788;
   --appxc-main-blue-toned-500: #33546f;
-  --appxc-main-blue-toned-600: #3b4558;
-  --appxc-main-blue-toned-700: #213647;
-  --appxc-main-blue-toned-800: #1c2e3c;
-  --appxc-main-blue-toned-900: #172632;
+  --appxc-main-blue-toned-600: #2d4a63;
+  --appxc-main-blue-toned-700: #264053;
+  --appxc-main-blue-toned-800: #1f3546;
+  --appxc-main-blue-toned-900: #182b38;
 
   /* --- Accent yellow palette --- */
   --appxc-yellow-100: #f8f3de;
@@ -78,6 +78,8 @@ html[data-theme="light"] {
   --pst-color-text-base: var(--appxc-main-blue-toned-700);
   /* main text headings */
   --pst-xc-color-headings: var(--appxc-main-blue-500);
+  /* text color semi-muted (added for inline code) */
+  --pst-xc-color-text-semi-muted: var(--appxc-main-blue-toned-600);
 
   /* SPECIAL TEXT ELEMENTS */
   /* link colors */
@@ -147,6 +149,8 @@ html[data-theme="dark"] {
   --pst-color-text-base: var(--appxc-main-blue-200);
   /* main text headings */
   --pst-xc-color-headings: var(--appxc-main-blue-100);
+  /* text color semi-muted (added for inline code) */
+  --pst-xc-color-text-semi-muted: var(--appxc-main-blue-300);
 
   /* SPECIAL TEXT ELEMENTS */
   /* link colors */
@@ -269,9 +273,18 @@ html[data-theme="dark"] {
   font-size: 2.5em;
   font-weight: 700;
   letter-spacing: 0.2em;
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;
 }
 .logo__title {
   color: var(--appxc-main-blue-500) !important;
+  border-left: 6px solid var(--pst-color-border);
+  background-color: var(--pst-xc-color-accent-line);
+  display: inline-block;
+  line-height: 1;
+  margin: 5px 0;
+  padding: 0.1rem 0.5rem;
 }
 
 /* Intent: use clear red for version warning banner. The PyData theme does not have a
@@ -332,9 +345,8 @@ code.docutils.literal.pre {
   border: none;
   border-radius: 0;
   box-shadow: none;
-  font-size: 1.00em;
-  font-weight: 550;
-  color: var(--pst-color-text-base);
+  font-size: normal;
+  color: var(--pst-xc-color-text-semi-muted);
   padding: 0;
 }
 
