@@ -158,6 +158,9 @@ include = ["src"]
 # remove "+"
 reportImplicitStringConcatenation = false
 
+[tool.pytest.ini_options]
+norecursedirs = ["tests/doc"]
+
 [tool.tox]
 legacy_tox_ini = """
     [tox]
@@ -191,5 +194,3 @@ legacy_tox_ini = """
     # requirements. tests were AI generated and were not intended for development
     # tooling. they are kept in case the additions are separated.
 """
-# commands = pytest --cov=appxc --cov-report html --cov-report term
-# commands = coverage run --source src -m pytest
