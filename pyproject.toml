@@ -179,15 +179,17 @@ legacy_tox_ini = """
 
     commands = pytest -rA tests/fixtures/application.py::test_cleanup
                coverage erase
-               coverage run --source=appxc --context=UNIT --branch -m pytest -rA ./tests/unit
+               coverage run --source=appxc --context=UNIT --branch -m pytest -rfE ./tests/unit
                coverage report --contexts=UNIT
                coverage html --contexts=UNIT -d cov_html_UNIT
-               coverage run -a --source=appxc --context=ACCEPTANCE --branch -m pytest -rA ./tests/acceptance
+               coverage run -a --source=appxc --context=ACCEPTANCE --branch -m pytest -rfE ./tests/acceptance
                coverage report --contexts=ACCEPTANCE
                coverage html --contexts=ACCEPTANCE -d cov_html_ACCEPTANCE
                coverage report
                coverage html -d cov_html
-               pytest -rA ./tests/doc
+    # tests/doc is NOT included in tox runs. reason is that they need additional
+    # requirements. tests were AI generated and were not intended for development
+    # tooling. they are kept in case the additions are separated.
 """
 # commands = pytest --cov=appxc --cov-report html --cov-report term
 # commands = coverage run --source src -m pytest
