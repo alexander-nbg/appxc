@@ -3,7 +3,7 @@
 # Documentation: Page Status
 
 ```{page-status} usable
-:summary: ""
+:summary: initial version (2026/03)
 ```
 
 The **page status** is the prominent block on the right, raising awareness on incomplete
@@ -52,8 +52,8 @@ Each page adds a directive at the top:
 ```
 ````
 
-The directive **page-status** is configured in `conf.py` and further details entry point
-is `doc/_ext/doc_status.py`.
+The directive **page-status** is configured in [conf.py](gh:doc/conf.py) and further
+details entry point is [doc/_ext/page_status.py](gh).
 
 
 <!-- Could be added later: In contrast to module or feature status, there is no ***mature*** page status.-->

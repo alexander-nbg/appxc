@@ -6,8 +6,20 @@
 {% extends "!layout.html" %}
 
 {% block docs_toc %}
-  {% if not remove_sidebar_secondary or appxc_page_status_show %}
+  {% if not remove_sidebar_secondary %}
     <dialog id="pst-secondary-sidebar-modal"></dialog>
-    <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc">{% include "sections/sidebar-secondary.html" %}</div>
+    <!--inline style: add a div to stack the versioning and normal column on top of each
+        other -->
+    <div class="appxc-secondary-sidebar-column" style="display:block">
+      <!--adding the version tag before the normal column content-->
+      {% if appxc_sidebar_version %}
+        <div class="appxc-sidebar-version-container">
+          <span class="appxc-sidebar-version">{{ appxc_sidebar_version }}</span>
+        </div>
+      {% endif %}
+      <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc">
+        {% include "sections/sidebar-secondary.html" %}
+      </div>
+    </div>
   {% endif %}
 {% endblock docs_toc %}

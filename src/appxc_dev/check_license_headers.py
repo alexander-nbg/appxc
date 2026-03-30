@@ -18,6 +18,9 @@ LICENSES = {
     "./doc/_ext": {
         ".py": "SPDX-License-Identifier: 0BSD",
     },
+    "./tests/doc": {
+        ".py": "SPDX-License-Identifier: 0BSD",
+    },
     "default": {
         ".py": "SPDX-License-Identifier: Apache-2.0",
         ".po": "SPDX-License-Identifier: Apache-2.0",

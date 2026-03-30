@@ -6,7 +6,7 @@
 :summary: just dropped some comments (2026/03)
 ```
 
-Will be updated in scope of issue #12.
+Will be updated in scope of issue [#12](gh).
 
 * APPXC uses `ruff format` you may want to configure VS Code to apply this upon file
   save

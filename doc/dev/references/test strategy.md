@@ -8,7 +8,8 @@
 
 The test strategy applies to all [features](/user/features/_features) in the user area
 and to all modules in `src/appxc`. It does not cover development tools in
-`src/appxc-dev`, the scripts in `dev` or documentation related extensions in `doc/**`.
+[src/appxc_dev](gh), the scripts in `dev` or documentation related extensions in
+`doc/**`.
 
 ## Test Levels
 Considered are the following two test levels:

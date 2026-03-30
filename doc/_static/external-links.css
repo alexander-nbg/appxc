@@ -10,3 +10,31 @@
   line-height: 1;
   opacity: 0.8;
 }
+
+a.appxc-gh-link-code {
+  text-decoration: none;
+}
+
+a.appxc-gh-link-code code.appxc-gh-link-text {
+  color: var(--pst-color-link);
+  font-weight: normal !important;
+}
+
+a.appxc-gh-link-code:hover code.appxc-gh-link-text,
+a.appxc-gh-link-code:focus-visible code.appxc-gh-link-text {
+  color: var(--pst-color-link-hover);
+}
+
+a.appxc-gh-link .appxc-gh-link-tail {
+  white-space: nowrap;
+}
+
+a.appxc-gh-link .appxc-gh-link-icon {
+  display: inline-block;
+  margin-left: -0.1rem;
+  margin-right: 0.1rem;
+  font-size: 0.88em;
+  line-height: 1;
+  opacity: 0.72;
+  vertical-align: baseline;
+}

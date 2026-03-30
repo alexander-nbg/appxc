@@ -10,7 +10,7 @@ Principles:
 - Summary text can be explicit (`:summary:`) or directive body text.
 - Defaults are status-specific and configured in ``conf.py``.
 
-See also: doc/dev/concepts/page_status.md
+See also: doc/dev/concepts/doc_page_status.md
 """
 
 from __future__ import annotations
@@ -52,24 +52,17 @@ def _get_status_store(build_environment: Any) -> dict[str, dict[str, Any]]:
     if not isinstance(existing_store, dict):
         existing_store = {}
         build_environment.appxc_page_status = existing_store
-    return cast(
-        "dict[str, dict[str, Any]]",
-        existing_store,
-    )
+    return cast("dict[str, dict[str, Any]]", existing_store)
 
 
 def _normalize_status(requested_status: str) -> tuple[str, str]:
-    normalized_status = requested_status.strip().lower()
-    canonical_status = normalized_status
-
+    canonical_status = requested_status.strip().lower()
     if canonical_status not in VALID_STATUSES:
         allowed_statuses = "draft, stub, obsolete, usable, incomplete"
-        msg = (
+        raise ValueError(
             "Unsupported page-status value "
             f"'{requested_status}'. Allowed values are: {allowed_statuses}."
         )
-        raise ValueError(msg)
-
     return canonical_status, VALID_STATUSES[canonical_status]
 
 
@@ -85,12 +78,9 @@ def _resolve_default_summary(app: Sphinx, status: str) -> str:
 
 
 def _build_page_status(app: Sphinx, page_name: str) -> dict[str, Any]:
-    status_store = getattr(app.env, "appxc_page_status", {})
-    page_status = status_store.get(page_name, {})
+    page_status = getattr(app.env, "appxc_page_status", {}).get(page_name, {})
     status = page_status.get("status", DEFAULT_STATUS)
-
     summary = page_status.get("summary") or _resolve_default_summary(app, status)
-
     return {
         "status": status,
         "label": page_status.get("label", DEFAULT_STATUS_LABEL),
@@ -108,12 +98,7 @@ class DocStatusDirective(SphinxDirective):
     has_content = True
     final_argument_whitespace = True
     option_spec = cast(
-        "dict[str, Any]",
-        MappingProxyType(
-            {
-                "summary": directives.unchanged,
-            }
-        ),
+        "dict[str, Any]", MappingProxyType({"summary": directives.unchanged})
     )
 
     def run(self) -> list[Any]:
@@ -121,21 +106,12 @@ class DocStatusDirective(SphinxDirective):
             canonical_status, display_label = _normalize_status(self.arguments[0])
         except ValueError as error:
             reporter = cast("Any", self.state.document.reporter)
-            error_message = reporter.error(
-                str(error),
-                line=self.lineno,
-            )
-            return [error_message]
+            return [reporter.error(str(error), line=self.lineno)]
 
-        # Parsing order:
-        # 1) `:summary:` option, 2) directive body, 3) status-specific default.
-        # ``hide`` is an optional positional argument on the same line as the status.
         summary_from_content = " ".join(
             line.strip() for line in self.content if line.strip()
         ).strip()
-
         hidden = len(self.arguments) > 1 and self.arguments[1].strip().lower() == "hide"
-
         summary = (
             self.options.get("summary", "").strip()
             or summary_from_content
@@ -169,7 +145,6 @@ def _add_page_context(
     doctree: Any,
 ) -> None:
     del template_name, doctree
-
     context["appxc_page_status"] = _build_page_status(app, page_name)
     context["appxc_page_status_show"] = (
         not app.config.page_status_hide_all
@@ -195,28 +170,14 @@ def _merge_doc_status(
 
 def setup(app: Sphinx) -> dict[str, bool]:
     app.add_config_value(
-        "page_status_default_summary",
-        DEFAULT_SUMMARIES,
-        "env",
-        [dict],
+        "page_status_default_summary", DEFAULT_SUMMARIES, "env", [dict]
     )
-    app.add_config_value(
-        "page_status_linked_page",
-        "",
-        "env",
-        [str],
-    )
-    app.add_config_value(
-        "page_status_hide_all",
-        False,
-        "env",
-        [bool],
-    )
+    app.add_config_value("page_status_linked_page", "", "env", [str])
+    app.add_config_value("page_status_hide_all", False, "env", [bool])
     app.add_directive("page-status", DocStatusDirective)
     app.connect("html-page-context", _add_page_context)
     app.connect("env-purge-doc", _purge_doc_status)
     app.connect("env-merge-info", _merge_doc_status)
-
     return {
         "parallel_read_safe": True,
         "parallel_write_safe": True,

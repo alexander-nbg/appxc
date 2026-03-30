@@ -14,5 +14,5 @@ of feature pages.
 :titlesonly:
 :hidden:
 :glob:
-
+*
 ```
