@@ -9,13 +9,13 @@
 ## Behavior
 
 ### Generate user request
-```{plantuml} registry_generate_request.puml
+```{plantuml} registry-generate-request.puml
 ```
 
 ### Update User Database
 
 ? this diagram sounds technical (calling registry)
-```{uml} registry_update_user_database.puml
+```{uml} registry-update-user-database.puml
 ```
 ### Checking Public Keys
 The registry stores the public signing key and the public encryption key which also

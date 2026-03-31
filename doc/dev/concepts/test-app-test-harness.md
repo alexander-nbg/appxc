@@ -1,6 +1,6 @@
 <!--Copyright 2026 the contributors of APPXC (github.com/alexander-nbg/appxc)-->
 <!--SPDX-License-Identifier: 0BSD-->
-# Application Test Harness
+# Testing: Application Test Harness
 
 ```{page-status} draft
 :summary: see introduction (2026/03)
