@@ -127,10 +127,13 @@ def _init_test_sandbox(
         f"{f'(class: {class_name})' if class_name else '(no class)'}"
         f"{' with cleanup.' if cleanup else '.'}",
     )
-    sandbox_root_parent = Path(test_sandbox_root).resolve().parent
+    # We need the folder with all tests to otain the relative path from ./tests to the
+    # actual test module ./tests/<relative-path>/test_something.py such that the sandbox
+    # can use the same reletive path ./.testing/<relative-path>/<module>/<case>.
+    tests_folder = Path(test_sandbox_root).resolve().parent / "tests"
     module_path = Path(module_directory).resolve()
     try:
-        relative_module_path = module_path.relative_to(sandbox_root_parent).as_posix()
+        relative_module_path = module_path.relative_to(tests_folder).as_posix()
     except ValueError:
         relative_module_path = module_path.name
 
