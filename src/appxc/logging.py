@@ -65,7 +65,7 @@ def activate_logging(
     _couple_to_warnings()
 
     if not os.path.exists(directory):
-        os.mkdir(directory)
+        os.makedirs(directory, exist_ok=True)
     # cleanup needs to remove one more file to retain n_files after the new one is
     # created:
     cleanup(directory, n_files - 1)
