@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: 0BSD
 """Resolve compact GitHub links written in MyST markdown link targets.
 
-See doc/dev/concepts/doc_github_links.md for a top level introduction of the feature.
+See doc/dev/concepts/doc-github-links.md for a top level introduction of the feature.
 
 This extension operates on MyST markdown link syntax ``[text](target)`` during the
 Sphinx doctree stage. It is therefore intentionally markdown-focused and does not try

@@ -35,8 +35,8 @@ A Sphinx extension, [doc/_ext/github_links.py](gh), supports links to:
 * the **project** via `[APPXC](gh)`, resulting in [APPXC](gh)
 * **issues** or **PRs** via `[#61](gh)`, resulting in [#61](gh)
 * **source folders** via `[doc/dev](gh)`, resulting in [doc/dev](gh)
-* **source files** via `[doc/dev/concepts/doc_github_links.md](gh)`, resulting in
-  [doc/dev/concepts/doc_github_links.md](gh)
+* **source files** via `[doc/dev/concepts/doc-github-links.md](gh)`, resulting in
+  [doc/dev/concepts/doc-github-links.md](gh)
 * **versions**, either explicitly via `[v0.0.2](gh)`, resulting in [v0.0.2](gh) or the
   **current version** via `[gh:version](gh)`, resulting in [gh:version](gh)
 
@@ -46,8 +46,8 @@ The syntax also supports the following alternatives:
   [workflow](gh:.github/workflows/cd.yml)
 * a file name as the link text while providing only the path as additional
   information, such as
-  `[doc_github_links.md](gh:path:doc/dev/concepts)`, resulting in
-  [doc_github_links.md](gh:path:doc/dev/concepts)
+  `[doc-github-links.md](gh:path:doc/dev/concepts)`, resulting in
+  [doc-github-links.md](gh:path:doc/dev/concepts)
 
 The extension uses the `release` variable in [conf.py](gh:doc/conf.py) and links to
 files and paths for the version that matches the documentation build. Development
