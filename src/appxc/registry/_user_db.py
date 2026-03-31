@@ -21,7 +21,7 @@ class UserEntry(TypedDict):
 
 
 class UserDatabase(Storable):
-    log = logging.get_logger(__name__ + ".UserDatabase")
+    log = logging.getLogger(__name__ + ".UserDatabase")
 
     def __init__(self, storage_method: Storage, **kwargs):
         super().__init__(storage_method, **kwargs)

@@ -13,7 +13,7 @@ from .storable import Storable
 from .storage import Storage
 from .storage_to_bytes import StorageToBytes
 
-log = logging.get_logger(__name__)
+log = logging.getLogger(__name__)
 
 
 class AppxcStorageSyncError(Exception):

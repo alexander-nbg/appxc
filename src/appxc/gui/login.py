@@ -43,7 +43,7 @@ class Login:
      * key: a secred key that is used to encrypt locally stored data
     """
 
-    log = logging.get_logger(__name__ + ".Login")
+    log = logging.getLogger(__name__ + ".Login")
 
     def __init__(
         self,

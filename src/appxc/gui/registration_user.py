@@ -21,7 +21,7 @@ from appxc.registry import Registry
 # needs a detailed review. Currently, getting the GUI and behavior right is
 # prioritized since it may considerably impact this implementation.
 
-log = logging.get_logger(__name__)
+log = logging.getLogger(__name__)
 
 
 class RegistrationUser:
@@ -32,7 +32,7 @@ class RegistrationUser:
     parent is provided, or as Toplevel if parent is given.
     """
 
-    log = logging.get_logger(__name__ + ".RegistrationUser")
+    log = logging.getLogger(__name__ + ".RegistrationUser")
 
     def __init__(
         self,

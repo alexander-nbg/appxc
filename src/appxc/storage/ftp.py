@@ -55,7 +55,7 @@ class FtpLocation(StorageToBytes):
     # TODO UPGRADE: The verbose logging should be collected and printet to info
     # when errors occur
 
-    log = logging.get_logger(__name__ + ".RemoteConnection")
+    log = logging.getLogger(__name__ + ".RemoteConnection")
 
     def __init__(self, host: str, user: str, password: str, path: str = "", **kwargs):
         """Maintainer for FTP locations

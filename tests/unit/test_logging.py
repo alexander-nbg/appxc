@@ -120,7 +120,7 @@ def test_typical_usage_in_order(request):
 
     def run_logging(directory: str):
         logging.activate_logging(directory=directory, app_scope=["test"])
-        logging.get_logger("test.").info("test scope log")
+        logging.getLogger("test.").info("test scope log")
         # just produce some APPXF logging:
         fileversions.set_locale("DE")
 

@@ -68,7 +68,7 @@ class GridFrame(tk.LabelFrame):
     of frames in one column.
     """
 
-    log = logging.get_logger(f"{__name__}.GridFrame")
+    log = logging.getLogger(f"{__name__}.GridFrame")
     # deriving classes are supposed to define which APPXC types they support in
     # displayling:
     supports: tuple[type, ...] = ()
@@ -320,7 +320,7 @@ class ButtonFrame(GridFrame):
     label.
     """
 
-    log = logging.get_logger(__name__ + ".ButtonFrame")
+    log = logging.getLogger(__name__ + ".ButtonFrame")
 
     def __init__(
         self,

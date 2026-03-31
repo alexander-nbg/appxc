@@ -59,7 +59,7 @@ class SettingDictSingleFrame(SettingFrameBase):
     """
 
     supports = (SettingDict,)
-    log = logging.get_logger(__name__ + ".SettingDictSingleFrame")
+    log = logging.getLogger(__name__ + ".SettingDictSingleFrame")
 
     def __init__(
         self,
@@ -261,7 +261,7 @@ class SettingDictColumnFrame(SettingFrameBase):
 class SettingDictWindow(GridToplevel):
     """Display dialog for Settings or Setting dicts"""
 
-    log = logging.get_logger(__name__ + ".SettingDictWindow")
+    log = logging.getLogger(__name__ + ".SettingDictWindow")
 
     def __init__(
         self,

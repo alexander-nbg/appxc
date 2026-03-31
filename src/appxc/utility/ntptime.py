@@ -31,7 +31,7 @@ class NtpTime:  # pragma: no cover
     This class can also be used to determine active network connection.
     """
 
-    log = logging.get_logger(__name__ + ".NtpTime")
+    log = logging.getLogger(__name__ + ".NtpTime")
 
     # default base server is europe
     base_server = "europe.pool.ntp.org"

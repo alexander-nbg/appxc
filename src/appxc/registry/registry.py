@@ -84,7 +84,7 @@ class Registry(RegistryBase):
     user_db, user_id are stored in ./data/security.
     """
 
-    log = logging.get_logger(__name__ + ".Registry")
+    log = logging.getLogger(__name__ + ".Registry")
 
     def __init__(
         self,

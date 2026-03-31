@@ -69,7 +69,7 @@ class Config:
     after initialization.
     """
 
-    log = logging.get_logger(__name__ + ".Config")
+    log = logging.getLogger(__name__ + ".Config")
 
     def __init__(
         self,

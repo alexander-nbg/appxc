@@ -11,7 +11,7 @@ from . import __version__, fileversions
 # Expected usage will likely not include appxc.logging and python builtin
 # logging such that the following should be OK:
 logging = builtin_logging
-get_logger = builtin_logging.getLogger
+getLogger = builtin_logging.getLogger  # noqa: N816 compatibility with builtin logging
 
 file_formatter = logging.Formatter(
     "%(asctime)s.%(msecs)03d "
