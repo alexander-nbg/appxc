@@ -65,6 +65,17 @@ def test_activate_logging_multiple_files(request):
     assert f"logging_{today}_02.log" in created_files
 
 
+def test_activate_logging_new_subfolder(request):
+    test_path = init_test_sandbox_from_fixture(request)
+
+    new_subfolder = os.path.join(test_path, "new", "subfolder")
+
+    _run_activate_logging(new_subfolder)
+
+    today = babel.dates.format_date(date=None, format="yyyyMMdd", locale="en_US")
+    assert os.path.isfile(os.path.join(new_subfolder, f"logging_{today}_00.log"))
+
+
 def test_activate_logging_file_rotation(request):
     test_path = init_test_sandbox_from_fixture(request)
 
