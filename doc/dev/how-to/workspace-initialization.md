@@ -25,8 +25,10 @@ sudo apt install gettext
 ```
 ## Virtual Environment Setup
 
+Recommended is using [dev/setup_venv.sh](gh) but you can also run this manually:
+
 ```bash
-python3.12 -m venv .venv
+python3 -m venv .venv
 source .venv/bin/activate
 python -m pip install --upgrade pip
 pip install -e . -r tests/requirements.txt -r dev/requirements.txt -r doc/requirements.txt
