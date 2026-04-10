@@ -2,8 +2,8 @@
 <!--SPDX-License-Identifier: 0BSD-->
 # User
 
-```{page-status} draft
-:summary: Documentation structure is still evolving (2026/03)
+```{page-status} stub
+:summary: Documentation structure is still evolving (2026/04)
 ```
 
 ```{toctree}
@@ -12,6 +12,7 @@
 :hidden:
 :glob:
 
-*
+scope
+concerns
 */_*
 ```

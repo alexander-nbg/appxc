@@ -7,8 +7,8 @@
 ```
 
 ## Situation
-**In a short draft:** As soon as [persistency](/user/concerns/persistency) is supported,
-application updates may break with previously persisted data.
+**In a short draft:** As soon as persistency is supported, application updates may break
+with previously persisted data.
 
 ```{admonition} Draft Status
 :class: attention

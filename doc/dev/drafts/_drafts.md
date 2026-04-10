@@ -25,5 +25,5 @@ if existing features or modules are extended.
 features/_features
 modules/_modules
 matema/_matema
-
+*
 ```

@@ -2,6 +2,18 @@
 <!--SPDX-License-Identifier: 0BSD-->
 # Logging
 
+```{page-status} draft
+Unchanged takeover from private library, needs review (2026/04)
+```
+
+:::{admonition} to be refined
+:class: warning
+
+This page was taken over from my private library *as is* and needs refinement which is
+planned in scope of [#79](gh)
+
+:::
+
 ## Basic Logging
 Logging during development shows progress and hints you left in your messages. Any log you issue will be __printed to the console__. When your application is shipped out of your hands, you rely on __logging written to a file__. Once log files are written, some __log rotation and cleanup of storage would be nice__: appxc starts a new log file for each application session (log rotation) and will only keep the last five log files (cleanup).
 

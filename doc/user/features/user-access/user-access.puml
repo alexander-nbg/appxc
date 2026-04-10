@@ -1,0 +1,19 @@
+' Copyright 2026 the contributors of APPXC (github.com/alexander-nbg/appxc)
+' SPDX-License-Identifier: 0BSD
+@startuml
+hide empty members
+'left to right direction
+
+object login
+object registration
+object "user registry"
+object "data synchronization"
+
+"data synchronization" .down.> "user registry": requires users and roles
+"user registry" .right.> login: requires secure local storage
+"user registry" .right.> registration: requires setup procedure
+
+registration .[hidden]up.> login
+
+
+@enduml

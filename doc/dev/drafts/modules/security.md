@@ -1,15 +1,23 @@
 <!--Copyright 2026 the contributors of APPXC (github.com/alexander-nbg/appxc)-->
 <!--SPDX-License-Identifier: 0BSD-->
-# Login for Local Encryption
+# Security
 
-**Situation and Problems.** An application maintains sensible information for which you want to apply access restrictions, not relying on a particular operating system setup. Additionally, the application may need server access but you do not want to expose the credentials to the user. In both case, you also do not want to store this information on disk without encryption.
-
-**Feature.** Upon first usage, the user sets a password and the application requires the password to run. APPXC maintains a symmetric encryption key with this password and enables a secure storage.
+:::{page-status} draft
+:summary: dropping old documentation parts for refinement (2026/04)
+:::
 
 ## Old Security Documentation
-Your application likely stores sensible data like passwords to servers or details on other persons. A **login** procedure allows to encrypt the locally stored data. You thereby do not depend on the password protection of the operating system and stolen data cannot be used without this password. A **registration** procedure can ensure that only authorized users get access to servers. For example can you verify the requested user role and you can provide server passwords as part of the registration process.
 
-Usage can be as simple as the following. Note that login and registration both requiere a appxc configuration object (see TBD):
+:::{admonition} To be updated and refined
+:class: warning
+
+The samples in this section are old and likely not up to date. However, their intend is
+valid. The conent should be refined.
+
+:::
+
+Usage can be as simple as the following. Note that login and registration both requiere
+a appxc configuration object (see TBD):
 ```python
 from appxc import config, login, registration
 
