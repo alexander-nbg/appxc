@@ -2,9 +2,27 @@
 <!--SPDX-License-Identifier: 0BSD-->
 # Storage Concept
 
-**Situation and Problem.** An application maintains data that shall be persisted during sessions. But there are more details to consider. Shall the data be stored human readable or in binary format? Shall it be encrypted? Shall it be shared with other application instances?
+```{page-status} incomplete
+:summary: not good enough for user space with the currently open tickets (2026/04)
+```
 
-**Feature.** The storage concept is an abstraction allowing you to focus on the function your are implementing and pick the storage behavior from the APPXC library. The behavior is split into **storage locations**:
+:::{admonition} Conceptual Concerns
+:class: warning
+
+With [#37](gh), there are general concerns on the storage concept which should be
+clarified before releasing this page to user documentation.
+
+:::
+
+## Situation
+An application maintains data that shall be persisted during sessions. But there are
+more details to consider. Shall the data be stored human readable or in binary format?
+Shall it be encrypted? Shall it be shared with other application instances?
+
+## Approach
+The storage concept is an abstraction allowing you to focus on the function your are
+implementing and pick the storage behavior from the APPXC library. The behavior is split
+into **storage locations**:
 * on local disk (LocalStorage) or
 * via FTP,
 **storage format** (also called the serialization method):

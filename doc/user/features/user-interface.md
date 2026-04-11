@@ -2,22 +2,22 @@
 <!--SPDX-License-Identifier: 0BSD-->
 # User Interface
 
-```{page-status} draft
-:summary: added to drop an old note and quickly extended to <i>some</i> overview (2026/03)
-```
+:::{page-status} incomplete
+:summary: to be updated for v0.0.4 for UI abstraction (2026/04)
+:::
 
 ## Overview
 
 ### Situation
 
-User interfaces are a cross-cutting concern which also cut the APPXC features such that
+User interfaces are cross-cutting concerns that also cut across APPXC features such that
 ***a user interface must be provided***. However, user interfaces are susceptible to
 ***heavy customization*** conflicting with the APPXC scope to enable easy application
 creation.
 
 ### Approach
-The APPXC core will (feature is pending) realize features based on a command line
-interface (CLI) to enable light-weight executables and automated feature testing.
+The APPXC core will (feature is pending) realize features based on a command-line
+interface (CLI) to enable lightweight executables and automated feature testing.
 
 A GUI implementation based on [tkinter](https://docs.python.org/3/library/tkinter.html)
 is provided for all features while adding a lightweight framework approach (feature is
