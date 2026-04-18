@@ -66,12 +66,12 @@ html_theme = "pydata_sphinx_theme"
 
 html_theme_options = {
     "github_url": "https://github.com/alexander-nbg/appxc",
-    "announcement": (
-        "<b>Documentation is not usable</b>: "
-        "APPXC is currently transitioning from private repo. "
-        'See <a href="https://github.com/alexander-nbg/appxc/issues/48" '
-        'target="_blank">issue #48</a>.'
-    ),
+    # "announcement": (
+    #    "<b>Documentation is not usable</b>: "
+    #    "APPXC is currently transitioning from private repo. "
+    #    'See <a href="https://github.com/alexander-nbg/appxc/issues/48" '
+    #    'target="_blank">issue #48</a>.'
+    # ),
 }
 
 html_context = {
