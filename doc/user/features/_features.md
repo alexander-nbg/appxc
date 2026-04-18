@@ -5,10 +5,10 @@
 ```{page-status} usable
 ```
 
-Features are derived from [concerns](/user/concerns). Pages in this
-section raise awareness of common situations that emerge sooner or later during
-an application's lifetime and, thereby, provide the context of a feature and the
-resulting [modules](../modules/_modules.md).
+The feature pages raise awareness of common situations that may emerge sooner or later
+during an application's lifetime. The situations are always derived from [cross-cutting
+concerns](../appxc.md#cross-cutting-concerns). The pages focus on providing the context
+of a feature and the resulting [modules](../modules/_modules.md).
 
 ```{toctree}
 :maxdepth: 1

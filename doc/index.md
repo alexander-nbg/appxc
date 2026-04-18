@@ -1,6 +1,6 @@
 <!--Copyright 2026 the contributors of APPXC (github.com/alexander-nbg/appxc)-->
 <!--SPDX-License-Identifier: 0BSD-->
-```{include} ../README.md
+```{include} /user/appxc.md
 ```
 
 ```{toctree}

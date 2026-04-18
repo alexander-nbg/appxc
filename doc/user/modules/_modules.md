@@ -2,8 +2,8 @@
 <!--SPDX-License-Identifier: 0BSD-->
 # Modules
 
-```{page-status} draft
-:summary: Documentation structure is still evolving (2026/03)
+```{page-status} incomplete
+:summary: Needs updates when first module descriptions are available (2026/04)
 ```
 
 Intend of pages here is to ***enable usage*** of the implemented modules. Descriptions include interfaces, behavior and code snippets for common problems.
