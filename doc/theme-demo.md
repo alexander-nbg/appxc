@@ -11,7 +11,7 @@ This page is intentionally not linked from the navigation and is used to visuall
 
 ## Links
 
-- Internal link via Sphinx role: {doc}`user/scope`
+- Internal link via Sphinx role: {doc}`user/appxc`
 - External link: [PyData Sphinx Theme](https://pydata-sphinx-theme.readthedocs.io/)
 - GitHub issue shortcut: [#42](gh)
 - GitHub source shortcut: [doc/theme-demo.md](gh)

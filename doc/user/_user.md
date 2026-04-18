@@ -12,7 +12,6 @@
 :hidden:
 :glob:
 
-scope
-concerns
+appxc
 */_*
 ```
