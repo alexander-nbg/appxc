@@ -11,7 +11,7 @@ from pathlib import Path
 import babel.dates
 
 from appxc import __version__, fileversions, logging
-from tests.fixtures.test_sandbox import init_test_sandbox_from_fixture
+from appxc.testing.sandbox import sandbox_from_fixture
 
 
 def _log_default_usage(directory: str) -> None:
@@ -44,7 +44,7 @@ def _run_activate_logging(
 
 
 def test_activate_logging_multiple_files(request):
-    test_path = init_test_sandbox_from_fixture(request)
+    test_path = sandbox_from_fixture(request)
 
     # Initialize a logged program 3 times:
     _run_activate_logging(test_path)
@@ -66,7 +66,7 @@ def test_activate_logging_multiple_files(request):
 
 
 def test_activate_logging_new_subfolder(request):
-    test_path = init_test_sandbox_from_fixture(request)
+    test_path = sandbox_from_fixture(request)
 
     new_subfolder = os.path.join(test_path, "new", "subfolder")
 
@@ -77,7 +77,7 @@ def test_activate_logging_new_subfolder(request):
 
 
 def test_activate_logging_file_rotation(request):
-    test_path = init_test_sandbox_from_fixture(request)
+    test_path = sandbox_from_fixture(request)
 
     # Initialize a logged program 5 times:
     _run_activate_logging(test_path)
@@ -102,7 +102,7 @@ def test_activate_logging_file_rotation(request):
 
 
 def test_activate_logging_content(request):
-    test_path = init_test_sandbox_from_fixture(request)
+    test_path = sandbox_from_fixture(request)
 
     _run_activate_logging(test_path)
 
@@ -116,7 +116,7 @@ def test_activate_logging_content(request):
 
 
 def test_typical_usage_in_order(request):
-    test_path = init_test_sandbox_from_fixture(request)
+    test_path = sandbox_from_fixture(request)
 
     def run_logging(directory: str):
         logging.activate_logging(directory=directory, app_scope=["test"])

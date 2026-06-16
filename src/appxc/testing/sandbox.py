@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 """Test sandbox path handling
 
-The test sandbox is a directory where each test case can create a sanbox for
+The test sandbox is a directory where each test case can create a sandbox for
 files and folders needed during test case execution. This module provides
 corresponding variables and helpers.
 """
@@ -11,11 +11,14 @@ import inspect
 import os
 import shutil
 from pathlib import Path
+from typing import TYPE_CHECKING, cast
 
-import pytest
 import toml
 
 from appxc import __version__
+
+if TYPE_CHECKING:
+    import pytest
 
 ### Reading configuration from pyproject.toml
 try:
@@ -23,21 +26,21 @@ try:
         toml_data = toml.load(pyproject_file)
     # get current project version:
     project_version = __version__
-    # get sandbox root directory for testing:
-    test_sandbox_root = toml_data["tool"]["appxc"]["test-sandbox-root"]
+    # get sandbox root directory for testing (needed cast to avoid TypeAny complaints):
+    sandbox_root = cast("str", toml_data["tool"]["appxc"]["testing"]["sandbox-root"])
     print(
         f"Configuration from pyproject.toml:\n"
-        f"Testing sandbox root: {test_sandbox_root}\n"
+        f"Testing sandbox root: {sandbox_root}\n"
         f"Project version: {project_version}",
     )
 except FileNotFoundError:
     print("Warning: no pyproject.toml was found.")
     project_version = ""
-    test_sandbox_root = ".testing"
+    sandbox_root = ".testing"
 
 
-def init_test_sandbox_from_fixture(
-    request: pytest.FixtureRequest,
+def sandbox_from_fixture(
+    request: "pytest.FixtureRequest",
     cleanup: bool = True,
 ) -> str:
     """Create a sandbox from a pytest fixture (request) returning the
@@ -59,7 +62,7 @@ def init_test_sandbox_from_fixture(
     # Obtain folder of the current module. Assuming a structure like
     # ./tests/module_name/test_file.py, the module_name should be part of the
     # created subdirectory for test files.
-    module_path = request.node.fspath
+    module_path: Path = request.path
     module_directory = os.path.dirname(str(module_path))
 
     # Also obtain the class name in case the executed function is actually a
@@ -70,7 +73,7 @@ def init_test_sandbox_from_fixture(
     if test_cls:
         class_name = test_cls.__name__
 
-    return _init_test_sandbox(
+    return _init_sandbox(
         module_name,
         module_directory,
         test_name,
@@ -79,7 +82,7 @@ def init_test_sandbox_from_fixture(
     )
 
 
-def init_test_sandbox_for_caller_module(cleanup: bool = True) -> str:
+def sandbox_for_caller_module(cleanup: bool = True) -> str:
     """Create a sandbox for the caller returning the path as string
 
     Arguments:
@@ -105,7 +108,7 @@ def init_test_sandbox_for_caller_module(cleanup: bool = True) -> str:
     # Intended use of this sandbox creation is for manual test cases where the
     # file itself is the test case. Therefore, only the module name (test case
     # name) and the path to this module matter. Class name does not matter.
-    return _init_test_sandbox(
+    return _init_sandbox(
         module_name="",
         module_directory=module_directory,
         test_name=module_name,
@@ -114,7 +117,7 @@ def init_test_sandbox_for_caller_module(cleanup: bool = True) -> str:
     )
 
 
-def _init_test_sandbox(
+def _init_sandbox(
     module_name: str,
     module_directory: str,
     test_name: str,
@@ -127,17 +130,17 @@ def _init_test_sandbox(
         f"{f'(class: {class_name})' if class_name else '(no class)'}"
         f"{' with cleanup.' if cleanup else '.'}",
     )
-    # We need the folder with all tests to otain the relative path from ./tests to the
+    # We need the folder with all tests to obtain the relative path from ./tests to the
     # actual test module ./tests/<relative-path>/test_something.py such that the sandbox
-    # can use the same reletive path ./.testing/<relative-path>/<module>/<case>.
-    tests_folder = Path(test_sandbox_root).resolve().parent / "tests"
+    # can use the same relative path ./.testing/<relative-path>/<module>/<case>.
+    tests_folder = Path(sandbox_root).resolve().parent / "tests"
     module_path = Path(module_directory).resolve()
     try:
         relative_module_path = module_path.relative_to(tests_folder).as_posix()
     except ValueError:
         relative_module_path = module_path.name
 
-    path = test_sandbox_root
+    path = sandbox_root
     if relative_module_path:
         path = os.path.join(path, relative_module_path)
     if module_name:

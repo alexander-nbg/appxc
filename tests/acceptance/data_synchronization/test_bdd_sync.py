@@ -5,7 +5,7 @@ import os.path
 from pytest import fixture
 from pytest_bdd import given, parsers, scenarios, then, when
 
-import tests.fixtures.test_sandbox
+import appxc.testing.sandbox as sandbox
 from appxc.config import Config
 from appxc.registry import Registry, SecureSharedStorage
 from appxc.security import SecurePrivateStorage
@@ -25,7 +25,7 @@ scenarios("test_bdd_sync.feature")
 def env(request):
     Storage.reset()
 
-    env = {"dir": tests.fixtures.test_sandbox.init_test_sandbox_from_fixture(request)}
+    env = {"dir": sandbox.sandbox_from_fixture(request)}
     # commonly used objects:
     env["security"] = appxc_objects.get_security_unlocked(path=env["dir"])
     env["config"] = Config(

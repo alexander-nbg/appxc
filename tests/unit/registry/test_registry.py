@@ -4,7 +4,7 @@ import os
 
 import pytest
 
-import tests.fixtures.test_sandbox
+import appxc.testing.sandbox as sandbox
 from appxc.registry import (
     AppxcRegistryError,
     AppxcRegistryRoleError,
@@ -28,7 +28,7 @@ def fresh_registry(request):
     # Usually, testing uses RAM objects (quicker)
     path = None
     # For debugging, you may want to use real files:
-    path = tests.fixtures.test_sandbox.init_test_sandbox_from_fixture(request)
+    path = sandbox.sandbox_from_fixture(request)
     path = os.path.join(path, "default")
     return appxc_objects.get_fresh_registry(
         path=path,
@@ -51,7 +51,7 @@ def admin_user_initialized_registry_pair(request):
     # Usually, testing uses RAM objects (quicker)
     path = None
     # For debugging, you may want to use real files:
-    path = tests.fixtures.test_sandbox.init_test_sandbox_from_fixture(request)
+    path = sandbox.sandbox_from_fixture(request)
 
     Storage.switch_context("admin")
     admin_path = os.path.join(path, "admin")
@@ -280,7 +280,7 @@ def test_manual_config_update(admin_user_initialized_registry_pair, request):
     #  * update of USER DB
 
     # Adding a second user for USER DB update tests (no path >> RAM storage)
-    sandbox_path = tests.fixtures.test_sandbox.init_test_sandbox_from_fixture(request)
+    sandbox_path = sandbox.sandbox_from_fixture(request)
     Storage.switch_context("new_user")
     new_user_path = os.path.join(sandbox_path, "new_user")
     new_user_registry = appxc_objects.get_fresh_registry(
@@ -361,7 +361,7 @@ def test_manual_update_set_error_unknown_user(
     user_registry: Registry = admin_user_initialized_registry_pair[1]
 
     # Adding a second admin
-    sandbox_path = tests.fixtures.test_sandbox.init_test_sandbox_from_fixture(request)
+    sandbox_path = sandbox.sandbox_from_fixture(request)
     Storage.switch_context("new_user")
     new_user_path = os.path.join(sandbox_path, "new_user")
     new_user_registry = appxc_objects.get_fresh_registry(

@@ -17,19 +17,19 @@ __Step 3:__ Closing the app and reopening should call for the password.
 Entering the right one should again provide access to the application.
 """
 
+import appxc.testing.sandbox as sandbox
 from appxc_matema.case_runner import ManualCaseRunner
-from tests.fixtures import test_sandbox
 from tests.fixtures.app_harness import AppHarness
 from tests.fixtures.app_harness_gui import AppHarnessGui
 
 
 def setup_once():
-    test_sandbox.init_test_sandbox_for_caller_module(cleanup=True)
+    sandbox.sandbox_for_caller_module(cleanup=True)
 
 
 def process_app_user():
     """Launch User"""
-    sandbox_path = test_sandbox.init_test_sandbox_for_caller_module(cleanup=False)
+    sandbox_path = sandbox.sandbox_for_caller_module(cleanup=False)
     app_user = AppHarness(sandbox_path, "user")
     AppHarnessGui(app_user).start()
 

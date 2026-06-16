@@ -7,7 +7,7 @@ Utilizing BaseStorageTest for test cases. See test_storage_base.py
 
 import pytest
 
-import tests.fixtures.test_sandbox
+import appxc.testing.sandbox as sandbox
 from appxc.registry import SecureSharedStorage
 from appxc.storage import LocalStorage, Storage
 from tests.fixtures import appxc_objects
@@ -26,7 +26,7 @@ from tests.unit.storage.test_storage_base import BaseStorageTest
 @pytest.fixture(autouse=True)
 def setup_local(request):
     Storage.reset()
-    env = {"dir": tests.fixtures.test_sandbox.init_test_sandbox_from_fixture(request)}
+    env = {"dir": sandbox.sandbox_from_fixture(request)}
     env["config"] = appxc_objects.get_dummy_config()
     env["security"] = appxc_objects.get_security_unlocked(path=env["dir"])
     env["registry"] = appxc_objects.get_registry_admin_initialized(

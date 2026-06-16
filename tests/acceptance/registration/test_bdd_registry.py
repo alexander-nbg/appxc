@@ -3,8 +3,9 @@
 from pytest import fixture
 from pytest_bdd import given, parsers, scenarios, then, when
 
+import appxc.testing.sandbox as sandbox
 from appxc.storage import Storage
-from tests.fixtures import application, test_sandbox
+from tests.fixtures import application
 from tests.fixtures.app_harness import AppHarness
 
 # Fixtures upon which the ones we require are depenent on must be included as
@@ -15,7 +16,7 @@ scenarios("test_bdd_registry.feature")
 @fixture(autouse=True)
 def env(request):
     # cleanup
-    test_sandbox.init_test_sandbox_from_fixture(request, cleanup=True)
+    sandbox.sandbox_from_fixture(request, cleanup=True)
     return {}
 
 

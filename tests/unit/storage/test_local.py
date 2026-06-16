@@ -7,8 +7,8 @@ Utilizing BaseStorageTest for test cases. See test_storage_base.py
 
 import pytest
 
+import appxc.testing.sandbox as sandbox
 from appxc.storage import LocalStorage, Storage
-from tests.fixtures import test_sandbox
 from tests.unit.storage.test_storage_base import BaseStorageTest
 
 # TODO: test for right place of meta storage
@@ -21,7 +21,7 @@ from tests.unit.storage.test_storage_base import BaseStorageTest
 @pytest.fixture(autouse=True)
 def setup_local(request):
     Storage.reset()
-    request.instance.env = {"dir": test_sandbox.init_test_sandbox_from_fixture(request)}
+    request.instance.env = {"dir": sandbox.sandbox_from_fixture(request)}
 
 
 class TestLocalStorage(BaseStorageTest):

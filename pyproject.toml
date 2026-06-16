@@ -33,6 +33,9 @@ source = "vcs"
 [tool.hatch.version.raw-options]
 version_scheme = "guess-next-dev"
 
+[project.optional-dependencies]
+test = ["pytest", "toml"]
+
 [tool.hatch.metadata.hooks.requirements_txt]
 files = ["src/requirements.txt"]
 
@@ -53,11 +56,10 @@ packages = ["src/appxc"]
 [project.entry-points.pyinstaller40]
 hook-dirs = "appxc.pyinstaller:get_hook_dirs"
 
-[tool.appxc]
-# The testing sandbox is the root directory where files are placed that are
-# needed or generated during test case. Each test case should use individual
-# subfolders.
-test-sandbox-root = "./.testing"
+[tool.appxc.testing]
+# The sandbox root is the directory where files placed during test case
+# execution are retained. Each test case should use individual subfolders.
+sandbox-root = "./.testing"
 
 [tool.ruff]
 # Note: Line length default is already 88. Minimum python version is taken from project
@@ -143,6 +145,11 @@ suppress-none-returning = true
   "ARG", "S603", "S607", "T201"
 ]
 
+# print() calls in test utilities are intentional (test output)
+"src/appxc/testing/**/*.py" = [
+  "T201"
+]
+
 # development scripts are not part of the shipped library and are only running locally
 # and within CI (not in user applications)
 "src/appxc_dev/**/*.py" = [
@@ -157,6 +164,12 @@ include = ["src"]
 # Implicit string concatenation is commonly used for exceptions and ruff formatter would
 # remove "+"
 reportImplicitStringConcatenation = false
+
+# Untyped third-party libraries (e.g. pytest fixtures, toml) expose members without type
+# annotations. Reporting unknown member/variable/argument types is not actionable.
+reportUnknownMemberType = false
+reportUnknownVariableType = false
+reportUnknownArgumentType = false
 
 [tool.pytest.ini_options]
 norecursedirs = ["tests/doc"]

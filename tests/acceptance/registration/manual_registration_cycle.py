@@ -39,14 +39,14 @@ __Step 8:__ Even if the admin closes the application and reloads the request
 and adds the user again, it will be added with the same user ID.
 """
 
+import appxc.testing.sandbox as sandbox
 from appxc_matema.case_runner import ManualCaseRunner
-from tests.fixtures import test_sandbox
 from tests.fixtures.app_harness import AppHarness
 from tests.fixtures.app_harness_gui import AppHarnessGui
 
 
 def setup_once():
-    sandbox_path = test_sandbox.init_test_sandbox_for_caller_module(cleanup=True)
+    sandbox_path = sandbox.sandbox_for_caller_module(cleanup=True)
     # setup user
     app_user = AppHarness(sandbox_path, "user", registry_enabled=True)
     app_user.perform_login_init()
@@ -58,7 +58,7 @@ def setup_once():
 
 def process_app_user():
     """Launch User"""
-    sandbox_path = test_sandbox.init_test_sandbox_for_caller_module(cleanup=False)
+    sandbox_path = sandbox.sandbox_for_caller_module(cleanup=False)
     app_user = AppHarness(sandbox_path, "user", registry_enabled=True)
     app_user.perform_login_unlock()
 
@@ -67,7 +67,7 @@ def process_app_user():
 
 def process_app_admin():
     """Launch Admin"""
-    sandbox_path = test_sandbox.init_test_sandbox_for_caller_module(cleanup=False)
+    sandbox_path = sandbox.sandbox_for_caller_module(cleanup=False)
     app_admin = AppHarness(sandbox_path, "admin", registry_enabled=True)
     app_admin.perform_login_unlock()
     AppHarnessGui(app_admin).start()

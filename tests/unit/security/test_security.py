@@ -11,9 +11,10 @@ import os
 
 import pytest
 
+import appxc.testing.sandbox as sandbox
 from appxc.security import SecurePrivateStorage, Security
 from appxc.storage import LocalStorage, Storage
-from tests.fixtures import appxc_objects, test_sandbox
+from tests.fixtures import appxc_objects
 
 TEST_PASSWORD = "test-registry-password"
 
@@ -29,12 +30,12 @@ TEST_PASSWORD = "test-registry-password"
 @pytest.fixture(autouse=True)
 def test_setup(request):
     Storage.reset()
-    test_sandbox.init_test_sandbox_from_fixture(request, cleanup=True)
+    sandbox.sandbox_from_fixture(request, cleanup=True)
 
 
 @pytest.fixture
 def sandbox_path(request):
-    return test_sandbox.init_test_sandbox_from_fixture(request, cleanup=True)
+    return sandbox.sandbox_from_fixture(request, cleanup=True)
 
 
 def get_data_storage_factory(root_path, sec: Security):
